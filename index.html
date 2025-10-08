@@ -22,7 +22,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&family=Caveat:wght@700&display=swap" rel="stylesheet">
   
   <!-- html2canvas for downloads -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -44,10 +44,12 @@
     .dark body { 
       background-color: #020617; /* Slate 950 */
       color: #cbd5e1; /* Slate 300 */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%2394a3b8' fill-opacity='0.04' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.99 7.5V30L0 22.5zM15 15l12.99 7.5V30L15 22.5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
     .font-display { font-family: 'Poppins', sans-serif; }
     .font-serif-display { font-family: 'Playfair Display', serif; }
     .font-signature { font-family: 'Dancing Script', cursive; }
+    .font-handwriting { font-family: 'Caveat', cursive; }
     
     /* Gradients & Buttons */
     .gradient-bg { background-image: linear-gradient(120deg, var(--primary-600), var(--secondary-600)); }
@@ -73,7 +75,7 @@
     }
     button:disabled { cursor: not-allowed; opacity: 0.7; }
 
-    /* Animations */
+    /* Animations & Effects */
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     @keyframes slideInUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -100,18 +102,19 @@
     /* Custom Card Style */
     .card {
       background-color: #ffffff;
-      border: 1px solid #e2e8f0; /* Slate 200 */
+      border: 1px solid #e2e8f0;
       border-radius: 0.75rem;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
     }
     .dark .card {
-      background-color: #1e2937; /* Slate 800 */
-      border-color: #334155; /* Slate 700 */
+      background-color: rgba(30, 41, 59, 0.8); /* Slate 800 with opacity */
+      border-color: #334155; 
+      backdrop-filter: blur(10px);
     }
     .card:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
     }
     
     /* Certificate Styles */
@@ -127,13 +130,19 @@
         top: 3px; left: 3px; right: 3px; bottom: 3px;
         border: 3px solid #d4af37;
     }
-
-    /* Confetti Styles */
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      animation: confetti-fall linear infinite;
+    .certificate-logo {
+        width: 6rem;
+        height: 6rem;
+        margin: 0 auto 0.5rem;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .student-name {
+      font-family: 'Caveat', cursive;
+      color: black;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -147,9 +156,12 @@
     const DATA = {
       name: "Ganesh Dai Academy",
       subtitle: "Your SEE Companion",
-      // FIX: Using a Base64 Data URI to ensure the logo is captured by html2canvas
       logoDataUri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAbFBMVEX////8/PwAAAA+Pj7w8PApKSny8vIuLi7i4uLr6+s7OzuoqKj19fXAwMCtra2JiYlTU1Nvb2+AgIBbW1vj4+N/f3+bm5vW1tZOTk5dXV1cXFzLy8tGRkahoaGcnJyysrI2NjZISEhXV1eQkJAlJSVoaGi+T9WfAAAFUklEQVR4nO2d6XqiMBCGSRRCQbxiQYKiVbu17/+CA+qW69hJTjITMv9/B+dZIMlsyTknSQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8luzL2/xQvtu3+aF+G4pZ5b1+p35fI/L4Q7qG/6L/7o+k/n9GzP9O/3u/g2k/kP6g7+4L6l6kP8r/nL7P/pX/3k83h2cE8Y/6t7tX/qgQ/s7/wL/o4UeQ/pv+ez8S6f9g3943/y/6f0v6d/w/3r+4lA/5f/V7/g/5v0+1q7P8H6Z/0v9U6q0n/d+m/w3/L/2H/3/kR5R/z/+0+5/4+Qv+z/s/v9n+D8M+7/sP3oQ7v9e+q+lT/F/3v+L/2f+z//qL/J/4X+4/5v+x/y/+j/+/4H+B/0//k/7n/S/73/E/5n/X/+H/if9v/k/7P/G/7H/E/6H/J/4n/N/73/W/5X/d/7P+j/1P+h/1v+Z/y/+T/q/93/g/6H/If8z/lf87/hf8j/if8T/g/5H/Q/5n/O/43/K/5P+h/zP+d/wP+d/xP+B/yP+R/wP+d/zP+B/yv+D/of8T/gf8T/gf8T/if8T/mf8z/hf8T/if8T/if8T/if8T/k/4P+T/g/5P+D/k/4P+T/g/5P+B/3f+B/3f+B/yP+B/yv+V/xv+d/wP+B/wv+F/xv+d/wv+B/yP+B/wP+B/yP+B/yP+J/xv+d/zv+d/wv+d/zP+B/x/+R/w/+B/zP+B/zP+D/gf8D/gf8T/kf8r/gf8b/if8T/kf8T/gf8T/if8j/kf8T/gf8T/kf8r/kf8b/kf8b/kf8b/kf8b/kf8j/gf8D/gf8D/kf8j/gf8j/kf8j/gf8j/gf8j/k/4P+T/g/5P+B/3P+D/gv9z/hf8r/hf8L/lf8L/lP8L/lP8L/kf8j/g/5H/A/5H/A/4n/A/4n/I/5H/I/4n/M/5n/M/5n/M/5n/I/5H/I/4H/I/4H/I/4H/A/4n/M/5n/C/5P/M/4v/b/9P/M/6v/b/9P/M/4//X/9/3/8u32L/T/zP+P/z/+/7/+e32P/T/zP+P/wP+J/zv+p/zP+d/1v+Z/wv+Z/wv+J/wv+h/yv+p/w/+f/z/+x/33/232P/X/+P/x/+d/z/+h/wv+p/w/+R/w/+x/y/+f/3v+t/wv+t/wv+B/wv+J/yv+J/zv+V/wv+R/wv+x/y/+f/3v+9/wP+d/wP+Z/wP+J/wv+h/wv+h/yv+d/wv+V/wv+B/wv+V/yv+d/wv+d/wv+B/wv+R/wP+d/zv+d/wv+V/wv+B/yv+R/yv+J/xP+d/wv+d/wv+d/wP+B/wP+Z/wP+J/wv+B/wP+p/wP+V/wP+Z/wP+J/yP+B/yv+N/wv+d/wP+B/wv+J/xP+B/wP+d/wP+Z/wv+R/xP+B/w/+Z/wP+p/wP+F/yP+d/wv+p/xv+J/yP+p/wv+V/wv+R/xv+V/wv+B/xv+Z/wP+Z/xP+B/xP+d/yP+Z/wv+J/xP+d/wv+R/wv+h/zP+Z/wP+p/xv+B/x/+h/zP+V/x/+d/wP+d/zP+d/wP+Z/xP+B/wP+d/wP+Z/wv+J/wP+J/wv+d/wv+R/wv+V/yv+d/wP+d/xP+h/xP+h/yP+V/wv+V/wv+V/wv+J/x/+d/wP+d/xP+h/wP+V/wP+V/wP+d/zP+Z/wP+d/wP+p/x/+Z/wP+J/wP+Z/wv+p/xv+B/wP+d/wP+V/wP+Z/w/+d/zP+p/wP+Z/wP+V/wP+p/yP+Z/zP+Z/wP+Z/wP+d/zP+d/wP+Z/wP+Z/wP+Z/wP+d/wP+p/wP+Z/wv+B/wP+Z/wP+Z/wP+V/wP+Z/wP+V/yv+J/xP+R/zP+B/wv+h/wP+d/wP+Z/xP+Z/wP+Z/wP+R/wP+V/yP+d/wP+V/wP+d/wv+J/xP+d/xP+d/wP+d/xP+d/wP+Z/xP+d/wP+d/wP+R/wv+V/wP+p/xP+d/wv+V/wP+Z/wv+V/wv+R/wP+V/wP+p/zP+B/wP+d/wP+Z/wP+B/wP+J/wP+Z/zP+d/wP+J/wP+Z/zP+Z/zP+R/zP+J/xP+B/yP+B/wP+R/zP+R/zP+B/wP+Z/wP+p/x/+Z/xP+B/wP+Z/wP+V/wP+Z/wP+V/wP+Z/wP+Z/wP+Z/wP+Z/wP+Z/wP+p/wv+J/wP+d/yv+d/wP+d/wP+d/wP+Z/wP+p/wP+p/wP+V/yP+d/wP+d/wP+Z/wP+d/wP+Z/yv+d/yP+V/zP+d/wP+d/yP+V/xP+Z/wP+p/xP+Z/wP+p/wP+V/wP+d/wP+V/yP+p/zP+d/wP+p/wP+Z/wP+d/wP+Z/wP+p/zP+V/yP+Z/wP+d/wP+p/yv+B/zP+B/wv+J/wP+J/wv+B/wP+d/wP+d/zP+J/wv+h/yv+d/zP+V/yP+p/wv+p/yP+Z/wP+p/wP+d/wP+d/wv+Z/yP+Z/wv+d/wv+J/wP+d/yP+J/yv+Z/yP+Z/yP+Z/wP+d/wP+Z/yP+Z/yP+d/yP+p/zP+Z/wv+Z/yv+d/wv+R/wv+Z/wv+Z/wv+J/wP+J/wv+R/wv+R/yP+p/yv+Z/yv+d/wv+Z/wv+d/yv+d/wv+d/wP+Z/yv+V/wP+V/wv+R/yP+V/yv+R/wP+R/wv+Z/wv+Z/wP+Z/wP+p/yv+p/wP+Z/yP+R/wP+d/wP+Z/wP+d/wv+d/wP+d/yP+d/yP+d/yP+Z/zP+R/yP+p/wP+p/yP+Z/wP+d/wP+d/wP+p/wP+V/wv+p/yP+p/yv+p/yv+p/wP+Z/yv+p/zP+p/yv+Z/wP+d/yv+Z/yP+Z/yP+p/wP+p/wP+d/yP+Z/zP+p/yv+V/yP+V/yP+d/yv+Z/yv+d/wP+p/wP+d/wv+Z/yv+Z/yP+R/yP+d/wP+d/yv+V/wv+d/wP+p/wP+V/yv+d/wP+d/yP+Z/wP+d/wP+Z/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwJ/gV2F9Pj8/rXAAAAABJRU5ErkJggg==",
       social: { youtube: "#", facebook: "#" },
+      whatsapp: {
+        number: "9826594548",
+        message: "Hello Ganesh Dai, I have a question about my SEE preparation..."
+      },
       subjects: ["Mathematics", "Science", "English", "Nepali", "Social Studies", "Computer Science", "Optional Mathematics", "Accountancy", "Economics", "Health & EPH"],
       notes: [
         { id: 101, subject: "Mathematics", title: "Algebra: Polynomials — Core Concepts", summary: "Basics, factorization, identities, examples.", link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
@@ -194,26 +206,28 @@
       if (/\.pdf($|\?)/i.test(url)) return url;
       const g = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
       if (g) return `https://drive.google.com/file/d/${g[1]}/preview`;
-      return url; // Return other URLs directly to be opened in an iframe
+      return url;
     };
     
     // --- UI COMPONENTS ---
-    const Section = ({ title, subtitle, children, id = "" }) => (
-      <section id={id} className="max-w-7xl mx-auto px-4 py-16 md:py-20">
-        <div className="text-center mb-12 slide-in-up">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-800 dark:text-white">{title}</h2>
-          {subtitle && <p className="text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto">{subtitle}</p>}
-        </div>
-        {children}
-      </section>
-    );
+    const Section = ({ title, subtitle, children }) => {
+        return (
+            <section className="max-w-7xl mx-auto px-4 py-16 md:py-20">
+                <div className="text-center mb-12 slide-in-up">
+                    <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-800 dark:text-white">{title}</h2>
+                    {subtitle && <p className="text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto">{subtitle}</p>}
+                </div>
+                {children}
+            </section>
+        );
+    };
 
     const NameCaptureModal = ({ onSave }) => {
         const [name, setName] = useState('');
         return (
             <div className="overlay">
                 <div className="w-full max-w-md p-8 text-center bg-white dark:bg-slate-900 rounded-2xl shadow-2xl slide-in-up">
-                    <img src={DATA.logoDataUri} alt="Logo" className="w-20 h-20 mx-auto mb-4 rounded-full"/>
+                    <div className="certificate-logo mx-auto mb-4" style={{backgroundImage: `url(${DATA.logoDataUri})`}}></div>
                     <h2 className="text-2xl font-display font-bold text-slate-800 dark:text-white">Welcome to the Academy!</h2>
                     <p className="text-slate-500 dark:text-slate-400 mt-2 mb-6">What should we call you?</p>
                     <form onSubmit={(e) => { e.preventDefault(); if (name.trim()) onSave(name.trim()); }}>
@@ -232,12 +246,7 @@
         const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800'];
         const confetti = Array.from({ length: 100 }).map((_, i) => ({
             id: i,
-            style: {
-                left: `${Math.random() * 100}vw`,
-                backgroundColor: colors[Math.floor(Math.random() * colors.length)],
-                animationDuration: `${Math.random() * 3 + 4}s`,
-                animationDelay: `${Math.random() * 2}s`
-            }
+            style: { left: `${Math.random() * 100}vw`, backgroundColor: colors[Math.floor(Math.random() * colors.length)], animationDuration: `${Math.random() * 3 + 4}s`, animationDelay: `${Math.random() * 2}s` }
         }));
         return (
             <div className="overlay overflow-hidden">
@@ -249,10 +258,11 @@
             </div>
         );
     };
-
+    
     const CertificateModal = ({ name, onContinue, onDownload }) => {
         const certificateRef = useRef(null);
         const [downloading, setDownloading] = useState(false);
+        const logoStyle = { backgroundImage: `url(${DATA.logoDataUri})` };
 
         const handleDownload = async () => {
             if (certificateRef.current && !downloading) {
@@ -274,10 +284,10 @@
                     <div className="p-6 overflow-y-auto">
                         <div ref={certificateRef} id="certificate" className="text-slate-800">
                             <div className="text-center">
-                                <img src={DATA.logoDataUri} alt="Logo" className="w-24 h-24 mx-auto mb-2 rounded-full"/>
+                                <div className="certificate-logo" style={logoStyle}></div>
                                 <h1 className="font-serif-display text-4xl text-yellow-700">Certificate of Membership</h1>
                                 <p className="text-lg mt-4">This certificate is proudly presented to</p>
-                                <p className="font-display text-5xl font-bold my-6 gradient-text">{name}</p>
+                                <p className="student-name text-6xl font-bold my-4">{name}</p>
                                 <p className="text-lg">for joining the Ganesh Dai Academy. We wish you the very best for your SEE preparation journey and future endeavors.</p>
                                 <div className="mt-12 flex justify-between items-end">
                                     <div>
@@ -294,16 +304,22 @@
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 p-4 border-t border-slate-200 dark:border-slate-700">
                         <button onClick={handleDownload} disabled={downloading} className="flex-1 btn-accent px-6 py-3 rounded-lg font-semibold flex items-center justify-center">
-                            {downloading ? (
-                                <><i className="fa-solid fa-spinner spinner mr-2"></i> Downloading...</>
-                            ) : (
-                                <><i className="fa-solid fa-download mr-2"></i>Download Certificate</>
-                            )}
+                            {downloading ? ( <><i className="fa-solid fa-spinner spinner mr-2"></i> Downloading...</> ) : ( <><i className="fa-solid fa-download mr-2"></i>Download Certificate</> )}
                         </button>
                         <button onClick={onContinue} className="flex-1 btn-grad px-6 py-3 rounded-lg font-semibold">Continue to Academy <i className="fa-solid fa-arrow-right ml-2"></i></button>
                     </div>
                 </div>
             </div>
+        );
+    };
+
+    const AskQuestionFAB = () => {
+        const whatsappUrl = `https://wa.me/${DATA.whatsapp.number}?text=${encodeURIComponent(DATA.whatsapp.message)}`;
+        return (
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" 
+               className="fixed bottom-6 right-6 z-50 h-16 w-16 bg-gradient-to-tr from-green-500 to-teal-500 rounded-full shadow-lg grid place-items-center text-white text-3xl transition-transform hover:scale-110 active:scale-95">
+                <i className="fa-brands fa-whatsapp"></i>
+            </a>
         );
     };
 
@@ -329,7 +345,6 @@
       );
     };
 
-    // --- PAGE COMPONENTS ---
     const Header = ({ active, setActive, dark, setDark }) => {
       const [menuOpen, setMenuOpen] = useState(false);
       useEffect(() => {
@@ -343,23 +358,25 @@
         window.scrollTo(0,0);
       };
 
-      const NavItem = ({ name, label, icon }) => (
-        <button onClick={()=>navigate(name)} className={classNames(
-          "px-3 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors w-full text-left lg:w-auto",
-          active === name 
-            ? "text-primary-500 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-900/40" 
-            : "text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-800/60"
-        )}>
-          <i className={`${icon} w-5 text-center`}></i> {label}
-        </button>
-      );
+      const NavItem = ({ name, label, icon }) => {
+          return (
+            <button onClick={()=>navigate(name)} className={classNames(
+              "px-3 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors w-full text-left lg:w-auto",
+              active === name 
+                ? "text-primary-500 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-900/40" 
+                : "text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-800/60"
+            )}>
+              <i className={`${icon} w-5 text-center`}></i> {label}
+            </button>
+          );
+      };
 
       return (
-        <header className="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 backdrop-blur-lg bg-white/80 dark:bg-slate-950/70">
+        <header className="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 backdrop-blur-lg bg-white/80 dark:bg-slate-950/70">
           <div className="max-w-7xl mx-auto px-4">
             <div className="py-3 flex items-center justify-between">
               <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('home')}>
-                <img src={DATA.logoDataUri} alt="Logo" className="h-10 w-10 rounded-lg"/>
+                <div className="h-10 w-10 rounded-lg bg-cover bg-center" style={{backgroundImage: `url(${DATA.logoDataUri})`}}></div>
                 <div>
                   <div className="font-display font-semibold text-slate-900 dark:text-white text-lg leading-tight">{DATA.name}</div>
                   <div className="text-xs text-slate-500">{DATA.subtitle}</div>
@@ -395,63 +412,69 @@
       );
     };
 
-    const Hero = ({ go, userName }) => (
-      <section className="gradient-bg text-white">
-        <div className="max-w-7xl mx-auto px-4 py-20 md:py-28 text-center relative overflow-hidden">
-          <div className="absolute -top-1/2 -left-1/4 w-full h-full bg-white/5 rounded-full filter blur-3xl opacity-50"></div>
-          <div className="relative">
-            <h1 className="text-4xl md:text-6xl font-display font-bold fade-in" style={{animationDelay: '100ms'}}>
-              {userName ? `Welcome back, ${userName}!` : "Your SEE Success Starts Here."}
-            </h1>
-            <p className="mt-4 text-white/90 md:text-xl max-w-3xl mx-auto fade-in" style={{animationDelay: '200ms'}}>Your complete guide to acing the Grade 10 exams. Notes, practice papers, plans, and tools — all in one place.</p>
-            <div className="mt-8 flex flex-wrap gap-4 justify-center fade-in" style={{animationDelay: '300ms'}}>
-              <button onClick={() => go('prep')} className="btn-grad px-6 py-3 rounded-full font-semibold text-lg"><i className="fa-solid fa-graduation-cap mr-2"></i>Start Preparation</button>
-              <button onClick={() => go('notes')} className="px-6 py-3 rounded-full font-semibold bg-white text-slate-800 hover:bg-white/90 transition"><i className="fa-solid fa-book-open mr-2 text-primary-500"></i>Explore Notes</button>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    const Hero = ({ go, userName }) => {
+        return (
+            <section className="gradient-bg text-white">
+                <div className="max-w-7xl mx-auto px-4 py-20 md:py-28 text-center relative overflow-hidden">
+                    <div className="absolute -top-1/2 -left-1/4 w-full h-full bg-white/5 rounded-full filter blur-3xl opacity-50"></div>
+                    <div className="relative">
+                        <h1 className="text-4xl md:text-6xl font-display font-bold fade-in" style={{ animationDelay: '100ms' }}>
+                            {userName ? `Welcome back, ${userName}!` : "Your SEE Success Starts Here."}
+                        </h1>
+                        <p className="mt-4 text-white/90 md:text-xl max-w-3xl mx-auto fade-in" style={{ animationDelay: '200ms' }}>
+                            Your complete guide to acing the Grade 10 exams. Notes, practice papers, plans, and tools — all in one place.
+                        </p>
+                        <div className="mt-8 flex flex-wrap gap-4 justify-center fade-in" style={{ animationDelay: '300ms' }}>
+                            <button onClick={() => go('prep')} className="btn-grad px-6 py-3 rounded-full font-semibold text-lg"><i className="fa-solid fa-graduation-cap mr-2"></i>Start Preparation</button>
+                            <button onClick={() => go('notes')} className="px-6 py-3 rounded-full font-semibold bg-white text-slate-800 hover:bg-white/90 transition"><i className="fa-solid fa-book-open mr-2 text-primary-500"></i>Explore Notes</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+    };
 
-    const FeatureCard = ({ icon, title, text, delay }) => (
-        <div className="card p-6 text-center slide-in-up" style={{ animationDelay: `${delay}ms`}}>
-            <div className="h-16 w-16 mx-auto rounded-full gradient-bg grid place-items-center text-white text-2xl mb-4">
-                <i className={icon}></i>
+    const FeatureCard = ({ icon, title, text, delay }) => {
+        return (
+            <div className="card p-6 text-center slide-in-up" style={{ animationDelay: `${delay}ms`}}>
+                <div className="h-16 w-16 mx-auto rounded-full gradient-bg grid place-items-center text-white text-2xl mb-4">
+                    <i className={icon}></i>
+                </div>
+                <h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{title}</h3>
+                <p className="text-slate-500 dark:text-slate-400 mt-2">{text}</p>
             </div>
-            <h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{title}</h3>
-            <p className="text-slate-500 dark:text-slate-400 mt-2">{text}</p>
-        </div>
-    );
+        );
+    };
     
-    // (NoteCard, NotesExplorer, SeePreparationComponent, MyListComponent, AboutSection, and Footer are largely unchanged from the previous version, so they are included here without extensive comments for brevity)
-
-    const NoteCard = ({ note, saved, onToggle, onOpen }) => (
-      <div className="card p-4 flex flex-col" style={{animationDelay: `${(note.id % 10) * 50}ms`}}>
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <div className="text-xs font-semibold text-primary-500 dark:text-indigo-300 uppercase">{note.subject}</div>
-            <h4 className="font-semibold mt-1 text-slate-800 dark:text-white">{note.title}</h4>
-          </div>
-          <button onClick={() => onToggle(note.id)} className="text-slate-400 hover:text-secondary-500 text-lg flex-shrink-0 p-1">
-            <i className={saved ? "fa-solid fa-bookmark text-secondary-500" : "fa-regular fa-bookmark"}></i>
-          </button>
-        </div>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 flex-grow">{note.summary}</p>
-        <div className="mt-4 flex items-center justify-end">
-          <button onClick={() => onOpen(note)} className="px-4 py-2 rounded-full text-sm font-semibold bg-slate-100 dark:bg-slate-700/80 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-500 transition">
-            Open Note <i className="fa-solid fa-arrow-right ml-1 text-xs"></i>
-          </button>
-        </div>
-      </div>
-    );
+    const NoteCard = ({ note, saved, onToggle, onOpen }) => {
+        return (
+            <div className="card p-4 flex flex-col" style={{animationDelay: `${(note.id % 10) * 50}ms`}}>
+                <div className="flex items-start justify-between gap-2">
+                    <div>
+                        <div className="text-xs font-semibold text-primary-500 dark:text-indigo-300 uppercase">{note.subject}</div>
+                        <h4 className="font-semibold mt-1 text-slate-800 dark:text-white">{note.title}</h4>
+                    </div>
+                    <button onClick={() => onToggle(note.id)} className="text-slate-400 hover:text-secondary-500 text-lg flex-shrink-0 p-1">
+                        <i className={saved ? "fa-solid fa-bookmark text-secondary-500" : "fa-regular fa-bookmark"}></i>
+                    </button>
+                </div>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 flex-grow">{note.summary}</p>
+                <div className="mt-4 flex items-center justify-end">
+                    <button onClick={() => onOpen(note)} className="px-4 py-2 rounded-full text-sm font-semibold bg-slate-100 dark:bg-slate-700/80 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-500 transition">
+                        Open Note <i className="fa-solid fa-arrow-right ml-1 text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        );
+    };
     
     const NotesExplorer = ({ savedIds, toggleSave, openFile }) => {
        const [q, setQ] = useState("");
       const [sub, setSub] = useState("All");
       const list = useMemo(() => {
         return DATA.notes
-          .filter(n => (sub==="All" || n.subject===sub))
-          .filter(n => (n.title.toLowerCase().includes(q.toLowerCase()) || (n.summary||"").toLowerCase().includes(q.toLowerCase())));
+          .filter(n => (sub === "All" || n.subject === sub))
+          .filter(n => (n.title.toLowerCase().includes(q.toLowerCase()) || (n.summary || "").toLowerCase().includes(q.toLowerCase())));
       }, [q, sub]);
       
       return (
@@ -460,15 +483,14 @@
               <div className="flex flex-col md:flex-row gap-3">
                 <div className="relative flex-1">
                   <i className="fa-solid fa-search absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"></i>
-                  <input className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="Search notes..." value={q} onChange={e=>setQ(e.target.value)} />
+                  <input className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="Search notes..." value={q} onChange={e => setQ(e.target.value)} />
                 </div>
-                <select className="w-full md:w-56 px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" value={sub} onChange={e=>setSub(e.target.value)}>
+                <select className="w-full md:w-56 px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" value={sub} onChange={e => setSub(e.target.value)}>
                   <option>All</option>
                   {DATA.subjects.map(s => <option key={s}>{s}</option>)}
                 </select>
               </div>
             </div>
-            
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {list.length > 0 ? list.map(n => (
                 <div key={n.id} className="slide-in-up">
@@ -481,15 +503,13 @@
               )}
             </div>
         </Section>
-      )
+      );
     };
     
     const SeePreparationComponent = ({ openFile }) => {
         const [activeTab, setActiveTab] = useState('papers');
         const TabButton = ({ id, label, icon }) => (
-            <button
-                onClick={() => setActiveTab(id)}
-                className={classNames( "flex-1 px-4 py-3 text-sm md:text-base font-semibold rounded-lg flex items-center justify-center gap-2 transition", activeTab === id ? "bg-primary-500 text-white shadow-md" : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700" )} >
+            <button onClick={() => setActiveTab(id)} className={classNames("flex-1 px-4 py-3 text-sm md:text-base font-semibold rounded-lg flex items-center justify-center gap-2 transition", activeTab === id ? "bg-primary-500 text-white shadow-md" : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700")}>
                 <i className={icon}></i> {label}
             </button>
         );
@@ -510,7 +530,6 @@
               </div>
             </div>
         );
-
         return (
             <Section title="SEE Preparation Hub" subtitle="Your one-stop destination for routines, past papers, and expert-curated guess papers.">
                 <div className="max-w-3xl mx-auto p-1.5 bg-slate-100 dark:bg-slate-900 rounded-xl flex gap-1.5 mb-8 slide-in-up">
@@ -519,8 +538,8 @@
                     <TabButton id="routine" label="Exam Routine" icon="fa-solid fa-calendar-alt" />
                 </div>
                 <div>
-                    {activeTab === 'papers' && ( <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{DATA.seePreparation.questionPapers.map(p => <PaperCard key={p.id} paper={p} />)}</div> )}
-                    {activeTab === 'guess' && ( <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{DATA.seePreparation.guessPapers.map(p => <PaperCard key={p.id} paper={p} />)}</div> )}
+                    {activeTab === 'papers' && (<div className="grid grid-cols-1 md:grid-cols-2 gap-6">{DATA.seePreparation.questionPapers.map(p => <PaperCard key={p.id} paper={p} />)}</div>)}
+                    {activeTab === 'guess' && (<div className="grid grid-cols-1 md:grid-cols-2 gap-6">{DATA.seePreparation.guessPapers.map(p => <PaperCard key={p.id} paper={p} />)}</div>)}
                     {activeTab === 'routine' && (
                         <div className="card max-w-4xl mx-auto p-6 text-center slide-in-up">
                             <h3 className="text-2xl font-bold font-display text-slate-800 dark:text-white">{DATA.seePreparation.routine.title}</h3>
@@ -537,47 +556,51 @@
       const notes = DATA.notes.filter(n => ids.includes(n.id));
       return (
         <Section title="My Study List" subtitle="Your saved notes in one place for quick access.">
-          {notes.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {notes.map(n => <div key={n.id} className="slide-in-up"><NoteCard note={n} saved={true} onToggle={toggleSave} onOpen={openFile} /></div>)}
-            </div>
-          ) : (
-            <div className="text-center p-12 card slide-in-up">
-              <i className="fa-regular fa-bookmark text-5xl text-slate-400"></i>
-              <p className="mt-4 text-slate-500">No saved notes yet. Click the bookmark icon on any note to save it here.</p>
-            </div>
-          )}
+            {notes.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {notes.map(n => <div key={n.id} className="slide-in-up"><NoteCard note={n} saved={true} onToggle={toggleSave} onOpen={openFile} /></div>)}
+                </div>
+            ) : (
+                <div className="text-center p-12 card slide-in-up">
+                    <i className="fa-regular fa-bookmark text-5xl text-slate-400"></i>
+                    <p className="mt-4 text-slate-500">No saved notes yet. Click the bookmark icon on any note to save it here.</p>
+                </div>
+            )}
         </Section>
       );
     };
 
-    const AboutSection = () => (
-        <Section title="About The Academy" subtitle="Our mission, our promise, and our commitment to your privacy.">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div className="card p-6 slide-in-up" style={{animationDelay: '100ms'}}>
-                    <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DATA.aboutContent.aboutUs }} />
+    const AboutSection = () => {
+        return (
+            <Section title="About The Academy" subtitle="Our mission, our promise, and our commitment to your privacy.">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div className="card p-6 slide-in-up" style={{ animationDelay: '100ms' }}>
+                        <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DATA.aboutContent.aboutUs }} />
+                    </div>
+                    <div className="card p-6 slide-in-up" style={{ animationDelay: '200ms' }}>
+                        <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DATA.aboutContent.privacyPolicy }} />
+                    </div>
                 </div>
-                <div className="card p-6 slide-in-up" style={{animationDelay: '200ms'}}>
-                    <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DATA.aboutContent.privacyPolicy }} />
-                </div>
-            </div>
-        </Section>
-    );
+            </Section>
+        );
+    };
 
-    const Footer = ({ go }) => (
-      <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 py-8 text-sm text-slate-500">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>© {new Date().getFullYear()} {DATA.name} • Your SEE Success Partner</div>
-            <div className="flex items-center gap-4">
-                <button onClick={() => go('about')} className="hover:text-primary-500">About Us</button>
-                <a href={DATA.social.youtube} target="_blank" className="hover:text-red-500"><i className="fa-brands fa-youtube"></i> YouTube</a>
-                <a href={DATA.social.facebook} target="_blank" className="hover:text-blue-600"><i className="fa-brands fa-facebook"></i> Facebook</a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    );
+    const Footer = ({ go }) => {
+        return (
+            <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                <div className="max-w-7xl mx-auto px-4 py-8 text-sm text-slate-500">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div>© {new Date().getFullYear()} {DATA.name} • Your SEE Success Partner</div>
+                        <div className="flex items-center gap-4">
+                            <button onClick={() => go('about')} className="hover:text-primary-500">About Us</button>
+                            <a href={DATA.social.youtube} target="_blank" className="hover:text-red-500"><i className="fa-brands fa-youtube"></i> YouTube</a>
+                            <a href={DATA.social.facebook} target="_blank" className="hover:text-blue-600"><i className="fa-brands fa-facebook"></i> Facebook</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        );
+    };
     
     // --- MAIN APP ---
     const App = () => {
@@ -669,6 +692,7 @@
               {renderContent()}
           </main>
           <Footer go={setActive}/>
+          <AskQuestionFAB />
           {viewer && <PdfModal file={viewer} onClose={() => setViewer(null)} />}
         </div>
       );
