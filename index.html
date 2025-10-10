@@ -34,15 +34,18 @@
       --accent-500: #10b981; --accent-600: #059669;
     }
     html, body { scroll-behavior: smooth; }
-    body { font-family: 'Inter', system-ui, sans-serif; background-color: #f1f5f9; color: #334155; }
-    .dark body { background-color: #0f172a; color: #cbd5e1; background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px; }
+    body { font-family: 'Inter', system-ui, sans-serif; background-color: #f8fafc; color: #334155; }
+    .dark body { 
+      background-color: #0b1120; color: #cbd5e1; 
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%231e293b' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
     .font-display { font-family: 'Poppins', sans-serif; }
     .font-serif-display { font-family: 'Playfair Display', serif; }
     .font-handwriting { font-family: 'Caveat', cursive; }
     
     .gradient-bg { background-image: linear-gradient(135deg, var(--primary-600), var(--secondary-600)); }
     .btn-grad { background-image: linear-gradient(45deg, var(--primary-500) 0%, var(--secondary-500) 100%); color: #fff; transition: all .3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: none; }
-    .btn-grad:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
+    .btn-grad:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
     button:disabled { cursor: not-allowed; opacity: 0.6; }
 
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -52,15 +55,12 @@
     .slide-in-up { opacity: 0; animation: slideInUp .6s ease-out forwards; }
     .spinner { animation: spin 1s linear infinite; }
 
-    .overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); display:flex; align-items:center; justify-content:center; padding:1rem; z-index: 1000; animation: fadeIn .3s ease; }
+    .overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); display:flex; align-items:flex-start; justify-content:center; padding: 1rem; z-index: 1000; animation: fadeIn .3s ease; }
     .modal-pdf { width: 96vw; max-width: 1200px; height: 92vh; background:#0f172a; border: 1px solid #334155; border-radius:.75rem; overflow:hidden; display:flex; flex-direction:column; animation: slideInUp .4s ease-out; }
     
     .card { background-color: #ffffff; border-radius: 0.75rem; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-    .dark .card { background-color: rgba(30, 41, 59, 0.6); border-color: #334155; backdrop-filter: blur(12px); }
-    .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); }
-    
-    #certificate { background-color: #fdfdfd; border: 12px solid #a78bfa; padding: 2rem; position: relative; }
-    #certificate::before { content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border: 2px solid #c4b5fd; }
+    .dark .card { background-color: rgba(30, 41, 59, 0.7); border-color: #334155; backdrop-filter: blur(16px); }
+    .card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-900">
@@ -69,7 +69,10 @@
   <script type="text/babel">
     const { useEffect, useMemo, useState, useCallback, Fragment, useRef, memo } = React;
 
-    // --- DATA STORE ---
+    // =================================================================================================
+    // --- EDITABLE DATA STORE ---
+    // All editable content is here. Add your new notes, books, quizzes, etc. in this section.
+    // =================================================================================================
     const DATA = {
       name: "Ganesh Dai Academy",
       subtitle: "Your SEE Companion",
@@ -87,7 +90,7 @@
               { icon: "fa-solid fa-file-alt", title: "Past Papers", text: "Practice with official SEE question papers from previous years." },
               { icon: "fa-solid fa-star", title: "Model Questions", text: "Solve high-probability question sets prepared by subject experts." },
               { icon: "fa-solid fa-lightbulb", title: "Interactive Quizzes", text: "Test your knowledge and track your progress with subject-wise quizzes." },
-              { icon: "fa-solid fa-mobile-screen", title: "Mobile Friendly", text: "Study anytime, anywhere. Our platform is fully responsive for all devices." },
+              { icon: "fa-solid fa-search", title: "Global Search", text: "Instantly find any resource you need with our powerful search tool." },
           ]
       },
       quizzes: {
@@ -95,10 +98,80 @@
             title: "Science Quizzes",
             icon: "fa-solid fa-flask",
             chapters: {
+                "Scientific Study": {
+  questions: [
+    { question: "How many types of variables are there?", options: ["3", "4", "5", "6"], correctAnswer: "4" },
+    { question: "The variable that can be controlled while doing the experiment is called:", options: ["Independent", "Controlled", "Dependent", "Constant"], correctAnswer: "Controlled" },
+    { question: "The variable whose value depends on other variables and the user cannot determine its value directly is called:", options: ["Independent", "Controlled", "Dependent", "Constant"], correctAnswer: "Dependent" },
+    { question: "The variable whose value can be determined by the user is called:", options: ["Independent", "Controlled", "Dependent", "Constant"], correctAnswer: "Independent" },
+    { question: "In the research question, 'effect of physical exercise on the heartbeat', which of the following is the independent variable?", options: ["Type of physical exercise", "Duration of physical exercise in minutes", "Number of heart beats per minute", "Both type and duration of physical exercise"], correctAnswer: "Both type and duration of physical exercise" },
+    { question: "In the research question, 'what is the effect of heat on the solubility of sugar?', identify the independent and dependent variables.", options: ["Temperature of water and amount of sugar", "Temperature of water and amount of water", "Amount of sugar and temperature of water", "Amount of sugar and temperature of sugar"], correctAnswer: "Temperature of water and amount of sugar" },
+    { question: "The unit of length is called a fundamental unit because:", options: ["It depends on other units of measurement", "It does not depend on other units of measurement", "It is easy to measure", "It depends only on two units of measurement"], correctAnswer: "It does not depend on other units of measurement" },
+    { question: "Identify the fundamental units involved in the unit newton (N):", options: ["kg, m, and s", "kg, m, and cm", "kg, m, and K", "kg, m, and Pa"], correctAnswer: "kg, m, and s" },
+    { question: "Which of the following are the fundamental units involved in the unit of pressure?", options: ["kg/m·s²", "kg·m²/s²", "g/m·s²", "kg/m³"], correctAnswer: "kg/m·s²" },
+    { question: "Identify the physical quantity related to the given units: (i) kg·m/s³ (ii) kg·m/s²", options: ["Power, Pressure", "Pressure, Density", "Force, Pressure", "Pressure, Force"], correctAnswer: "Pressure, Force" },
+    { question: "Identify the group of fundamental units from the following:", options: ["Metre, kelvin, watt, and newton", "Kilogram, pascal, joule, and watt", "Metre, kilogram, second, and candela", "Metre, kilogram, watt, and second"], correctAnswer: "Metre, kilogram, second, and candela" },
+    { question: "Which of the following is the group of derived units?", options: ["Metre, second, pascal, and newton", "Pascal, newton, joule, and watt", "Metre, kilogram, second, and candela", "Kilogram, metre, second, and kelvin"], correctAnswer: "Pascal, newton, joule, and watt" },
+    { question: "What is the primary purpose of a control group in an experiment?", options: ["To increase the sample size", "To provide a baseline for comparison", "To manipulate the independent variable", "To measure the dependent variable"], correctAnswer: "To provide a baseline for comparison" },
+    { question: "Which of the following best describes a hypothesis in scientific research?", options: ["A proven fact", "A testable prediction based on observations", "A final conclusion of an experiment", "A random guess without evidence"], correctAnswer: "A testable prediction based on observations" },
+    { question: "What is the SI unit for measuring temperature?", options: ["Celsius", "Fahrenheit", "Kelvin", "Rankine"], correctAnswer: "Kelvin" },
+    { question: "Which of the following is a derived unit?", options: ["Meter", "Kilogram", "Velocity", "Second"], correctAnswer: "Velocity" },
+    { question: "In an experiment testing the effect of sunlight on plant growth, what is the dependent variable?", options: ["Amount of sunlight", "Type of plant", "Height of the plant", "Amount of water"], correctAnswer: "Height of the plant" },
+    { question: "Which of the following units is used to measure force?", options: ["Joule", "Newton", "Watt", "Pascal"], correctAnswer: "Newton" },
+    { question: "Why is the second considered a fundamental unit?", options: ["It is derived from other units", "It is used to measure time independently", "It depends on the meter and kilogram", "It is only used in derived units"], correctAnswer: "It is used to measure time independently" }
+  ]
+},
+"Classification of Living Beings": {
+  questions: [
+    { question: "Which of the following plants belongs to division Algae?", options: ["Riccia", "Volvox", "Cycas", "Liverworts"], correctAnswer: "Volvox" },
+    { question: "Why is Juniper kept in sub-division Gymnosperms?", options: ["It has needle-shaped leaves", "It has naked seeds", "It has chlorophyll", "It has cones instead of fruit"], correctAnswer: "It has naked seeds" },
+    { question: "Identify the dicot plant from the following:", options: ["Garlic", "Maize", "Bamboo", "Apple"], correctAnswer: "Apple" },
+    { question: "Identify the characteristics of animals that belong to the phylum Coelenterata:", options: ["They are multicellular", "They are found on land", "They move with the help of tentacles", "Their body has numerous pores"], correctAnswer: "They move with the help of tentacles" },
+    { question: "Why is coelenteron called gastrovascular cavity?", options: ["It is found in hydra", "It works to digest and transport", "Its shape is like that of a tube", "It helps to digest food"], correctAnswer: "It works to digest and transport" },
+    { question: "Identify the group of animals that belong to phylum Mollusca:", options: ["Hydra, Jellyfish, Pinworm, Liver fluke", "Tapeworm, Liver fluke, Diplozoon, Atoplana", "Octopus, Slug, Unio, Snail", "Tapeworm, Liver fluke, Diplozoon, Hydra"], correctAnswer: "Octopus, Slug, Unio, Snail" },
+    { question: "Identify the butterfly based on the characteristics given below:", options: ["Moist skin, hermaphrodite, nervous system with a nerve ring", "Moist skin, unisexual, nervous system with a nerve ring", "Flat body, hermaphrodite, nephridia for excretion, breathes through body surface", "Body divided into head, thorax, and abdomen, having jointed legs, flies with wings"], correctAnswer: "Body divided into head, thorax, and abdomen, having jointed legs, flies with wings" },
+    { question: "Which of the given animals belongs to phylum Arthropoda?", options: ["Cuttlefish", "Butterfly", "Jellyfish", "Starfish"], correctAnswer: "Butterfly" },
+    { question: "What is the function of gills in seahorse?", options: ["Helps to swim", "Helps to breathe", "Helps to digest food", "Helps to change direction in water"], correctAnswer: "Helps to breathe" },
+    { question: "What is the main reason for keeping Dolphin in class Mammalia?", options: ["Its body has a vertebral column", "Its body has mammary glands", "It breathes through the lungs", "It gives birth to young ones and suckles them"], correctAnswer: "It gives birth to young ones and suckles them" },
+    { question: "Which of the following groups of plants belong to sub-division Angiosperms?", options: ["Fern, Cycas, Pea, Onion", "Pine, Mango, Orange, Maize", "Cycas, Bamboo, Simal, Apple", "Orange, Garlic, Rose, Sal"], correctAnswer: "Orange, Garlic, Rose, Sal" },
+    { question: "Why is sunflower kept in sub-division Angiosperms?", options: ["It has cones and seeds inside the fruit", "It has needle-shaped leaves and produces flowers", "It produces flowers and fruits", "It has cones instead of flowers and naked seeds"], correctAnswer: "It produces flowers and fruits" },
+    { question: "Which characteristic distinguishes angiosperms from gymnosperms?", options: ["Presence of chlorophyll", "Seeds enclosed in a fruit", "Needle-shaped leaves", "Lack of vascular tissue"], correctAnswer: "Seeds enclosed in a fruit" },
+    { question: "Which of the following animals belongs to the phylum Annelida?", options: ["Starfish", "Earthworm", "Jellyfish", "Snail"], correctAnswer: "Earthworm" },
+    { question: "What is a key feature of animals in the phylum Arthropoda?", options: ["Soft, unsegmented body", "Exoskeleton and jointed appendages", "Radial symmetry", "Presence of a backbone"], correctAnswer: "Exoskeleton and jointed appendages" },
+    { question: "Which plant group lacks true roots, stems, and leaves?", options: ["Bryophytes", "Pteridophytes", "Gymnosperms", "Angiosperms"], correctAnswer: "Bryophytes" },
+    { question: "Which of the following is a characteristic of the phylum Chordata?", options: ["Presence of a notochord at some stage of development", "Segmented body with jointed legs", "Body with a coelom and no backbone", "Radial symmetry in adults"], correctAnswer: "Presence of a notochord at some stage of development" },
+    { question: "Which of the following is a monocot plant?", options: ["Pea", "Wheat", "Mango", "Mustard"], correctAnswer: "Wheat" },
+    { question: "What is the primary function of the nematocysts in Coelenterates?", options: ["Locomotion", "Digestion", "Capturing prey and defense", "Respiration"], correctAnswer: "Capturing prey and defense" }
+  ]
+},
+"Honey Bee": {
+  questions: [
+    { question: "Which phylum does the drone honey bee belong to?", options: ["Annelida", "Arthropoda", "Chordata", "Mollusca"], correctAnswer: "Arthropoda" },
+    { question: "How many types of honey bees are there in a hive?", options: ["Two", "Three", "Four", "Five"], correctAnswer: "Three" },
+    { question: "How many eggs does a queen bee lay in a day in favorable conditions?", options: ["1500", "2000", "3000", "5000"], correctAnswer: "2000" },
+    { question: "Why is the honey bee kept in phylum Arthropoda?", options: ["It lays eggs", "It produces honey", "Jointed legs are found in its body", "It is a social insect"], correctAnswer: "Jointed legs are found in its body" },
+    { question: "What is the function of the pollen basket found in the legs of a worker honey bee?", options: ["To make honey", "To know about the change in environment", "To collect pollens", "To search for food"], correctAnswer: "To collect pollens" },
+    { question: "Identify the queen bee based on the given characteristics:", options: ["Small and round head, largest and elongated body", "Medium-sized body, black and hairy", "Smallest body, chewing and lapping mouth", "Having pollen basket in legs, no poison glands"], correctAnswer: "Small and round head, largest and elongated body" },
+    { question: "What is the major function of the queen bee?", options: ["To lay eggs", "To control the hive", "To fight with the enemy", "To produce honey"], correctAnswer: "To lay eggs" },
+    { question: "What is the stage of the life cycle of the honey bee shown in the given figure?", options: ["Egg", "Larva", "Pupa", "Adult"], correctAnswer: "Pupa" },
+    { question: "What is the lifespan of a drone bee?", options: ["2–5 years", "2 months", "6 weeks to 6 months", "5 years"], correctAnswer: "2 months" },
+    { question: "What is the number of worker bees in a hive?", options: ["10,000 to 20,000", "30,000 to 50,000", "20,000 to 80,000", "50,000 to 80,000"], correctAnswer: "50,000 to 80,000" },
+    { question: "In which of the following conditions is a queen bee developed?", options: ["Takes royal jelly for the first 3 days", "Takes royal jelly throughout the larval period", "Takes royal jelly for the first 4 days", "Takes royal jelly throughout the pupal period"], correctAnswer: "Takes royal jelly throughout the larval period" },
+    { question: "What is the primary role of worker bees in a hive?", options: ["Reproducing with the queen", "Maintaining the hive and collecting food", "Protecting the queen from predators", "Laying eggs for the colony"], correctAnswer: "Maintaining the hive and collecting food" },
+    { question: "Which part of the honey bee’s body is responsible for producing wax?", options: ["Antennae", "Wax glands", "Pollen baskets", "Mandibles"], correctAnswer: "Wax glands" },
+    { question: "What is the primary source of food for a honey bee larva?", options: ["Nectar", "Royal jelly", "Honey", "Pollen"], correctAnswer: "Royal jelly" },
+    { question: "How do honey bees communicate the location of food sources?", options: ["Through sound signals", "By performing a waggle dance", "Using pheromones only", "By physical contact"], correctAnswer: "By performing a waggle dance" },
+    { question: "What is the average lifespan of a worker bee during the active season?", options: ["6 weeks", "6 months", "1 year", "2 years"], correctAnswer: "6 weeks" },
+    { question: "Which of the following best describes the drone bee’s role in the hive?", options: ["Collecting nectar", "Mating with the queen", "Building the honeycomb", "Guarding the hive"], correctAnswer: "Mating with the queen" },
+    { question: "What environmental factor most influences the queen bee’s egg-laying rate?", options: ["Temperature and food availability", "Hive size", "Number of worker bees", "Presence of drones"], correctAnswer: "Temperature and food availability" }
+  ]
+},
+
               "Force & Motion": {
                 questions: [
                   { question: "What is the SI unit of force?", options: ["Joule", "Watt", "Newton", "Pascal"], correctAnswer: "Newton" },
                   { question: "Inertia is the property of a body to resist changes in its state of...", options: ["Rest only", "Motion only", "Rest or uniform motion", "Energy"], correctAnswer: "Rest or uniform motion" },
+                  { question: "What does 'g' represent in physics?", options: ["Gravity Constant", "Gravitational Field", "Acceleration due to Gravity", "General Relativity"], correctAnswer: "Acceleration due to Gravity" },
                 ]
               },
               "Chemical Reactions": {
@@ -107,12 +180,7 @@
                   { question: "A reaction where a substance breaks down is called...", options: ["Combination", "Decomposition", "Displacement", "Redox"], correctAnswer: "Decomposition" },
                 ]
               },
-              "Cell Biology": {
-                questions: [
-                  { question: "Which organelle is known as the 'brain' of the cell?", options: ["Mitochondria", "Nucleus", "Ribosome", "Chloroplast"], correctAnswer: "Nucleus" },
-                  { question: "Photosynthesis primarily occurs in which organelle?", options: ["Mitochondria", "Vacuole", "Chloroplast", "Nucleus"], correctAnswer: "Chloroplast" },
-                ]
-              }
+             
             }
         },
         "Mathematics": {
@@ -124,11 +192,33 @@
             ]
         },
       },
-      subjects: ["Mathematics", "Science", "English", "Nepali", "Social Studies","Economics","Computer"],
-      notes: [{ id: 101, subject: "Mathematics", title: "Algebra: Polynomials", summary: "Basics, factorization, identities.", link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" }],
-      libraryBooks: [{ id: 'b01', title: 'Class 10 Science', author: 'Govt. of Nepal', cover: 'https://placehold.co/400x600/3b82f6/ffffff?text=Science', pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' }],
-      seePreparation: { routine: { title: "SEE Routine", image: "https://placehold.co/800x500/e2e8f0/334155?text=SEE+Routine", details: "Official routine for SEE." }, questionPapers: [], guessPapers: [] }
+      subjects: ["Mathematics", "Science", "English", "Nepali", "Social Studies"],
+      notes: [
+        { id: 101, subject: "Mathematics", title: "Algebra: Polynomials", summary: "Basics, factorization, identities.", link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+        { id: 201, subject: "Science", title: "Physics: Complete Notes", summary: "Force, Pressure, Energy, Heat, Light, Electricity.", link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      ],
+      libraryBooks: [
+        { id: 'b01', title: 'Class 10 Science Textbook', author: 'Govt. of Nepal', cover: 'https://placehold.co/400x600/3b82f6/ffffff?text=Science', pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+        { id: 'b02', title: 'Class 10 Mathematics Textbook', author: 'Govt. of Nepal', cover: 'https://placehold.co/400x600/8b5cf6/ffffff?text=Maths', pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+        { id: 'b03', title: 'Class 10 English Textbook', author: 'Govt. of Nepal', cover: 'https://placehold.co/400x600/10b981/ffffff?text=English', pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+        { id: 'b04', title: 'Class 10 Social Studies Textbook', author: 'Govt. of Nepal', cover: 'https://placehold.co/400x600/f59e0b/ffffff?text=Social', pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+      ],
+      seePreparation: {
+        routine: { title: "SEE Routine", image: "https://placehold.co/800x500/e2e8f0/334155?text=SEE+Routine", details: "Official routine for SEE." },
+        questionPapers: [
+            { id: 'pp1', subject: 'Mathematics', year: 2079, title: 'Mathematics Past Paper (2079)', pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+            { id: 'pp2', subject: 'Science', year: 2079, title: 'Science Past Paper (2079)', pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+        ],
+        guessPapers: [
+            { id: 'gp1', subject: 'Science', title: 'Science Model Set 1', description: "Curated by experts.", pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+            { id: 'gp2', subject: 'Mathematics', title: 'Maths Model Set 1', description: "High-probability questions.", pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+        ]
+      }
     };
+    // =================================================================================================
+    // --- END OF EDITABLE DATA ---
+    // =================================================================================================
+
 
     // --- HOOKS & HELPERS ---
     const useLocalStorage = (key, initialValue) => {
@@ -186,7 +276,7 @@
       return <div className="overlay" onClick={onClose}><div className="modal-pdf" onClick={e=>e.stopPropagation()}><div className="flex items-center justify-between bg-slate-950 p-3 border-b border-[#334155] text-white"><div className="flex items-center gap-3 min-w-0"><i className="fa-solid fa-file-pdf text-rose-400"></i><span className="font-semibold truncate">{file.title}</span></div><div className="flex items-center gap-2"><button onClick={() => setZoom(z => Math.max(z - 0.2, 0.5))} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600"><i className="fa-solid fa-search-minus"></i></button><button onClick={() => setZoom(1)} className="h-8 px-3 rounded-full bg-slate-700 hover:bg-slate-600 text-sm">Reset</button><button onClick={() => setZoom(z => Math.min(z + 0.2, 3))} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600"><i className="fa-solid fa-search-plus"></i></button><button onClick={onClose} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600 text-xl flex-shrink-0 ml-2">&times;</button></div></div><div className="flex-1 bg-slate-800 overflow-auto"><iframe src={url} title={file.title} className="w-full h-full border-0 transition-transform duration-300" style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }}></iframe></div></div></div>;
     };
 
-    const Header = ({ active, setActive, isDark, toggleTheme }) => {
+    const Header = ({ active, setActive, isDark, toggleTheme, onSearchClick }) => {
       const [menuOpen, setMenuOpen] = useState(false);
       const navigate = (tab) => { setActive(tab); setMenuOpen(false); };
       const NavItem = ({ name, label, icon }) => (<button onClick={()=>navigate(name)} className={classNames("px-3 py-2 rounded-md font-medium flex items-center gap-2 transition-colors w-full text-left lg:w-auto", active === name ? "text-primary-500 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/40" : "text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-800/60")}><i className={`${icon} w-5 text-center`}></i> {label}</button>);
@@ -198,7 +288,7 @@
         { name: 'quizzes', label: 'Quizzes', icon: 'fa-solid fa-lightbulb' },
         { name: 'about', label: 'About', icon: 'fa-solid fa-info-circle' },
       ];
-      return <header className="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 backdrop-blur-lg bg-white/80 dark:bg-slate-900/70"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="py-3 flex items-center justify-between"><div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('home')}><img src={DATA.logoUrl} alt="Logo" className="h-10 w-10 rounded-lg"/><div><div className="font-display font-semibold text-slate-900 dark:text-white text-lg leading-tight">{DATA.name}</div><div className="text-xs text-slate-500">{DATA.subtitle}</div></div></div><nav className="hidden lg:flex items-center gap-1">{navItems.map(item => <NavItem key={item.name} {...item}/>)}</nav><div className="flex items-center gap-3"><button onClick={toggleTheme} className="h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300" aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}><i className={isDark ? "fa-solid fa-moon text-yellow-300" : "fa-regular fa-sun text-orange-400"}></i></button><button onClick={() => setMenuOpen(o => !o)} className="lg:hidden h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700"><i className={`fa-solid ${menuOpen ? 'fa-times' : 'fa-bars'}`}></i></button></div></div>{menuOpen && <nav className="lg:hidden py-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">{navItems.map(item => <NavItem key={item.name} {...item}/>)}</nav>}</div></header>;
+      return <header className="sticky top-0 z-40 border-b border-slate-200/80 dark:border-slate-800/80 backdrop-blur-lg bg-white/80 dark:bg-slate-900/70"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="py-3 flex items-center justify-between"><div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('home')}><img src={DATA.logoUrl} alt="Logo" className="h-10 w-10 rounded-lg"/><div><div className="font-display font-semibold text-slate-900 dark:text-white text-lg leading-tight">{DATA.name}</div><div className="text-xs text-slate-500">{DATA.subtitle}</div></div></div><nav className="hidden lg:flex items-center gap-1">{navItems.map(item => <NavItem key={item.name} {...item}/>)}</nav><div className="flex items-center gap-2"><button onClick={onSearchClick} className="h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300" aria-label="Search"><i className="fa-solid fa-search"></i></button><button onClick={toggleTheme} className="h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300" aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}><i className={isDark ? "fa-solid fa-moon text-yellow-300" : "fa-regular fa-sun text-orange-400"}></i></button><button onClick={() => setMenuOpen(o => !o)} className="lg:hidden h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700"><i className={`fa-solid ${menuOpen ? 'fa-times' : 'fa-bars'}`}></i></button></div></div>{menuOpen && <nav className="lg:hidden py-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">{navItems.map(item => <NavItem key={item.name} {...item}/>)}</nav>}</div></header>;
     };
 
     const Hero = ({ go, userName }) => <section className="gradient-bg text-white"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 text-center relative overflow-hidden"><div className="absolute -top-1/2 -left-1/4 w-full h-full bg-white/5 rounded-full filter blur-3xl opacity-50"></div><div className="relative"><h1 className="text-4xl md:text-6xl font-display font-bold fade-in">{userName ? `Welcome back, ${userName}!` : "Your SEE Success Starts Here."}</h1><p className="mt-4 text-white/90 md:text-xl max-w-3xl mx-auto fade-in" style={{ animationDelay: '200ms' }}>The ultimate guide to acing the Grade 10 exams. Notes, quizzes, papers, and more — all in one place.</p><div className="mt-8 flex flex-wrap gap-4 justify-center fade-in" style={{ animationDelay: '300ms' }}><button onClick={() => go('prep')} className="btn-grad px-8 py-3 rounded-full font-semibold text-lg"><i className="fa-solid fa-graduation-cap mr-2"></i>Start Preparation</button><button onClick={() => go('notes')} className="px-8 py-3 rounded-full font-semibold bg-white text-slate-800 hover:bg-white/90 transition"><i className="fa-solid fa-book-open mr-2 text-primary-500"></i>Explore Notes</button></div></div></div></section>;
@@ -210,7 +300,7 @@
     const NotesExplorer = ({ openFile }) => {
       const [q, setQ] = useState(""); const [sub, setSub] = useState("All");
       const list = useMemo(() => DATA.notes.filter(n => (sub === "All" || n.subject === sub) && (n.title.toLowerCase().includes(q.toLowerCase()) || n.summary.toLowerCase().includes(q.toLowerCase()))), [q, sub]);
-      return <Section title="Notes Explorer" subtitle="Find crisp, easy-to-understand notes and revision sheets for every subject."><div className="card p-4 mb-8 max-w-3xl mx-auto slide-in-up"><div className="flex flex-col md:flex-row gap-3"><div className="relative flex-1"><i className="fa-solid fa-search absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"></i><input className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="Search notes..." value={q} onChange={e => setQ(e.target.value)} /></div><select className="w-full md:w-56 px-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" value={sub} onChange={e => setSub(e.target.value)}><option>All</option>{DATA.subjects.map(s => <option key={s}>{s}</option>)}</select></div></div><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">{list.length > 0 ? list.map((n, i) => (<div key={n.id} className="card p-5 flex flex-col h-full slide-in-up" style={{animationDelay:`${i*30}ms`}}><div className="flex-1"><div className="text-xs font-semibold text-primary-500 dark:text-blue-300 uppercase tracking-wider">{n.subject}</div><h4 className="font-semibold mt-1 text-slate-800 dark:text-white leading-tight">{n.title}</h4><p className="text-sm text-slate-500 dark:text-slate-400 mt-2">{n.summary}</p></div><div className="mt-4 flex justify-end"><button onClick={() => openFile(n)} className="px-4 py-2 rounded-full text-sm font-semibold text-primary-600 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-500 transition">Open Note <i className="fa-solid fa-arrow-right ml-1 text-xs"></i></button></div></div>)) : <div className="col-span-full text-center p-12 card slide-in-up"><p className="text-slate-500">No notes found.</p></div>}</div></Section>;
+      return <Section title="Notes Explorer" subtitle="Find crisp, easy-to-understand notes for every subject."><div className="card p-4 mb-8 max-w-3xl mx-auto slide-in-up"><div className="flex flex-col md:flex-row gap-3"><div className="relative flex-1"><i className="fa-solid fa-search absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"></i><input className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="Search notes..." value={q} onChange={e => setQ(e.target.value)} /></div><select className="w-full md:w-56 px-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" value={sub} onChange={e => setSub(e.target.value)}><option>All</option>{DATA.subjects.map(s => <option key={s}>{s}</option>)}</select></div></div><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">{list.length > 0 ? list.map((n, i) => (<div key={n.id} className="card p-5 flex flex-col h-full slide-in-up" style={{animationDelay:`${i*30}ms`}}><div className="flex-1"><div className="text-xs font-semibold text-primary-500 dark:text-blue-300 uppercase tracking-wider">{n.subject}</div><h4 className="font-semibold mt-1 text-slate-800 dark:text-white leading-tight">{n.title}</h4><p className="text-sm text-slate-500 dark:text-slate-400 mt-2">{n.summary}</p></div><div className="mt-4 flex justify-end"><button onClick={() => openFile(n)} className="px-4 py-2 rounded-full text-sm font-semibold text-primary-600 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-500 transition">Open Note <i className="fa-solid fa-arrow-right ml-1 text-xs"></i></button></div></div>)) : <div className="col-span-full text-center p-12 card slide-in-up"><p className="text-slate-500">No notes found.</p></div>}</div></Section>;
     };
 
     const DigitalLibrary = ({ openFile }) => {
@@ -226,41 +316,38 @@
 
     const AboutComponent = () => <> <div className="gradient-bg text-white"><Section className="py-20 md:py-28"><div className="text-center"><h1 className="text-4xl md:text-5xl font-display font-bold">Our Mission</h1><p className="mt-4 text-white/90 md:text-xl max-w-3xl mx-auto">{DATA.aboutContent.mission}</p></div></Section></div> <Section title="What We Offer" subtitle="A complete suite of tools designed for your SEE success."><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{DATA.aboutContent.features.map((feature, i) => <div key={feature.title} className="text-center p-6 slide-in-up" style={{ animationDelay: `${i * 100}ms` }}><div className="h-16 w-16 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/40 grid place-items-center text-primary-500 text-2xl mb-4"><i className={feature.icon}></i></div><h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{feature.title}</h3><p className="text-slate-500 dark:text-slate-400 mt-2">{feature.text}</p></div>)}</div></Section> </> ;
 
+    const DonutChart = ({ percentage }) => { const sqSize = 120; const strokeWidth = 12; const radius = (sqSize - strokeWidth) / 2; const viewBox = `0 0 ${sqSize} ${sqSize}`; const circumference = radius * Math.PI * 2; const dashOffset = circumference - (circumference * percentage) / 100; return <svg width={sqSize} height={sqSize} viewBox={viewBox} className="-rotate-90"><circle className="text-slate-200 dark:text-slate-700" cx={sqSize/2} cy={sqSize/2} r={radius} strokeWidth={`${strokeWidth}px`} fill="none" stroke="currentColor"/><circle className="text-primary-500" cx={sqSize/2} cy={sqSize/2} r={radius} strokeWidth={`${strokeWidth}px`} fill="none" stroke="currentColor" strokeDasharray={circumference} strokeDashoffset={circumference} strokeLinecap="round" style={{transition: 'stroke-dashoffset 1s ease-out', strokeDashoffset: dashOffset}} /><text className="font-bold text-2xl fill-current text-slate-700 dark:text-slate-200" x="50%" y="50%" dy=".3em" textAnchor="middle" style={{ transform: 'rotate(90deg)', transformOrigin: 'center' }}>{`${percentage}%`}</text></svg>; };
+
+    const QuizResults = ({ quizData, userAnswers, onRestart, onSelectNew }) => { const { score, correctAnswers, wrongAnswers, percentage } = useMemo(() => { let correct = 0; quizData.questions.forEach((q, i) => { if (q.correctAnswer === userAnswers[i]) correct++; }); const total = quizData.questions.length; return { score: correct, correctAnswers: correct, wrongAnswers: total - correct, percentage: total > 0 ? Math.round((correct / total) * 100) : 0 }; }, [quizData, userAnswers]); return <div className="w-full max-w-4xl mx-auto slide-in-up"><div className="card p-6 md:p-8 text-center"><h2 className="font-display text-3xl font-bold text-slate-800 dark:text-white">Quiz Results</h2><p className="text-slate-500 dark:text-slate-400 mt-1">You completed the {quizData.title} quiz!</p><div className="my-8 flex flex-col md:flex-row items-center justify-center gap-8"><DonutChart percentage={percentage} /><div className="flex gap-4 text-left"><div className="card p-4 flex-1 bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800/50"><div className="font-bold text-3xl text-green-600 dark:text-green-400">{correctAnswers}</div><div className="text-sm font-semibold text-green-800 dark:text-green-300">Correct</div></div><div className="card p-4 flex-1 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800/50"><div className="font-bold text-3xl text-red-600 dark:text-red-400">{wrongAnswers}</div><div className="text-sm font-semibold text-red-800 dark:text-red-300">Incorrect</div></div><div className="card p-4 flex-1 bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800/50"><div className="font-bold text-3xl text-blue-600 dark:text-blue-400">{score}/{quizData.questions.length}</div><div className="text-sm font-semibold text-blue-800 dark:text-blue-300">Score</div></div></div></div><div className="flex flex-col md:flex-row gap-4 justify-center"><button onClick={onRestart} className="btn-grad px-8 py-3 rounded-full font-semibold"><i className="fa-solid fa-redo mr-2"></i>Play Again</button><button onClick={onSelectNew} className="px-8 py-3 rounded-full font-semibold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition">Choose Another Quiz</button></div></div><div className="card p-6 md:p-8 mt-6 text-left"><h3 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-4">Review Answers</h3><div className="space-y-6">{quizData.questions.map((q, i) => { const userAnswer = userAnswers[i]; const isCorrect = q.correctAnswer === userAnswer; return <div key={i} className="border-b border-slate-200 dark:border-slate-700 pb-4"><p className="font-semibold text-slate-800 dark:text-white">{i+1}. {q.question}</p><p className={`mt-2 text-sm ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}><i className={`fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'} mr-2`}></i>Your answer: <span className="font-bold">{userAnswer || "Not answered"}</span></p>{!isCorrect && <p className="mt-1 text-sm text-green-600 dark:text-green-400"><i className="fa-solid fa-check-circle mr-2"></i>Correct answer: <span className="font-bold">{q.correctAnswer}</span></p>}</div>; })}</div></div></div>; };
+
     const QuizComponent = () => {
-        const [selectedSubject, setSelectedSubject] = useState(null);
+        const [view, setView] = useState('subject_select'); // subject_select, chapter_select, quiz_config, quiz, results
         const [activeQuizData, setActiveQuizData] = useState(null);
         const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
         const [userAnswers, setUserAnswers] = useState([]);
-        const [showResults, setShowResults] = useState(false);
-
-        const DonutChart = ({ percentage }) => {
-            const sqSize = 120; const strokeWidth = 12; const radius = (sqSize - strokeWidth) / 2; const viewBox = `0 0 ${sqSize} ${sqSize}`; const circumference = radius * Math.PI * 2; const dashOffset = circumference - (circumference * percentage) / 100;
-            return <svg width={sqSize} height={sqSize} viewBox={viewBox} className="-rotate-90"><circle className="text-slate-200 dark:text-slate-700" cx={sqSize/2} cy={sqSize/2} r={radius} strokeWidth={`${strokeWidth}px`} fill="none" stroke="currentColor"/><circle className="text-primary-500" cx={sqSize/2} cy={sqSize/2} r={radius} strokeWidth={`${strokeWidth}px`} fill="none" stroke="currentColor" strokeDasharray={circumference} strokeDashoffset={circumference} strokeLinecap="round" style={{transition: 'stroke-dashoffset 1s ease-out', strokeDashoffset: dashOffset}} /><text className="font-bold text-2xl fill-current text-slate-700 dark:text-slate-200" x="50%" y="50%" dy=".3em" textAnchor="middle" style={{ transform: 'rotate(90deg)', transformOrigin: 'center' }}>{`${percentage}%`}</text></svg>;
-        };
-
-        const QuizResults = ({ onRestart, onSelectNew }) => {
-            const { score, correctAnswers, wrongAnswers, percentage } = useMemo(() => { let correct = 0; activeQuizData.questions.forEach((q, i) => { if (q.correctAnswer === userAnswers[i]) correct++; }); const total = activeQuizData.questions.length; return { score: correct, correctAnswers: correct, wrongAnswers: total - correct, percentage: Math.round((correct / total) * 100) }; }, [activeQuizData, userAnswers]);
-            return <div className="w-full max-w-4xl mx-auto slide-in-up"><div className="card p-6 md:p-8 text-center"><h2 className="font-display text-3xl font-bold text-slate-800 dark:text-white">Quiz Results</h2><p className="text-slate-500 dark:text-slate-400 mt-1">You completed the {activeQuizData.title} quiz!</p><div className="my-8 flex flex-col md:flex-row items-center justify-center gap-8"><DonutChart percentage={percentage} /><div className="flex gap-4 text-left"><div className="card p-4 flex-1 bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800/50"><div className="font-bold text-3xl text-green-600 dark:text-green-400">{correctAnswers}</div><div className="text-sm font-semibold text-green-800 dark:text-green-300">Correct</div></div><div className="card p-4 flex-1 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800/50"><div className="font-bold text-3xl text-red-600 dark:text-red-400">{wrongAnswers}</div><div className="text-sm font-semibold text-red-800 dark:text-red-300">Incorrect</div></div><div className="card p-4 flex-1 bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800/50"><div className="font-bold text-3xl text-blue-600 dark:text-blue-400">{score}/{activeQuizData.questions.length}</div><div className="text-sm font-semibold text-blue-800 dark:text-blue-300">Score</div></div></div></div><div className="flex flex-col md:flex-row gap-4 justify-center"><button onClick={onRestart} className="btn-grad px-8 py-3 rounded-full font-semibold"><i className="fa-solid fa-redo mr-2"></i>Play Again</button><button onClick={onSelectNew} className="px-8 py-3 rounded-full font-semibold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition">Choose Another Quiz</button></div></div><div className="card p-6 md:p-8 mt-6 text-left"><h3 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-4">Review Answers</h3><div className="space-y-6">{activeQuizData.questions.map((q, i) => { const userAnswer = userAnswers[i]; const isCorrect = q.correctAnswer === userAnswer; return <div key={i} className="border-b border-slate-200 dark:border-slate-700 pb-4"><p className="font-semibold text-slate-800 dark:text-white">{i+1}. {q.question}</p><p className={`mt-2 text-sm ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}><i className={`fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'} mr-2`}></i>Your answer: <span className="font-bold">{userAnswer || "Not answered"}</span></p>{!isCorrect && <p className="mt-1 text-sm text-green-600 dark:text-green-400"><i className="fa-solid fa-check-circle mr-2"></i>Correct answer: <span className="font-bold">{q.correctAnswer}</span></p>}</div>; })}</div></div></div>;
-        };
-
-        const startQuiz = (quizData) => { setActiveQuizData(quizData); setUserAnswers(Array(quizData.questions.length).fill(null)); setCurrentQuestionIndex(0); setShowResults(false); };
-        const generateMixedScienceQuiz = () => { const allQuestions = Object.values(DATA.quizzes.Science.chapters).flatMap(chapter => chapter.questions); return { title: "Mixed Science Quiz", questions: allQuestions }; };
+        
+        const startQuiz = (quizData) => { setActiveQuizData(quizData); setUserAnswers(Array(quizData.questions.length).fill(null)); setCurrentQuestionIndex(0); setView('quiz'); };
+        const generateMixedScienceQuiz = (numQuestions) => { const allQuestions = Object.values(DATA.quizzes.Science.chapters).flatMap(chapter => chapter.questions); for (let i = allQuestions.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]]; } const selectedQuestions = allQuestions.slice(0, numQuestions); return { title: `Mixed Science Quiz (${selectedQuestions.length} Qs)`, questions: selectedQuestions }; };
         const handleAnswerSelect = (answer) => { const newAnswers = [...userAnswers]; newAnswers[currentQuestionIndex] = answer; setUserAnswers(newAnswers); };
-        const handleNext = () => { if (currentQuestionIndex < activeQuizData.questions.length - 1) setCurrentQuestionIndex(prev => prev + 1); else setShowResults(true); };
-        const resetAll = () => { setSelectedSubject(null); setActiveQuizData(null); setShowResults(false); };
-
-        if (showResults) return <Section><QuizResults onRestart={() => startQuiz(activeQuizData)} onSelectNew={resetAll} /></Section>;
-        if (activeQuizData) {
-            const currentQuestion = activeQuizData.questions[currentQuestionIndex];
-            return <Section><div className="w-full max-w-3xl mx-auto card p-6 md:p-8 slide-in-up"><div className="flex justify-between items-center mb-4"><h2 className="font-display text-xl font-bold text-slate-800 dark:text-white">{activeQuizData.title}</h2><span className="font-semibold text-slate-500 dark:text-slate-400">{currentQuestionIndex + 1} / {activeQuizData.questions.length}</span></div><div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-6"><div className="bg-primary-500 h-2 rounded-full transition-all duration-300" style={{ width: `${((currentQuestionIndex + 1) / activeQuizData.questions.length) * 100}%` }}></div></div><h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-white mb-6">{currentQuestion.question}</h3><div className="grid grid-cols-1 md:grid-cols-2 gap-4">{currentQuestion.options.map(option => <button key={option} onClick={() => handleAnswerSelect(option)} className={`p-4 rounded-lg text-left font-medium border-2 transition-all ${userAnswers[currentQuestionIndex] === option ? 'bg-primary-500 border-primary-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-800 border-transparent hover:border-primary-400'}`}>{option}</button>)}</div><div className="mt-8 text-right"><button onClick={handleNext} disabled={!userAnswers[currentQuestionIndex]} className="btn-grad px-10 py-3 rounded-lg font-semibold">{currentQuestionIndex < activeQuizData.questions.length - 1 ? 'Next' : 'Finish'} <i className="fa-solid fa-arrow-right ml-2"></i></button></div></div></Section>;
-        }
-        if (selectedSubject === 'Science') {
-            const scienceChapters = DATA.quizzes.Science.chapters;
-            return <Section title="Science Quizzes" subtitle="Choose a chapter or try a mix of all chapters."><div className="max-w-xl mx-auto"><button onClick={() => startQuiz(generateMixedScienceQuiz())} className="w-full btn-grad text-lg font-semibold p-6 rounded-xl mb-6 shadow-lg hover:shadow-2xl transition-shadow text-left flex justify-between items-center"><span><i className="fa-solid fa-random mr-3"></i>Mixed Chapter Quiz</span><i className="fa-solid fa-arrow-right"></i></button><div className="card p-6 space-y-3">{Object.entries(scienceChapters).map(([chapterTitle, chapterData], i) => ( <button key={chapterTitle} onClick={() => startQuiz({title: chapterTitle, questions: chapterData.questions})} className="w-full text-left p-4 rounded-lg font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex justify-between items-center"><span>{chapterTitle}</span><span className="text-xs font-semibold text-slate-500">{chapterData.questions.length} Questions</span></button> ))}</div><button onClick={() => setSelectedSubject(null)} className="mt-8 text-sm font-semibold text-slate-500 hover:text-primary-500"><i className="fa-solid fa-arrow-left mr-2"></i>Back to Subjects</button></div></Section>;
-        }
-        return <Section title="Test Your Knowledge" subtitle="Select a subject to start a quick quiz and check your preparation."><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{Object.entries(DATA.quizzes).map(([subject, quizMeta], i) => ( <div key={subject} className="card p-6 text-center slide-in-up" style={{ animationDelay: `${i*100}ms` }}><div className="h-16 w-16 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/40 grid place-items-center text-primary-500 text-3xl mb-4"><i className={quizMeta.icon}></i></div><h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{subject}</h3><p className="text-slate-500 dark:text-slate-400 mt-1 mb-6">{quizMeta.title}</p><button onClick={() => { 'chapters' in quizMeta ? setSelectedSubject(subject) : startQuiz(quizMeta) }} className="btn-grad w-full px-6 py-2.5 rounded-lg font-semibold">Start Quiz</button></div> ))}</div></Section>;
+        const handleNext = () => { if (currentQuestionIndex < activeQuizData.questions.length - 1) setCurrentQuestionIndex(prev => prev + 1); else setView('results'); };
+        
+        if (view === 'results') return <Section><QuizResults quizData={activeQuizData} userAnswers={userAnswers} onRestart={() => startQuiz(activeQuizData)} onSelectNew={() => setView('subject_select')} /></Section>;
+        if (view === 'quiz') { const currentQuestion = activeQuizData.questions[currentQuestionIndex]; return <Section><div className="w-full max-w-3xl mx-auto card p-6 md:p-8 slide-in-up"><div className="flex justify-between items-center mb-4"><h2 className="font-display text-xl font-bold text-slate-800 dark:text-white">{activeQuizData.title}</h2><span className="font-semibold text-slate-500 dark:text-slate-400">{currentQuestionIndex + 1} / {activeQuizData.questions.length}</span></div><div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-6"><div className="bg-primary-500 h-2 rounded-full transition-all duration-300" style={{ width: `${((currentQuestionIndex + 1) / activeQuizData.questions.length) * 100}%` }}></div></div><h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-white mb-6">{currentQuestion.question}</h3><div className="grid grid-cols-1 md:grid-cols-2 gap-4">{currentQuestion.options.map(option => <button key={option} onClick={() => handleAnswerSelect(option)} className={`p-4 rounded-lg text-left font-medium border-2 transition-all ${userAnswers[currentQuestionIndex] === option ? 'bg-primary-500 border-primary-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-800 border-transparent hover:border-primary-400'}`}>{option}</button>)}</div><div className="mt-8 text-right"><button onClick={handleNext} disabled={!userAnswers[currentQuestionIndex]} className="btn-grad px-10 py-3 rounded-lg font-semibold">{currentQuestionIndex < activeQuizData.questions.length - 1 ? 'Next' : 'Finish'} <i className="fa-solid fa-arrow-right ml-2"></i></button></div></div></Section>; }
+        if (view === 'quiz_config') { const questionOptions = [10, 20, 30, 50]; return <Section title="Configure Mixed Quiz" subtitle="How many questions would you like?"><div className="max-w-xl mx-auto text-center"><div className="card p-6 grid grid-cols-2 gap-4">{questionOptions.map(num => <button key={num} onClick={() => startQuiz(generateMixedScienceQuiz(num))} className="btn-grad text-xl font-bold p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow">{num}<span className="block text-sm font-semibold opacity-80">Questions</span></button>)}</div><button onClick={() => setView('chapter_select')} className="mt-8 text-sm font-semibold text-slate-500 hover:text-primary-500"><i className="fa-solid fa-arrow-left mr-2"></i>Back to Chapters</button></div></Section>; }
+        if (view === 'chapter_select') { const scienceChapters = DATA.quizzes.Science.chapters; return <Section title="Science Quizzes" subtitle="Choose a chapter or try a mix of all chapters."><div className="max-w-xl mx-auto"><button onClick={() => setView('quiz_config')} className="w-full btn-grad text-lg font-semibold p-6 rounded-xl mb-6 shadow-lg hover:shadow-2xl transition-shadow text-left flex justify-between items-center"><span><i className="fa-solid fa-random mr-3"></i>Mixed Chapter Quiz</span><i className="fa-solid fa-arrow-right"></i></button><div className="card p-6 space-y-3">{Object.entries(scienceChapters).map(([chapterTitle, chapterData]) => ( <button key={chapterTitle} onClick={() => startQuiz({title: chapterTitle, questions: chapterData.questions})} className="w-full text-left p-4 rounded-lg font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex justify-between items-center"><span>{chapterTitle}</span><span className="text-xs font-semibold text-slate-500">{chapterData.questions.length} Questions</span></button> ))}</div><button onClick={() => setView('subject_select')} className="mt-8 text-sm font-semibold text-slate-500 hover:text-primary-500"><i className="fa-solid fa-arrow-left mr-2"></i>Back to Subjects</button></div></Section>; }
+        return <Section title="Test Your Knowledge" subtitle="Select a subject to start a quick quiz and check your preparation."><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{Object.entries(DATA.quizzes).map(([subject, quizMeta]) => ( <div key={subject} className="card p-6 text-center slide-in-up"><div className="h-16 w-16 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/40 grid place-items-center text-primary-500 text-3xl mb-4"><i className={quizMeta.icon}></i></div><h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{subject}</h3><p className="text-slate-500 dark:text-slate-400 mt-1 mb-6">{quizMeta.title}</p><button onClick={() => { 'chapters' in quizMeta ? setView('chapter_select') : startQuiz(quizMeta) }} className="btn-grad w-full px-6 py-2.5 rounded-lg font-semibold">Start Quiz</button></div> ))}</div></Section>;
     };
 
+    const SearchModal = ({ isOpen, onClose, openFile }) => {
+        const [query, setQuery] = useState("");
+        const searchableIndex = useMemo(() => { if (!isOpen) return []; const notes = DATA.notes.map(item => ({...item, type: 'Note'})); const books = DATA.libraryBooks.map(item => ({...item, link: item.pdf, type: 'Book'})); const pastPapers = DATA.seePreparation.questionPapers.map(item => ({...item, link: item.pdf, type: 'Past Paper'})); const guessPapers = DATA.seePreparation.guessPapers.map(item => ({...item, link: item.pdf, type: 'Model Paper'})); return [...notes, ...books, ...pastPapers, ...guessPapers]; }, [isOpen]);
+        const results = useMemo(() => { if (!query) return []; return searchableIndex.filter(item => item.title.toLowerCase().includes(query.toLowerCase())); }, [query, searchableIndex]);
+        useEffect(() => { if (!isOpen) setQuery(""); }, [isOpen]);
+        if (!isOpen) return null;
+        const handleResultClick = (item) => { openFile(item); onClose(); };
+        return <div className="overlay pt-16 md:pt-24" onClick={onClose}><div className="w-full max-w-2xl card p-0 flex flex-col slide-in-up" onClick={e => e.stopPropagation()}><div className="relative p-2"><i className="fa-solid fa-search absolute top-1/2 left-6 -translate-y-1/2 text-slate-400 text-xl"></i><input type="search" placeholder="Search for notes, books, papers..." className="w-full bg-slate-100 dark:bg-slate-800 text-lg font-semibold pl-12 pr-6 py-4 rounded-md outline-none focus:ring-2 focus:ring-primary-500" value={query} onChange={e => setQuery(e.target.value)} autoFocus /></div><div className="overflow-y-auto max-h-[60vh] p-2">{query && results.length === 0 && <p className="text-center p-8 text-slate-500">No results found for "{query}"</p>}<ul className="space-y-1">{results.map((item, i) => ( <li key={`${item.type}-${item.id || i}`}><button onClick={() => handleResultClick(item)} className="w-full text-left flex items-center gap-4 p-4 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i className={`fa-solid ${item.type === 'Note' ? 'fa-book-open' : item.type === 'Book' ? 'fa-swatchbook' : 'fa-file-alt'} text-primary-500 w-5 text-center`}></i><div className="flex-1"><span className="font-semibold text-slate-800 dark:text-slate-200">{item.title}</span></div><span className="text-xs font-bold uppercase text-slate-400 bg-slate-200 dark:bg-slate-700 px-2 py-1 rounded">{item.type}</span></button></li> ))}</ul></div></div></div>;
+    };
+    
     // --- MAIN APP ---
     const App = () => {
       const [active, setActive] = useState("home");
@@ -269,6 +356,7 @@
       const [userName, setUserName] = useLocalStorage('gda_user_name', null);
       const [certShown, setCertShown] = useLocalStorage('gda_certificate_shown', false);
       const [uiState, setUiState] = useState('loading');
+      const [isSearchOpen, setIsSearchOpen] = useState(false);
 
       useEffect(() => { document.documentElement.classList.toggle('dark', isDark); }, [isDark]);
       useEffect(() => { const timer = setTimeout(() => { if (userName && certShown) setUiState('ready'); else if (userName && !certShown) setUiState('certificate'); else setUiState('name'); }, 500); return () => clearTimeout(timer); }, [userName, certShown]);
@@ -291,7 +379,7 @@
           return <> {uiState === 'loading' && <div className="h-screen w-screen bg-slate-100 dark:bg-slate-900"></div>} {uiState === 'name' && <NameCaptureModal onSave={handleSaveName} />} {uiState === 'celebration' && <WelcomeCelebration name={userName} />} {uiState === 'certificate' && <CertificateModal name={userName} onContinue={handleContinueFromCert} />} </> ;
       }
 
-      return <div className="min-h-screen flex flex-col"><Header active={active} setActive={setActive} isDark={isDark} toggleTheme={() => setIsDark(d => !d)} /><main className="flex-1">{renderContent()}</main><Footer go={setActive}/><AskQuestionFAB />{viewerFile && <PdfModal file={viewerFile} onClose={() => setViewerFile(null)} />}</div>;
+      return <div className="min-h-screen flex flex-col"><Header active={active} setActive={setActive} isDark={isDark} toggleTheme={() => setIsDark(d => !d)} onSearchClick={() => setIsSearchOpen(true)} /><main className="flex-1">{renderContent()}</main><Footer go={setActive}/><AskQuestionFAB /><SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} openFile={setViewerFile} />{viewerFile && <PdfModal file={viewerFile} onClose={() => setViewerFile(null)} />}</div>;
     };
 
     ReactDOM.render(<App/>, document.getElementById('root'));
