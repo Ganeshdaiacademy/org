@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ganesh Dai Academy — Your SEE Companion</title>
-  <meta name="description" content="Ganesh Dai Academy — The ultimate SEE preparation platform with personalized notes, model questions, past papers, study plans, and smart tools for Grade 10." />
+  <meta name="description" content="Ganesh Dai Academy — The ultimate SEE preparation platform with personalized notes, model questions, past papers, study plans, quizzes, and a digital library for Grade 10." />
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -22,184 +22,129 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=Playfair+Display:wght@700&family=Caveat:wght@700&display=swap" rel="stylesheet">
   
   <!-- html2canvas for downloads -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
   <style>
     :root { 
-      --primary-500: #6366f1; /* Indigo 500 */
-      --secondary-500: #a855f7; /* Purple 500 */
-      --primary-600: #4f46e5; /* Indigo 600 */
-      --secondary-600: #9333ea; /* Purple 600 */
-      --accent-500: #14b8a6; /* Teal 500 */
+      --primary-500: #3b82f6; --primary-600: #2563eb;
+      --secondary-500: #8b5cf6; --secondary-600: #7c3aed;
+      --accent-500: #10b981; --accent-600: #059669;
     }
     html, body { scroll-behavior: smooth; }
-    body { 
-      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; 
-      background-color: #f8fafc; /* Slate 50 */
-      color: #334155; /* Slate 700 */
-    }
-    .dark body { 
-      background-color: #020617; /* Slate 950 */
-      color: #cbd5e1; /* Slate 300 */
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%2394a3b8' fill-opacity='0.04' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.99 7.5V30L0 22.5zM15 15l12.99 7.5V30L15 22.5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
+    body { font-family: 'Inter', system-ui, sans-serif; background-color: #f1f5f9; color: #334155; }
+    .dark body { background-color: #0f172a; color: #cbd5e1; background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px; }
     .font-display { font-family: 'Poppins', sans-serif; }
     .font-serif-display { font-family: 'Playfair Display', serif; }
-    .font-signature { font-family: 'Dancing Script', cursive; }
     .font-handwriting { font-family: 'Caveat', cursive; }
     
-    /* Gradients & Buttons */
-    .gradient-bg { background-image: linear-gradient(120deg, var(--primary-600), var(--secondary-600)); }
-    .gradient-text { background-clip: text; -webkit-background-clip: text; color: transparent; background-image: linear-gradient(90deg, var(--primary-500), var(--secondary-500)); }
-    .btn-grad { 
-      background-image: linear-gradient(45deg, var(--primary-500), var(--secondary-500)); 
-      color: #fff; 
-      transition: all .3s ease; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .btn-grad:hover:not(:disabled) { 
-      transform: translateY(-2px); 
-      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
-    }
-    .btn-accent {
-      background-color: var(--accent-500);
-      color: #fff;
-      transition: all .3s ease;
-    }
-    .btn-accent:hover:not(:disabled) {
-        background-color: #0d9488; /* Teal 600 */
-        transform: translateY(-2px);
-    }
-    button:disabled { cursor: not-allowed; opacity: 0.7; }
+    .gradient-bg { background-image: linear-gradient(135deg, var(--primary-600), var(--secondary-600)); }
+    .btn-grad { background-image: linear-gradient(45deg, var(--primary-500) 0%, var(--secondary-500) 100%); color: #fff; transition: all .3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: none; }
+    .btn-grad:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
+    button:disabled { cursor: not-allowed; opacity: 0.6; }
 
-    /* Animations & Effects */
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     @keyframes slideInUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    @keyframes confetti-fall { 0% { transform: translateY(-100vh); } 100% { transform: translateY(100vh); } }
     .fade-in { animation: fadeIn .6s ease-out forwards; }
     .slide-in-up { opacity: 0; animation: slideInUp .6s ease-out forwards; }
     .spinner { animation: spin 1s linear infinite; }
 
-    /* Modals & Overlays */
-    .overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.7); backdrop-filter: blur(8px);
-      display:flex; align-items:center; justify-content:center;
-      padding:1rem; z-index: 1000;
-      animation: fadeIn .3s ease;
-    }
-    .modal-pdf {
-      width: 96vw; max-width: 1200px; height: 92vh;
-      background:#0f172a; border: 1px solid #334155;
-      border-radius:.75rem; overflow:hidden; display:flex; flex-direction:column;
-      animation: slideInUp .4s ease-out;
-    }
+    .overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); display:flex; align-items:center; justify-content:center; padding:1rem; z-index: 1000; animation: fadeIn .3s ease; }
+    .modal-pdf { width: 96vw; max-width: 1200px; height: 92vh; background:#0f172a; border: 1px solid #334155; border-radius:.75rem; overflow:hidden; display:flex; flex-direction:column; animation: slideInUp .4s ease-out; }
     
-    /* Custom Card Style */
-    .card {
-      background-color: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.75rem;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-    }
-    .dark .card {
-      background-color: rgba(30, 41, 59, 0.8); /* Slate 800 with opacity */
-      border-color: #334155; 
-      backdrop-filter: blur(10px);
-    }
-    .card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
-    }
+    .card { background-color: #ffffff; border-radius: 0.75rem; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+    .dark .card { background-color: rgba(30, 41, 59, 0.6); border-color: #334155; backdrop-filter: blur(12px); }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); }
     
-    /* Certificate Styles */
-    #certificate {
-        background-color: #fdfbf5;
-        border: 10px solid #d4af37;
-        padding: 2rem;
-        position: relative;
-    }
-    #certificate::before {
-        content: '';
-        position: absolute;
-        top: 3px; left: 3px; right: 3px; bottom: 3px;
-        border: 3px solid #d4af37;
-    }
-    .certificate-logo {
-        width: 6rem;
-        height: 6rem;
-        margin: 0 auto 0.5rem;
-        border-radius: 50%;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
-    .student-name {
-      font-family: 'Caveat', cursive;
-      color: black;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
+    #certificate { background-color: #fdfdfd; border: 12px solid #a78bfa; padding: 2rem; position: relative; }
+    #certificate::before { content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border: 2px solid #c4b5fd; }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950">
+<body class="bg-slate-100 dark:bg-slate-900">
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useEffect, useMemo, useState, Fragment, useRef } = React;
+    const { useEffect, useMemo, useState, useCallback, Fragment, useRef, memo } = React;
 
-    // --- MOCK DATA ---
+    // --- DATA STORE ---
     const DATA = {
       name: "Ganesh Dai Academy",
       subtitle: "Your SEE Companion",
-      logoDataUri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAbFBMVEX////8/PwAAAA+Pj7w8PApKSny8vIuLi7i4uLr6+s7OzuoqKj19fXAwMCtra2JiYlTU1Nvb2+AgIBbW1vj4+N/f3+bm5vW1tZOTk5dXV1cXFzLy8tGRkahoaGcnJyysrI2NjZISEhXV1eQkJAlJSVoaGi+T9WfAAAFUklEQVR4nO2d6XqiMBCGSRRCQbxiQYKiVbu17/+CA+qW69hJTjITMv9/B+dZIMlsyTknSQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8luzL2/xQvtu3+aF+G4pZ5b1+p35fI/L4Q7qG/6L/7o+k/n9GzP9O/3u/g2k/kP6g7+4L6l6kP8r/nL7P/pX/3k83h2cE8Y/6t7tX/qgQ/s7/wL/o4UeQ/pv+ez8S6f9g3943/y/6f0v6d/w/3r+4lA/5f/V7/g/5v0+1q7P8H6Z/0v9U6q0n/d+m/w3/L/2H/3/kR5R/z/+0+5/4+Qv+z/s/v9n+D8M+7/sP3oQ7v9e+q+lT/F/3v+L/2f+z//qL/J/4X+4/5v+x/y/+j/+/4H+B/0//k/7n/S/73/E/5n/X/+H/if9v/k/7P/G/7H/E/6H/J/4n/N/73/W/5X/d/7P+j/1P+h/1v+Z/y/+T/q/93/g/6H/If8z/lf87/hf8j/if8T/g/5H/Q/5n/O/43/K/5P+h/zP+d/wP+d/xP+B/yP+R/wP+d/zP+B/yv+D/of8T/gf8T/gf8T/if8T/mf8z/hf8T/if8T/if8T/if8T/k/4P+T/g/5P+D/k/4P+T/g/5P+B/3f+B/3f+B/yP+B/yv+V/xv+d/wP+B/wv+F/xv+d/wv+B/yP+B/wP+B/yP+B/yP+J/xv+d/zv+d/wv+d/zP+B/x/+R/w/+B/zP+B/zP+D/gf8D/gf8T/kf8r/gf8b/if8T/kf8T/gf8T/if8j/kf8T/gf8T/kf8r/kf8b/kf8b/kf8b/kf8b/kf8j/gf8D/gf8D/kf8j/gf8j/kf8j/gf8j/gf8j/k/4P+T/g/5P+B/3P+D/gv9z/hf8r/hf8L/lf8L/lP8L/lP8L/kf8j/g/5H/A/5H/A/4n/A/4n/I/5H/I/4n/M/5n/M/5n/M/5n/I/5H/I/4H/I/4H/I/4H/A/4n/M/5n/C/5P/M/4v/b/9P/M/6v/b/9P/M/4//X/9/3/8u32L/T/zP+P/z/+/7/+e32P/T/zP+P/wP+J/zv+p/zP+d/1v+Z/wv+Z/wv+J/wv+h/yv+p/w/+f/z/+x/33/232P/X/+P/x/+d/z/+h/wv+p/w/+R/w/+x/y/+f/3v+t/wv+t/wv+B/wv+J/yv+J/zv+V/wv+R/wv+x/y/+f/3v+9/wP+d/wP+Z/wP+J/wv+h/wv+h/yv+d/wv+V/wv+B/wv+V/yv+d/wv+d/wv+B/wv+R/wP+d/zv+d/wv+V/wv+B/yv+R/yv+J/xP+d/wv+d/wv+d/wP+B/wP+Z/wP+J/wv+B/wP+p/wP+V/wP+Z/wP+J/yP+B/yv+N/wv+d/wP+B/wv+J/xP+B/wP+d/wP+Z/wv+R/xP+B/w/+Z/wP+p/wP+F/yP+d/wv+p/xv+J/yP+p/wv+V/wv+R/xv+V/wv+B/xv+Z/wP+Z/xP+B/xP+d/yP+Z/wv+J/xP+d/wv+R/wv+h/zP+Z/wP+p/xv+B/x/+h/zP+V/x/+d/wP+d/zP+d/wP+Z/xP+B/wP+d/wP+Z/wv+J/wP+J/wv+d/wv+R/wv+V/yv+d/wP+d/xP+h/xP+h/yP+V/wv+V/wv+V/wv+J/x/+d/wP+d/xP+h/wP+V/wP+V/wP+d/zP+Z/wP+d/wP+p/x/+Z/wP+J/wP+Z/wv+p/xv+B/wP+d/wP+V/wP+Z/w/+d/zP+p/wP+Z/wP+V/wP+p/yP+Z/zP+Z/wP+Z/wP+d/zP+d/wP+Z/wP+Z/wP+Z/wP+d/wP+p/wP+Z/wv+B/wP+Z/wP+Z/wP+V/wP+Z/wP+V/yv+J/xP+R/zP+B/wv+h/wP+d/wP+Z/xP+Z/wP+Z/wP+R/wP+V/yP+d/wP+V/wP+d/wv+J/xP+d/xP+d/wP+d/xP+d/wP+Z/xP+d/wP+d/wP+R/wv+V/wP+p/xP+d/wv+V/wP+Z/wv+V/wv+R/wP+V/wP+p/zP+B/wP+d/wP+Z/wP+B/wP+J/wP+Z/zP+d/wP+J/wP+Z/zP+Z/zP+R/zP+J/xP+B/yP+B/wP+R/zP+R/zP+B/wP+Z/wP+p/x/+Z/xP+B/wP+Z/wP+V/wP+Z/wP+V/wP+Z/wP+Z/wP+Z/wP+Z/wP+Z/wP+p/wv+J/wP+d/yv+d/wP+d/wP+d/wP+Z/wP+p/wP+p/wP+V/yP+d/wP+d/wP+Z/wP+d/wP+Z/yv+d/yP+V/zP+d/wP+d/yP+V/xP+Z/wP+p/xP+Z/wP+p/wP+V/wP+d/wP+V/yP+p/zP+d/wP+p/wP+Z/wP+d/wP+Z/wP+p/zP+V/yP+Z/wP+d/wP+p/yv+B/zP+B/wv+J/wP+J/wv+B/wP+d/wP+d/zP+J/wv+h/yv+d/zP+V/yP+p/wv+p/yP+Z/wP+p/wP+d/wP+d/wv+Z/yP+Z/wv+d/wv+J/wP+d/yP+J/yv+Z/yP+Z/yP+Z/wP+d/wP+Z/yP+Z/yP+d/yP+p/zP+Z/wv+Z/yv+d/wv+R/wv+Z/wv+Z/wv+J/wP+J/wv+R/wv+R/yP+p/yv+Z/yv+d/wv+Z/wv+d/yv+d/wv+d/wP+Z/yv+V/wP+V/wv+R/yP+V/yv+R/wP+R/wv+Z/wv+Z/wP+Z/wP+p/yv+p/wP+Z/yP+R/wP+d/wP+Z/wP+d/wv+d/wP+d/yP+d/yP+d/yP+Z/zP+R/yP+p/wP+p/yP+Z/wP+d/wP+d/wP+p/wP+V/wv+p/yP+p/yv+p/yv+p/wP+Z/yv+p/zP+p/yv+Z/wP+d/yv+Z/yP+Z/yP+p/wP+p/wP+d/yP+Z/zP+p/yv+V/yP+V/yP+d/yv+Z/yv+d/wP+p/wP+d/wv+Z/yv+Z/yP+R/yP+d/wP+d/yv+V/wv+d/wP+p/wP+V/yv+d/wP+d/yP+Z/wP+d/wP+Z/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwJ/gV2F9Pj8/rXAAAAABJRU5ErkJggg==",
-      social: { youtube: "#", facebook: "#" },
-      whatsapp: {
-        number: "9826594548",
-        message: "Hello Ganesh Dai, I have a question about my SEE preparation..."
+      logoUrl: "https://raw.githubusercontent.com/Ganeshdaiacademy/org/f6c2e63ee2a5a18972619ddd9b87fa02a8d29cf2/YT%20LOGO.png",
+      social: { 
+          youtube: "https://www.youtube.com/@Ganeshdahals", 
+          facebook: "https://www.facebook.com/ganesh.dahal.980" 
       },
-      subjects: ["Mathematics", "Science", "English", "Nepali", "Social Studies", "Computer Science", "Optional Mathematics", "Accountancy", "Economics", "Health & EPH"],
-      notes: [
-        { id: 101, subject: "Mathematics", title: "Algebra: Polynomials — Core Concepts", summary: "Basics, factorization, identities, examples.", link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
-        { id: 102, subject: "Mathematics", title: "Geometry: Circles — Theorems Cheatsheet", summary: "Angle properties, cyclic quadrilaterals, tangents.", link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
-        { id: 201, subject: "Science", title: "Physics: Complete Notes (Class 10)", summary: "Comprehensive notes covering Force, Pressure, Energy, Heat, Light, and Electricity.", link: "https://www.mycollegebag.in/2022/10/complete-notes-of-class-10-science.html#:~:text=Complete%20Notes%20of%20Class%2010%20Science%20Physics%20PDF,Complete%20Notes%20of%20Class%2010%20Science%20Chemistry%20PDF" },
-        { id: 202, subject: "Science", title: "Chemistry: Chemical Reactions", summary: "Balancing, types of reactions, examples.", link: "https://cdn.shopify.com/s/files/1/0507/7325/7421/files/Class_10_Chemistry_Notes_Chapter_1.pdf" },
-        { id: 301, subject: "English", title: "Grammar: Tenses, Active/Passive", summary: "Rules, tables, examples for quick revision.", link: "https://www.khullakitab.com/class-10/english/grammar/" },
-        { id: 401, subject: "Nepali", title: "Nepali Byakaran (व्याकरण)", summary: "Key concepts of Nepali grammar including पदवर्ग, वाक्य संश्लेषण, etc.", link: "#" },
-        { id: 501, subject: "Social Studies", title: "Unit 1: We and Our Society", summary: "Detailed notes on social harmony, development, and national identity.", link: "#" },
-        { id: 601, subject: "Computer Science", title: "QBASIC & C Language Notes", summary: "Full notes for SEE Computer Science including QBASIC, C, and Database.", link: "https://notes.tyro.guru/class-10/computer-science/complete-note-of-computer-science-class-10/" },
-        { id: 701, subject: "Economics", title: "Introduction to Economics", summary: "Scarcity, choice, and opportunity cost concepts.", link: "#" },
-        { id: 801, subject: "Optional Mathematics", title: "Trigonometry Formulas", summary: "A complete list of trigonometry formulas and identities.", link: "https://www.mathswithsaroj.com.np/2020/09/trigonometry-all-formula-for-class-9.html"},
-      ],
-      seePreparation: {
-        routine: { title: "SEE 2081 Routine", image: "https://via.placeholder.com/800x500.png?text=Official+SEE+Routine+Image", details: "The official routine for the upcoming Secondary Education Examination (SEE). Click to view the full image." },
-        questionPapers: [
-            { id: 'pp1', subject: 'Mathematics', year: 2079, title: 'Mathematics Past Paper (2079)', pdf: 'https://www.see.gov.np/uploads/files/1684305888_C.%20Maths%20(New).pdf' },
-            { id: 'pp2', subject: 'Science', year: 2079, title: 'Science Past Paper (2079)', pdf: 'https://www.see.gov.np/uploads/files/1684305943_Science.pdf' },
-            { id: 'pp3', subject: 'English', year: 2079, title: 'English Past Paper (2079)', pdf: 'https://www.see.gov.np/uploads/files/1684305844_English.pdf' },
-            { id: 'pp4', subject: 'Social Studies', year: 2079, title: 'Social Studies Past Paper (2079)', pdf: 'https://www.see.gov.np/uploads/files/1684305963_Social%20Studies.pdf' },
-        ],
-        guessPapers: [
-            { id: 'gp1', subject: 'Science', title: 'Science Model Set 1 (High Probability)', description: "Curated by experts, focusing on key chapters.", pdf: 'https://www.edusanjal.com/news/see-model-question-papers-grade-10' },
-            { id: 'gp2', subject: 'Mathematics', title: 'C.Maths Final Practice Paper', description: "Covers all important theorems and algebra problems.", pdf: 'https://www.edusanjal.com/news/see-model-question-papers-grade-10' },
-        ]
-      },
+      whatsapp: { number: "9826594548", message: "Hello Ganesh Dai, I have a question about my SEE preparation..." },
       aboutContent: {
-          aboutUs: `<h3 class="font-display text-2xl font-bold mb-4">About Ganesh Dai Academy</h3>
-            <p class="mb-4">Hello, future SEE toppers! I'm Ganesh Dahal, and I built this platform with a single, heartfelt mission: to make your Grade 10 journey smoother, more organized, and ultimately more successful. I remember the stress and pressure of SEE, and I wanted to create the resource I wish I had—a reliable 'Dai' (older brother) in digital form.</p>
-            <p class="mb-4">This academy is a culmination of carefully curated notes, high-yield practice questions, and smart tools, all tailored specifically for the Nepali SEE curriculum. Everything here is free, because I believe quality education should be accessible to everyone. My goal is to empower you to study smarter, not just harder. Let's conquer the SEE together!</p>`,
-          privacyPolicy: `<h3 class="font-display text-2xl font-bold mb-4">Your Privacy Matters</h3>
-            <p class="mb-4">We respect your privacy. Ganesh Dai Academy is designed to be a safe, helpful space. We only store your first name in your browser's local storage to personalize your experience—this data never leaves your device. We do not use tracking cookies or collect any other personal information. Our focus is 100% on education, not data harvesting. Simple as that.</p>`
+          mission: "Our mission is to empower every SEE student in Nepal with free, high-quality, and accessible digital resources. We believe that with the right tools, every student has the potential to excel. This platform is your digital 'Dai'—a reliable guide on your journey to success.",
+          features: [
+              { icon: "fa-solid fa-book-open", title: "Curated Notes", text: "Easy-to-understand notes for every chapter, designed for quick revision." },
+              { icon: "fa-solid fa-swatchbook", title: "Digital Library", text: "Access official textbooks and reference materials for your studies." },
+              { icon: "fa-solid fa-file-alt", title: "Past Papers", text: "Practice with official SEE question papers from previous years." },
+              { icon: "fa-solid fa-star", title: "Model Questions", text: "Solve high-probability question sets prepared by subject experts." },
+              { icon: "fa-solid fa-lightbulb", title: "Interactive Quizzes", text: "Test your knowledge and track your progress with subject-wise quizzes." },
+              { icon: "fa-solid fa-mobile-screen", title: "Mobile Friendly", text: "Study anytime, anywhere. Our platform is fully responsive for all devices." },
+          ]
       },
+      quizzes: {
+        "Science": {
+            title: "Science Quizzes",
+            icon: "fa-solid fa-flask",
+            chapters: {
+              "Force & Motion": {
+                questions: [
+                  { question: "What is the SI unit of force?", options: ["Joule", "Watt", "Newton", "Pascal"], correctAnswer: "Newton" },
+                  { question: "Inertia is the property of a body to resist changes in its state of...", options: ["Rest only", "Motion only", "Rest or uniform motion", "Energy"], correctAnswer: "Rest or uniform motion" },
+                ]
+              },
+              "Chemical Reactions": {
+                questions: [
+                  { question: "What is the chemical formula for table salt?", options: ["HCl", "NaCl", "KCl", "H2O"], correctAnswer: "NaCl" },
+                  { question: "A reaction where a substance breaks down is called...", options: ["Combination", "Decomposition", "Displacement", "Redox"], correctAnswer: "Decomposition" },
+                ]
+              },
+              "Cell Biology": {
+                questions: [
+                  { question: "Which organelle is known as the 'brain' of the cell?", options: ["Mitochondria", "Nucleus", "Ribosome", "Chloroplast"], correctAnswer: "Nucleus" },
+                  { question: "Photosynthesis primarily occurs in which organelle?", options: ["Mitochondria", "Vacuole", "Chloroplast", "Nucleus"], correctAnswer: "Chloroplast" },
+                ]
+              }
+            }
+        },
+        "Mathematics": {
+            title: "Math Essentials",
+            icon: "fa-solid fa-calculator",
+            questions: [
+                { question: "What is the value of Pi (to two decimal places)?", options: ["3.12", "3.14", "3.16", "3.18"], correctAnswer: "3.14" },
+                { question: "Area of a square with side length 5?", options: ["20", "25", "30", "15"], correctAnswer: "25" },
+            ]
+        },
+      },
+      subjects: ["Mathematics", "Science", "English", "Nepali", "Social Studies","Economics","Computer"],
+      notes: [{ id: 101, subject: "Mathematics", title: "Algebra: Polynomials", summary: "Basics, factorization, identities.", link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" }],
+      libraryBooks: [{ id: 'b01', title: 'Class 10 Science', author: 'Govt. of Nepal', cover: 'https://placehold.co/400x600/3b82f6/ffffff?text=Science', pdf: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' }],
+      seePreparation: { routine: { title: "SEE Routine", image: "https://placehold.co/800x500/e2e8f0/334155?text=SEE+Routine", details: "Official routine for SEE." }, questionPapers: [], guessPapers: [] }
     };
 
-    // --- HELPERS ---
-    const getJSON = (k, dv) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : dv; } catch { return dv; } };
-    const setJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+    // --- HOOKS & HELPERS ---
+    const useLocalStorage = (key, initialValue) => {
+        const [storedValue, setStoredValue] = useState(() => {
+            try { const item = window.localStorage.getItem(key); return item ? JSON.parse(item) : initialValue; } 
+            catch (error) { return initialValue; }
+        });
+        const setValue = (value) => {
+            try {
+                const valueToStore = value instanceof Function ? value(storedValue) : value;
+                setStoredValue(valueToStore);
+                window.localStorage.setItem(key, JSON.stringify(valueToStore));
+            } catch (error) { console.error(error); }
+        };
+        return [storedValue, setValue];
+    };
     const classNames = (...c) => c.filter(Boolean).join(' ');
     const getEmbedUrl = (url) => {
       if (!url || url === '#') return null;
@@ -210,492 +155,143 @@
     };
     
     // --- UI COMPONENTS ---
-    const Section = ({ title, subtitle, children }) => {
-        return (
-            <section className="max-w-7xl mx-auto px-4 py-16 md:py-20">
-                <div className="text-center mb-12 slide-in-up">
-                    <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-800 dark:text-white">{title}</h2>
-                    {subtitle && <p className="text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto">{subtitle}</p>}
-                </div>
-                {children}
-            </section>
-        );
-    };
-
-    const NameCaptureModal = ({ onSave }) => {
-        const [name, setName] = useState('');
-        return (
-            <div className="overlay">
-                <div className="w-full max-w-md p-8 text-center bg-white dark:bg-slate-900 rounded-2xl shadow-2xl slide-in-up">
-                    <div className="certificate-logo mx-auto mb-4" style={{backgroundImage: `url(${DATA.logoDataUri})`}}></div>
-                    <h2 className="text-2xl font-display font-bold text-slate-800 dark:text-white">Welcome to the Academy!</h2>
-                    <p className="text-slate-500 dark:text-slate-400 mt-2 mb-6">What should we call you?</p>
-                    <form onSubmit={(e) => { e.preventDefault(); if (name.trim()) onSave(name.trim()); }}>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your first name"
-                            className="w-full px-4 py-3 text-lg text-center rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none" autoFocus />
-                        <button type="submit" className="w-full btn-grad mt-4 px-6 py-3 rounded-lg font-semibold text-lg">
-                            Let's Get Started
-                        </button>
-                    </form>
-                </div>
-            </div>
-        );
-    };
-
-    const WelcomeCelebration = ({ name }) => {
-        const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800'];
-        const confetti = Array.from({ length: 100 }).map((_, i) => ({
-            id: i,
-            style: { left: `${Math.random() * 100}vw`, backgroundColor: colors[Math.floor(Math.random() * colors.length)], animationDuration: `${Math.random() * 3 + 4}s`, animationDelay: `${Math.random() * 2}s` }
-        }));
-        return (
-            <div className="overlay overflow-hidden">
-                {confetti.map(c => <div key={c.id} className="confetti" style={c.style}></div>)}
-                <div className="text-center text-white fade-in">
-                    <h1 className="text-5xl md:text-7xl font-display font-bold">Welcome, {name}!</h1>
-                    <p className="mt-4 text-xl">We're so glad you're here.</p>
-                </div>
-            </div>
-        );
-    };
+    const Section = ({ title, subtitle, children, className }) => ( <section className={classNames("max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24", className)}>{title && <div className="text-center mb-12 slide-in-up"><h2 className="text-3xl md:text-4xl font-display font-bold text-slate-800 dark:text-white">{title}</h2>{subtitle && <p className="text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto">{subtitle}</p>}</div>}{children}</section> );
     
-    const CertificateModal = ({ name, onContinue, onDownload }) => {
-        const certificateRef = useRef(null);
-        const [downloading, setDownloading] = useState(false);
-        const logoStyle = { backgroundImage: `url(${DATA.logoDataUri})` };
-
+    const NameCaptureModal = ({ onSave }) => ( <div className="overlay"><div className="w-full max-w-md p-8 text-center bg-white dark:bg-slate-900 rounded-2xl shadow-2xl slide-in-up"><img src={DATA.logoUrl} alt="Logo" className="w-20 h-20 mx-auto mb-4 rounded-full"/><h2 className="text-2xl font-display font-bold text-slate-800 dark:text-white">Welcome!</h2><p className="text-slate-500 dark:text-slate-400 mt-2 mb-6">What should we call you?</p><form onSubmit={(e) => { e.preventDefault(); const name = e.target.elements.name.value.trim(); if(name) onSave(name); }}><input type="text" name="name" placeholder="Enter your first name" className="w-full px-4 py-3 text-lg text-center rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary-500 outline-none" autoFocus required /><button type="submit" className="w-full btn-grad mt-4 px-6 py-3 rounded-lg font-semibold text-lg">Let's Get Started</button></form></div></div> );
+    
+    const WelcomeCelebration = ({ name }) => ( <div className="overlay overflow-hidden"><div className="text-center text-white fade-in"><h1 className="text-5xl md:text-7xl font-display font-bold">Welcome, {name}!</h1><p className="mt-4 text-xl">We're so glad you're here.</p></div></div> );
+    
+    const CertificateModal = ({ name, onContinue }) => {
+        const certificateRef = useRef(null); const [downloading, setDownloading] = useState(false);
         const handleDownload = async () => {
-            if (certificateRef.current && !downloading) {
+            if (certificateRef.current && !downloading && window.html2canvas) {
                 setDownloading(true);
                 try {
-                    await onDownload(certificateRef.current);
-                } catch (error) {
-                    console.error("Failed to download certificate:", error);
-                    alert("Sorry, there was an error downloading the certificate.");
-                } finally {
-                    setDownloading(false);
-                }
+                    const canvas = await html2canvas(certificateRef.current, { scale: 2, useCORS: true, backgroundColor: '#fdfdfd' });
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = `Ganesh_Dai_Academy_Certificate_${name}.png`;
+                    link.click();
+                } catch (error) { console.error("Download failed:", error); } finally { setDownloading(false); }
             }
         };
-
-        return (
-            <div className="overlay">
-                <div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-xl max-h-[90vh] flex flex-col slide-in-up" onClick={e=>e.stopPropagation()}>
-                    <div className="p-6 overflow-y-auto">
-                        <div ref={certificateRef} id="certificate" className="text-slate-800">
-                            <div className="text-center">
-                                <div className="certificate-logo" style={logoStyle}></div>
-                                <h1 className="font-serif-display text-4xl text-yellow-700">Certificate of Membership</h1>
-                                <p className="text-lg mt-4">This certificate is proudly presented to</p>
-                                <p className="student-name text-6xl font-bold my-4">{name}</p>
-                                <p className="text-lg">for joining the Ganesh Dai Academy. We wish you the very best for your SEE preparation journey and future endeavors.</p>
-                                <div className="mt-12 flex justify-between items-end">
-                                    <div>
-                                        <p className="text-sm border-t-2 border-slate-600 pt-1">Date</p>
-                                        <p>{new Date().toLocaleDateString('en-CA')}</p>
-                                    </div>
-                                    <div className="text-center">
-                                        <p className="font-signature text-4xl">Ganesh Dahal</p>
-                                        <p className="text-sm border-t-2 border-slate-600 pt-1">Founder, Ganesh Dai Academy</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-3 p-4 border-t border-slate-200 dark:border-slate-700">
-                        <button onClick={handleDownload} disabled={downloading} className="flex-1 btn-accent px-6 py-3 rounded-lg font-semibold flex items-center justify-center">
-                            {downloading ? ( <><i className="fa-solid fa-spinner spinner mr-2"></i> Downloading...</> ) : ( <><i className="fa-solid fa-download mr-2"></i>Download Certificate</> )}
-                        </button>
-                        <button onClick={onContinue} className="flex-1 btn-grad px-6 py-3 rounded-lg font-semibold">Continue to Academy <i className="fa-solid fa-arrow-right ml-2"></i></button>
-                    </div>
-                </div>
-            </div>
-        );
+        return <div className="overlay"><div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-xl max-h-[90vh] flex flex-col slide-in-up" onClick={e=>e.stopPropagation()}><div className="p-4 sm:p-6 overflow-y-auto"><div ref={certificateRef} id="certificate" className="text-slate-800"><div className="text-center"><img src={DATA.logoUrl} className="w-24 h-24 mx-auto mb-2 rounded-full" alt="Academy Logo"/><h1 className="font-serif-display text-4xl text-violet-700">Certificate of Membership</h1><p className="text-lg mt-4">This certificate is proudly presented to</p><p className="font-handwriting text-6xl font-bold my-4 text-slate-800">{name}</p><p className="text-lg">for joining the Ganesh Dai Academy. We wish you the very best for your SEE preparation journey and future endeavors.</p><div className="mt-12 flex justify-between items-end"><div className="text-left"><p className="text-sm border-t-2 border-slate-400 pt-1">Date</p><p>{new Date().toLocaleDateString('en-CA')}</p></div><div className="text-center"><p className="font-handwriting text-4xl">Ganesh Dahal</p><p className="text-sm border-t-2 border-slate-400 pt-1">Founder, Ganesh Dai Academy</p></div></div></div></div></div><div className="flex flex-col sm:flex-row gap-3 p-4 border-t border-slate-200 dark:border-slate-700"><button onClick={handleDownload} disabled={downloading} className="flex-1 bg-accent-500 hover:bg-accent-600 text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center transition disabled:bg-accent-500/70">{downloading ? <><i className="fa-solid fa-spinner spinner mr-2"></i> Downloading...</> : <><i className="fa-solid fa-download mr-2"></i>Download</>}</button><button onClick={onContinue} className="flex-1 btn-grad px-6 py-3 rounded-lg font-semibold">Continue to Academy <i className="fa-solid fa-arrow-right ml-2"></i></button></div></div></div>;
     };
 
-    const AskQuestionFAB = () => {
-        const whatsappUrl = `https://wa.me/${DATA.whatsapp.number}?text=${encodeURIComponent(DATA.whatsapp.message)}`;
-        return (
-            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" 
-               className="fixed bottom-6 right-6 z-50 h-16 w-16 bg-gradient-to-tr from-green-500 to-teal-500 rounded-full shadow-lg grid place-items-center text-white text-3xl transition-transform hover:scale-110 active:scale-95">
-                <i className="fa-brands fa-whatsapp"></i>
-            </a>
-        );
-    };
+    const AskQuestionFAB = () => ( <a href={`https://wa.me/${DATA.whatsapp.number}?text=${encodeURIComponent(DATA.whatsapp.message)}`} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 h-16 w-16 bg-gradient-to-tr from-emerald-500 to-green-500 rounded-full shadow-lg grid place-items-center text-white text-3xl transition-transform hover:scale-110 active:scale-95"><i className="fa-brands fa-whatsapp"></i></a> );
 
     const PdfModal = ({ file, onClose }) => {
-      const url = getEmbedUrl(file?.link || file?.pdf);
-      if (!url || url === "#") {
-        alert("Sorry, this document is not available right now. Please check back later.");
-        return null;
-      }
-      return (
-        <div className="overlay" onClick={onClose}>
-          <div className="modal-pdf" onClick={e=>e.stopPropagation()}>
-            <div className="flex items-center justify-between bg-[#020617] p-3 border-b border-[#334155] text-white">
-              <div className="flex items-center gap-3 min-w-0">
-                <i className="fa-solid fa-file-pdf text-rose-400"></i>
-                <span className="font-semibold truncate">{file.title}</span>
-              </div>
-              <button onClick={onClose} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600 text-white text-xl flex-shrink-0">&times;</button>
-            </div>
-            <iframe src={url} title={file.title} className="flex-1 bg-slate-800 border-0"></iframe>
-          </div>
-        </div>
-      );
+      const [zoom, setZoom] = useState(1); const url = getEmbedUrl(file?.link || file?.pdf);
+      if (!url) return null;
+      return <div className="overlay" onClick={onClose}><div className="modal-pdf" onClick={e=>e.stopPropagation()}><div className="flex items-center justify-between bg-slate-950 p-3 border-b border-[#334155] text-white"><div className="flex items-center gap-3 min-w-0"><i className="fa-solid fa-file-pdf text-rose-400"></i><span className="font-semibold truncate">{file.title}</span></div><div className="flex items-center gap-2"><button onClick={() => setZoom(z => Math.max(z - 0.2, 0.5))} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600"><i className="fa-solid fa-search-minus"></i></button><button onClick={() => setZoom(1)} className="h-8 px-3 rounded-full bg-slate-700 hover:bg-slate-600 text-sm">Reset</button><button onClick={() => setZoom(z => Math.min(z + 0.2, 3))} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600"><i className="fa-solid fa-search-plus"></i></button><button onClick={onClose} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600 text-xl flex-shrink-0 ml-2">&times;</button></div></div><div className="flex-1 bg-slate-800 overflow-auto"><iframe src={url} title={file.title} className="w-full h-full border-0 transition-transform duration-300" style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }}></iframe></div></div></div>;
     };
 
-    const Header = ({ active, setActive, dark, setDark }) => {
+    const Header = ({ active, setActive, isDark, toggleTheme }) => {
       const [menuOpen, setMenuOpen] = useState(false);
-      useEffect(() => {
-        document.documentElement.classList.toggle('dark', dark);
-        setJSON('gda_theme_dark', dark);
-      }, [dark]);
-      
-      const navigate = (tab) => {
-        setActive(tab);
-        setMenuOpen(false);
-        window.scrollTo(0,0);
-      };
-
-      const NavItem = ({ name, label, icon }) => {
-          return (
-            <button onClick={()=>navigate(name)} className={classNames(
-              "px-3 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors w-full text-left lg:w-auto",
-              active === name 
-                ? "text-primary-500 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-900/40" 
-                : "text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-800/60"
-            )}>
-              <i className={`${icon} w-5 text-center`}></i> {label}
-            </button>
-          );
-      };
-
-      return (
-        <header className="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 backdrop-blur-lg bg-white/80 dark:bg-slate-950/70">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="py-3 flex items-center justify-between">
-              <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('home')}>
-                <div className="h-10 w-10 rounded-lg bg-cover bg-center" style={{backgroundImage: `url(${DATA.logoDataUri})`}}></div>
-                <div>
-                  <div className="font-display font-semibold text-slate-900 dark:text-white text-lg leading-tight">{DATA.name}</div>
-                  <div className="text-xs text-slate-500">{DATA.subtitle}</div>
-                </div>
-              </div>
-              <nav className="hidden lg:flex items-center gap-1">
-                <NavItem name="home" label="Home" icon="fa-solid fa-house"/>
-                <NavItem name="notes" label="Notes" icon="fa-solid fa-book-open"/>
-                <NavItem name="prep" label="SEE Prep" icon="fa-solid fa-graduation-cap"/>
-                <NavItem name="saved" label="My List" icon="fa-solid fa-bookmark"/>
-                <NavItem name="about" label="About" icon="fa-solid fa-info-circle"/>
-              </nav>
-              <div className="flex items-center gap-3">
-                  <button onClick={() => setDark(d => !d)} className="h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300">
-                      <i className={dark ? "fa-solid fa-moon text-yellow-300" : "fa-regular fa-sun text-orange-400"}></i>
-                  </button>
-                  <button onClick={() => setMenuOpen(o => !o)} className="lg:hidden h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700">
-                      <i className={`fa-solid ${menuOpen ? 'fa-times' : 'fa-bars'}`}></i>
-                  </button>
-              </div>
-            </div>
-            {menuOpen && (
-              <nav className="lg:hidden py-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-                <NavItem name="home" label="Home" icon="fa-solid fa-house"/>
-                <NavItem name="notes" label="Notes" icon="fa-solid fa-book-open"/>
-                <NavItem name="prep" label="SEE Prep" icon="fa-solid fa-graduation-cap"/>
-                <NavItem name="saved" label="My List" icon="fa-solid fa-bookmark"/>
-                <NavItem name="about" label="About" icon="fa-solid fa-info-circle"/>
-              </nav>
-            )}
-          </div>
-        </header>
-      );
+      const navigate = (tab) => { setActive(tab); setMenuOpen(false); };
+      const NavItem = ({ name, label, icon }) => (<button onClick={()=>navigate(name)} className={classNames("px-3 py-2 rounded-md font-medium flex items-center gap-2 transition-colors w-full text-left lg:w-auto", active === name ? "text-primary-500 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/40" : "text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-800/60")}><i className={`${icon} w-5 text-center`}></i> {label}</button>);
+      const navItems = [
+        { name: 'home', label: 'Home', icon: 'fa-solid fa-house' },
+        { name: 'notes', label: 'Notes', icon: 'fa-solid fa-book-open' },
+        { name: 'library', label: 'Library', icon: 'fa-solid fa-swatchbook' },
+        { name: 'prep', label: 'SEE Prep', icon: 'fa-solid fa-graduation-cap' },
+        { name: 'quizzes', label: 'Quizzes', icon: 'fa-solid fa-lightbulb' },
+        { name: 'about', label: 'About', icon: 'fa-solid fa-info-circle' },
+      ];
+      return <header className="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 backdrop-blur-lg bg-white/80 dark:bg-slate-900/70"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="py-3 flex items-center justify-between"><div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('home')}><img src={DATA.logoUrl} alt="Logo" className="h-10 w-10 rounded-lg"/><div><div className="font-display font-semibold text-slate-900 dark:text-white text-lg leading-tight">{DATA.name}</div><div className="text-xs text-slate-500">{DATA.subtitle}</div></div></div><nav className="hidden lg:flex items-center gap-1">{navItems.map(item => <NavItem key={item.name} {...item}/>)}</nav><div className="flex items-center gap-3"><button onClick={toggleTheme} className="h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300" aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}><i className={isDark ? "fa-solid fa-moon text-yellow-300" : "fa-regular fa-sun text-orange-400"}></i></button><button onClick={() => setMenuOpen(o => !o)} className="lg:hidden h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700"><i className={`fa-solid ${menuOpen ? 'fa-times' : 'fa-bars'}`}></i></button></div></div>{menuOpen && <nav className="lg:hidden py-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">{navItems.map(item => <NavItem key={item.name} {...item}/>)}</nav>}</div></header>;
     };
 
-    const Hero = ({ go, userName }) => {
-        return (
-            <section className="gradient-bg text-white">
-                <div className="max-w-7xl mx-auto px-4 py-20 md:py-28 text-center relative overflow-hidden">
-                    <div className="absolute -top-1/2 -left-1/4 w-full h-full bg-white/5 rounded-full filter blur-3xl opacity-50"></div>
-                    <div className="relative">
-                        <h1 className="text-4xl md:text-6xl font-display font-bold fade-in" style={{ animationDelay: '100ms' }}>
-                            {userName ? `Welcome back, ${userName}!` : "Your SEE Success Starts Here."}
-                        </h1>
-                        <p className="mt-4 text-white/90 md:text-xl max-w-3xl mx-auto fade-in" style={{ animationDelay: '200ms' }}>
-                            Your complete guide to acing the Grade 10 exams. Notes, practice papers, plans, and tools — all in one place.
-                        </p>
-                        <div className="mt-8 flex flex-wrap gap-4 justify-center fade-in" style={{ animationDelay: '300ms' }}>
-                            <button onClick={() => go('prep')} className="btn-grad px-6 py-3 rounded-full font-semibold text-lg"><i className="fa-solid fa-graduation-cap mr-2"></i>Start Preparation</button>
-                            <button onClick={() => go('notes')} className="px-6 py-3 rounded-full font-semibold bg-white text-slate-800 hover:bg-white/90 transition"><i className="fa-solid fa-book-open mr-2 text-primary-500"></i>Explore Notes</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        );
-    };
+    const Hero = ({ go, userName }) => <section className="gradient-bg text-white"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 text-center relative overflow-hidden"><div className="absolute -top-1/2 -left-1/4 w-full h-full bg-white/5 rounded-full filter blur-3xl opacity-50"></div><div className="relative"><h1 className="text-4xl md:text-6xl font-display font-bold fade-in">{userName ? `Welcome back, ${userName}!` : "Your SEE Success Starts Here."}</h1><p className="mt-4 text-white/90 md:text-xl max-w-3xl mx-auto fade-in" style={{ animationDelay: '200ms' }}>The ultimate guide to acing the Grade 10 exams. Notes, quizzes, papers, and more — all in one place.</p><div className="mt-8 flex flex-wrap gap-4 justify-center fade-in" style={{ animationDelay: '300ms' }}><button onClick={() => go('prep')} className="btn-grad px-8 py-3 rounded-full font-semibold text-lg"><i className="fa-solid fa-graduation-cap mr-2"></i>Start Preparation</button><button onClick={() => go('notes')} className="px-8 py-3 rounded-full font-semibold bg-white text-slate-800 hover:bg-white/90 transition"><i className="fa-solid fa-book-open mr-2 text-primary-500"></i>Explore Notes</button></div></div></div></section>;
 
-    const FeatureCard = ({ icon, title, text, delay }) => {
-        return (
-            <div className="card p-6 text-center slide-in-up" style={{ animationDelay: `${delay}ms`}}>
-                <div className="h-16 w-16 mx-auto rounded-full gradient-bg grid place-items-center text-white text-2xl mb-4">
-                    <i className={icon}></i>
-                </div>
-                <h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{title}</h3>
-                <p className="text-slate-500 dark:text-slate-400 mt-2">{text}</p>
-            </div>
-        );
-    };
+    const FeatureCard = memo(({ icon, title, text, delay }) => <div className="card p-6 text-center slide-in-up" style={{ animationDelay: `${delay}ms`}}><div className="h-16 w-16 mx-auto rounded-full gradient-bg grid place-items-center text-white text-2xl mb-4 shadow-lg"><i className={icon}></i></div><h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{title}</h3><p className="text-slate-500 dark:text-slate-400 mt-2">{text}</p></div>);
     
-    const NoteCard = ({ note, saved, onToggle, onOpen }) => {
-        return (
-            <div className="card p-4 flex flex-col" style={{animationDelay: `${(note.id % 10) * 50}ms`}}>
-                <div className="flex items-start justify-between gap-2">
-                    <div>
-                        <div className="text-xs font-semibold text-primary-500 dark:text-indigo-300 uppercase">{note.subject}</div>
-                        <h4 className="font-semibold mt-1 text-slate-800 dark:text-white">{note.title}</h4>
-                    </div>
-                    <button onClick={() => onToggle(note.id)} className="text-slate-400 hover:text-secondary-500 text-lg flex-shrink-0 p-1">
-                        <i className={saved ? "fa-solid fa-bookmark text-secondary-500" : "fa-regular fa-bookmark"}></i>
-                    </button>
-                </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 flex-grow">{note.summary}</p>
-                <div className="mt-4 flex items-center justify-end">
-                    <button onClick={() => onOpen(note)} className="px-4 py-2 rounded-full text-sm font-semibold bg-slate-100 dark:bg-slate-700/80 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-500 transition">
-                        Open Note <i className="fa-solid fa-arrow-right ml-1 text-xs"></i>
-                    </button>
-                </div>
-            </div>
-        );
+    const Footer = ({ go }) => <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-sm text-slate-500"><div className="flex flex-col md:flex-row items-center justify-between gap-6"><div>© {new Date().getFullYear()} {DATA.name} • Your SEE Success Partner</div><div className="flex items-center gap-6"><button onClick={() => go('about')} className="hover:text-primary-500 transition-colors">About Us</button><a href={DATA.social.youtube} target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors text-xl" aria-label="YouTube"><i className="fa-brands fa-youtube"></i></a><a href={DATA.social.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors text-xl" aria-label="Facebook"><i className="fa-brands fa-facebook"></i></a></div></div></div></footer>;
+
+    const NotesExplorer = ({ openFile }) => {
+      const [q, setQ] = useState(""); const [sub, setSub] = useState("All");
+      const list = useMemo(() => DATA.notes.filter(n => (sub === "All" || n.subject === sub) && (n.title.toLowerCase().includes(q.toLowerCase()) || n.summary.toLowerCase().includes(q.toLowerCase()))), [q, sub]);
+      return <Section title="Notes Explorer" subtitle="Find crisp, easy-to-understand notes and revision sheets for every subject."><div className="card p-4 mb-8 max-w-3xl mx-auto slide-in-up"><div className="flex flex-col md:flex-row gap-3"><div className="relative flex-1"><i className="fa-solid fa-search absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"></i><input className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="Search notes..." value={q} onChange={e => setQ(e.target.value)} /></div><select className="w-full md:w-56 px-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" value={sub} onChange={e => setSub(e.target.value)}><option>All</option>{DATA.subjects.map(s => <option key={s}>{s}</option>)}</select></div></div><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">{list.length > 0 ? list.map((n, i) => (<div key={n.id} className="card p-5 flex flex-col h-full slide-in-up" style={{animationDelay:`${i*30}ms`}}><div className="flex-1"><div className="text-xs font-semibold text-primary-500 dark:text-blue-300 uppercase tracking-wider">{n.subject}</div><h4 className="font-semibold mt-1 text-slate-800 dark:text-white leading-tight">{n.title}</h4><p className="text-sm text-slate-500 dark:text-slate-400 mt-2">{n.summary}</p></div><div className="mt-4 flex justify-end"><button onClick={() => openFile(n)} className="px-4 py-2 rounded-full text-sm font-semibold text-primary-600 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-500 transition">Open Note <i className="fa-solid fa-arrow-right ml-1 text-xs"></i></button></div></div>)) : <div className="col-span-full text-center p-12 card slide-in-up"><p className="text-slate-500">No notes found.</p></div>}</div></Section>;
     };
-    
-    const NotesExplorer = ({ savedIds, toggleSave, openFile }) => {
-       const [q, setQ] = useState("");
-      const [sub, setSub] = useState("All");
-      const list = useMemo(() => {
-        return DATA.notes
-          .filter(n => (sub === "All" || n.subject === sub))
-          .filter(n => (n.title.toLowerCase().includes(q.toLowerCase()) || (n.summary || "").toLowerCase().includes(q.toLowerCase())));
-      }, [q, sub]);
-      
-      return (
-        <Section title="Notes Explorer" subtitle="Find crisp, easy-to-understand notes and revision sheets for every subject.">
-            <div className="card p-4 mb-8 slide-in-up">
-              <div className="flex flex-col md:flex-row gap-3">
-                <div className="relative flex-1">
-                  <i className="fa-solid fa-search absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"></i>
-                  <input className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" placeholder="Search notes..." value={q} onChange={e => setQ(e.target.value)} />
-                </div>
-                <select className="w-full md:w-56 px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" value={sub} onChange={e => setSub(e.target.value)}>
-                  <option>All</option>
-                  {DATA.subjects.map(s => <option key={s}>{s}</option>)}
-                </select>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {list.length > 0 ? list.map(n => (
-                <div key={n.id} className="slide-in-up">
-                    <NoteCard note={n} saved={savedIds.includes(n.id)} onToggle={toggleSave} onOpen={openFile} />
-                </div>
-              )) : (
-                <div className="col-span-full text-center p-12 card slide-in-up">
-                  <p className="text-slate-500">No notes found. Try another keyword or subject.</p>
-                </div>
-              )}
-            </div>
-        </Section>
-      );
+
+    const DigitalLibrary = ({ openFile }) => {
+      const BookCard = memo(({ book, onOpen }) => (<div className="group card p-3 flex flex-col text-center cursor-pointer" onClick={() => onOpen({title: book.title, pdf: book.pdf})}><div className="relative"><img src={book.cover} alt={book.title} className="w-full aspect-[2/3] object-cover rounded-md shadow-lg" /><div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-md"><div className="border-2 border-white rounded-full h-14 w-14 grid place-items-center text-white"><i className="fa-solid fa-book-open text-2xl"></i></div></div></div><h4 className="font-semibold text-slate-800 dark:text-white mt-3 text-sm leading-tight">{book.title}</h4><p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{book.author}</p></div>));
+      return <Section title="Digital Library" subtitle="Access official textbooks and reference materials."><div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">{DATA.libraryBooks.map((book, i) => <div key={book.id} className="slide-in-up" style={{ animationDelay: `${i * 30}ms` }}><BookCard book={book} onOpen={openFile} /></div>)}</div></Section>;
     };
     
     const SeePreparationComponent = ({ openFile }) => {
         const [activeTab, setActiveTab] = useState('papers');
-        const TabButton = ({ id, label, icon }) => (
-            <button onClick={() => setActiveTab(id)} className={classNames("flex-1 px-4 py-3 text-sm md:text-base font-semibold rounded-lg flex items-center justify-center gap-2 transition", activeTab === id ? "bg-primary-500 text-white shadow-md" : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700")}>
-                <i className={icon}></i> {label}
-            </button>
-        );
-        const PaperCard = ({ paper }) => (
-            <div className="card p-4 slide-in-up">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-xs font-semibold text-primary-500 dark:text-indigo-300 uppercase">{paper.subject} {paper.year && `• ${paper.year}`}</div>
-                  <h4 className="font-semibold text-slate-800 dark:text-white mt-1">{paper.title}</h4>
-                  {paper.description && <p className="text-sm text-slate-500 mt-1">{paper.description}</p>}
-                </div>
-                <i className="fa-solid fa-file-pdf text-rose-500 text-xl"></i>
-              </div>
-              <div className="mt-4 flex items-center justify-end">
-                <button onClick={() => openFile({ title: paper.title, link: paper.pdf })} className="px-4 py-2 text-sm font-semibold rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-primary-500 hover:text-white transition">
-                  Open PDF <i className="fa-solid fa-arrow-right ml-1 text-xs"></i>
-                </button>
-              </div>
-            </div>
-        );
-        return (
-            <Section title="SEE Preparation Hub" subtitle="Your one-stop destination for routines, past papers, and expert-curated guess papers.">
-                <div className="max-w-3xl mx-auto p-1.5 bg-slate-100 dark:bg-slate-900 rounded-xl flex gap-1.5 mb-8 slide-in-up">
-                    <TabButton id="papers" label="Past Papers" icon="fa-solid fa-file-lines" />
-                    <TabButton id="guess" label="Model Papers" icon="fa-solid fa-star" />
-                    <TabButton id="routine" label="Exam Routine" icon="fa-solid fa-calendar-alt" />
-                </div>
-                <div>
-                    {activeTab === 'papers' && (<div className="grid grid-cols-1 md:grid-cols-2 gap-6">{DATA.seePreparation.questionPapers.map(p => <PaperCard key={p.id} paper={p} />)}</div>)}
-                    {activeTab === 'guess' && (<div className="grid grid-cols-1 md:grid-cols-2 gap-6">{DATA.seePreparation.guessPapers.map(p => <PaperCard key={p.id} paper={p} />)}</div>)}
-                    {activeTab === 'routine' && (
-                        <div className="card max-w-4xl mx-auto p-6 text-center slide-in-up">
-                            <h3 className="text-2xl font-bold font-display text-slate-800 dark:text-white">{DATA.seePreparation.routine.title}</h3>
-                            <p className="text-slate-500 dark:text-slate-400 mt-2 mb-4">{DATA.seePreparation.routine.details}</p>
-                            <img src={DATA.seePreparation.routine.image} alt="SEE Routine" className="rounded-lg border border-slate-200 dark:border-slate-700" />
-                        </div>
-                    )}
-                </div>
-            </Section>
-        );
+        const PaperCard = ({ paper, i }) => (<div className="card p-5 slide-in-up" style={{ animationDelay: `${i * 50}ms`}}><div className="flex items-start justify-between"><div className="flex-1 pr-4"><div className="text-xs font-semibold text-primary-500 dark:text-blue-300 uppercase tracking-wider">{paper.subject} {paper.year && `• ${paper.year}`}</div><h4 className="font-semibold text-slate-800 dark:text-white mt-1">{paper.title}</h4>{paper.description && <p className="text-sm text-slate-500 mt-1">{paper.description}</p>}</div><i className="fa-solid fa-file-pdf text-rose-500 text-2xl"></i></div><div className="mt-4 flex items-center justify-end"><button onClick={() => openFile({ title: paper.title, pdf: paper.pdf })} className="px-4 py-2 text-sm font-semibold rounded-full bg-blue-100 dark:bg-blue-900/50 text-primary-600 dark:text-blue-300 hover:bg-primary-500 hover:text-white transition">Open PDF <i className="fa-solid fa-arrow-right ml-1 text-xs"></i></button></div></div>);
+        return <Section title="SEE Preparation Hub" subtitle="Your one-stop destination for routines and practice papers."><div className="max-w-3xl mx-auto p-1.5 bg-slate-100 dark:bg-slate-900 rounded-xl flex gap-1.5 mb-8 slide-in-up"><button onClick={()=>setActiveTab('papers')} className={`flex-1 px-4 py-3 text-sm md:text-base font-semibold rounded-lg flex items-center justify-center gap-2 transition ${activeTab==='papers' ? 'bg-primary-500 text-white shadow-md' : 'bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700'}`}><i className="fa-solid fa-file-lines"></i> Past Papers</button><button onClick={()=>setActiveTab('guess')} className={`flex-1 px-4 py-3 text-sm md:text-base font-semibold rounded-lg flex items-center justify-center gap-2 transition ${activeTab==='guess' ? 'bg-primary-500 text-white shadow-md' : 'bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700'}`}><i className="fa-solid fa-star"></i> Model Papers</button><button onClick={()=>setActiveTab('routine')} className={`flex-1 px-4 py-3 text-sm md:text-base font-semibold rounded-lg flex items-center justify-center gap-2 transition ${activeTab==='routine' ? 'bg-primary-500 text-white shadow-md' : 'bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700'}`}><i className="fa-solid fa-calendar-alt"></i> Exam Routine</button></div><div>{activeTab === 'papers' && (<div className="grid grid-cols-1 md:grid-cols-2 gap-6">{DATA.seePreparation.questionPapers.map((p, i) => <PaperCard key={p.id} paper={p} i={i} />)}</div>)}{activeTab === 'guess' && (<div className="grid grid-cols-1 md:grid-cols-2 gap-6">{DATA.seePreparation.guessPapers.map((p, i) => <PaperCard key={p.id} paper={p} i={i} />)}</div>)}{activeTab === 'routine' && (<div className="card max-w-4xl mx-auto p-6 text-center slide-in-up"><h3 className="text-2xl font-bold font-display text-slate-800 dark:text-white">{DATA.seePreparation.routine.title}</h3><p className="text-slate-500 dark:text-slate-400 mt-2 mb-4">{DATA.seePreparation.routine.details}</p><img src={DATA.seePreparation.routine.image} alt="SEE Routine" className="rounded-lg border border-slate-200 dark:border-slate-700" /></div>)}</div></Section>;
     };
 
-    const MyListComponent = ({ ids, openFile, toggleSave }) => {
-      const notes = DATA.notes.filter(n => ids.includes(n.id));
-      return (
-        <Section title="My Study List" subtitle="Your saved notes in one place for quick access.">
-            {notes.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {notes.map(n => <div key={n.id} className="slide-in-up"><NoteCard note={n} saved={true} onToggle={toggleSave} onOpen={openFile} /></div>)}
-                </div>
-            ) : (
-                <div className="text-center p-12 card slide-in-up">
-                    <i className="fa-regular fa-bookmark text-5xl text-slate-400"></i>
-                    <p className="mt-4 text-slate-500">No saved notes yet. Click the bookmark icon on any note to save it here.</p>
-                </div>
-            )}
-        </Section>
-      );
+    const AboutComponent = () => <> <div className="gradient-bg text-white"><Section className="py-20 md:py-28"><div className="text-center"><h1 className="text-4xl md:text-5xl font-display font-bold">Our Mission</h1><p className="mt-4 text-white/90 md:text-xl max-w-3xl mx-auto">{DATA.aboutContent.mission}</p></div></Section></div> <Section title="What We Offer" subtitle="A complete suite of tools designed for your SEE success."><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{DATA.aboutContent.features.map((feature, i) => <div key={feature.title} className="text-center p-6 slide-in-up" style={{ animationDelay: `${i * 100}ms` }}><div className="h-16 w-16 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/40 grid place-items-center text-primary-500 text-2xl mb-4"><i className={feature.icon}></i></div><h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{feature.title}</h3><p className="text-slate-500 dark:text-slate-400 mt-2">{feature.text}</p></div>)}</div></Section> </> ;
+
+    const QuizComponent = () => {
+        const [selectedSubject, setSelectedSubject] = useState(null);
+        const [activeQuizData, setActiveQuizData] = useState(null);
+        const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+        const [userAnswers, setUserAnswers] = useState([]);
+        const [showResults, setShowResults] = useState(false);
+
+        const DonutChart = ({ percentage }) => {
+            const sqSize = 120; const strokeWidth = 12; const radius = (sqSize - strokeWidth) / 2; const viewBox = `0 0 ${sqSize} ${sqSize}`; const circumference = radius * Math.PI * 2; const dashOffset = circumference - (circumference * percentage) / 100;
+            return <svg width={sqSize} height={sqSize} viewBox={viewBox} className="-rotate-90"><circle className="text-slate-200 dark:text-slate-700" cx={sqSize/2} cy={sqSize/2} r={radius} strokeWidth={`${strokeWidth}px`} fill="none" stroke="currentColor"/><circle className="text-primary-500" cx={sqSize/2} cy={sqSize/2} r={radius} strokeWidth={`${strokeWidth}px`} fill="none" stroke="currentColor" strokeDasharray={circumference} strokeDashoffset={circumference} strokeLinecap="round" style={{transition: 'stroke-dashoffset 1s ease-out', strokeDashoffset: dashOffset}} /><text className="font-bold text-2xl fill-current text-slate-700 dark:text-slate-200" x="50%" y="50%" dy=".3em" textAnchor="middle" style={{ transform: 'rotate(90deg)', transformOrigin: 'center' }}>{`${percentage}%`}</text></svg>;
+        };
+
+        const QuizResults = ({ onRestart, onSelectNew }) => {
+            const { score, correctAnswers, wrongAnswers, percentage } = useMemo(() => { let correct = 0; activeQuizData.questions.forEach((q, i) => { if (q.correctAnswer === userAnswers[i]) correct++; }); const total = activeQuizData.questions.length; return { score: correct, correctAnswers: correct, wrongAnswers: total - correct, percentage: Math.round((correct / total) * 100) }; }, [activeQuizData, userAnswers]);
+            return <div className="w-full max-w-4xl mx-auto slide-in-up"><div className="card p-6 md:p-8 text-center"><h2 className="font-display text-3xl font-bold text-slate-800 dark:text-white">Quiz Results</h2><p className="text-slate-500 dark:text-slate-400 mt-1">You completed the {activeQuizData.title} quiz!</p><div className="my-8 flex flex-col md:flex-row items-center justify-center gap-8"><DonutChart percentage={percentage} /><div className="flex gap-4 text-left"><div className="card p-4 flex-1 bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800/50"><div className="font-bold text-3xl text-green-600 dark:text-green-400">{correctAnswers}</div><div className="text-sm font-semibold text-green-800 dark:text-green-300">Correct</div></div><div className="card p-4 flex-1 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800/50"><div className="font-bold text-3xl text-red-600 dark:text-red-400">{wrongAnswers}</div><div className="text-sm font-semibold text-red-800 dark:text-red-300">Incorrect</div></div><div className="card p-4 flex-1 bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800/50"><div className="font-bold text-3xl text-blue-600 dark:text-blue-400">{score}/{activeQuizData.questions.length}</div><div className="text-sm font-semibold text-blue-800 dark:text-blue-300">Score</div></div></div></div><div className="flex flex-col md:flex-row gap-4 justify-center"><button onClick={onRestart} className="btn-grad px-8 py-3 rounded-full font-semibold"><i className="fa-solid fa-redo mr-2"></i>Play Again</button><button onClick={onSelectNew} className="px-8 py-3 rounded-full font-semibold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition">Choose Another Quiz</button></div></div><div className="card p-6 md:p-8 mt-6 text-left"><h3 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-4">Review Answers</h3><div className="space-y-6">{activeQuizData.questions.map((q, i) => { const userAnswer = userAnswers[i]; const isCorrect = q.correctAnswer === userAnswer; return <div key={i} className="border-b border-slate-200 dark:border-slate-700 pb-4"><p className="font-semibold text-slate-800 dark:text-white">{i+1}. {q.question}</p><p className={`mt-2 text-sm ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}><i className={`fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'} mr-2`}></i>Your answer: <span className="font-bold">{userAnswer || "Not answered"}</span></p>{!isCorrect && <p className="mt-1 text-sm text-green-600 dark:text-green-400"><i className="fa-solid fa-check-circle mr-2"></i>Correct answer: <span className="font-bold">{q.correctAnswer}</span></p>}</div>; })}</div></div></div>;
+        };
+
+        const startQuiz = (quizData) => { setActiveQuizData(quizData); setUserAnswers(Array(quizData.questions.length).fill(null)); setCurrentQuestionIndex(0); setShowResults(false); };
+        const generateMixedScienceQuiz = () => { const allQuestions = Object.values(DATA.quizzes.Science.chapters).flatMap(chapter => chapter.questions); return { title: "Mixed Science Quiz", questions: allQuestions }; };
+        const handleAnswerSelect = (answer) => { const newAnswers = [...userAnswers]; newAnswers[currentQuestionIndex] = answer; setUserAnswers(newAnswers); };
+        const handleNext = () => { if (currentQuestionIndex < activeQuizData.questions.length - 1) setCurrentQuestionIndex(prev => prev + 1); else setShowResults(true); };
+        const resetAll = () => { setSelectedSubject(null); setActiveQuizData(null); setShowResults(false); };
+
+        if (showResults) return <Section><QuizResults onRestart={() => startQuiz(activeQuizData)} onSelectNew={resetAll} /></Section>;
+        if (activeQuizData) {
+            const currentQuestion = activeQuizData.questions[currentQuestionIndex];
+            return <Section><div className="w-full max-w-3xl mx-auto card p-6 md:p-8 slide-in-up"><div className="flex justify-between items-center mb-4"><h2 className="font-display text-xl font-bold text-slate-800 dark:text-white">{activeQuizData.title}</h2><span className="font-semibold text-slate-500 dark:text-slate-400">{currentQuestionIndex + 1} / {activeQuizData.questions.length}</span></div><div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-6"><div className="bg-primary-500 h-2 rounded-full transition-all duration-300" style={{ width: `${((currentQuestionIndex + 1) / activeQuizData.questions.length) * 100}%` }}></div></div><h3 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-white mb-6">{currentQuestion.question}</h3><div className="grid grid-cols-1 md:grid-cols-2 gap-4">{currentQuestion.options.map(option => <button key={option} onClick={() => handleAnswerSelect(option)} className={`p-4 rounded-lg text-left font-medium border-2 transition-all ${userAnswers[currentQuestionIndex] === option ? 'bg-primary-500 border-primary-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-800 border-transparent hover:border-primary-400'}`}>{option}</button>)}</div><div className="mt-8 text-right"><button onClick={handleNext} disabled={!userAnswers[currentQuestionIndex]} className="btn-grad px-10 py-3 rounded-lg font-semibold">{currentQuestionIndex < activeQuizData.questions.length - 1 ? 'Next' : 'Finish'} <i className="fa-solid fa-arrow-right ml-2"></i></button></div></div></Section>;
+        }
+        if (selectedSubject === 'Science') {
+            const scienceChapters = DATA.quizzes.Science.chapters;
+            return <Section title="Science Quizzes" subtitle="Choose a chapter or try a mix of all chapters."><div className="max-w-xl mx-auto"><button onClick={() => startQuiz(generateMixedScienceQuiz())} className="w-full btn-grad text-lg font-semibold p-6 rounded-xl mb-6 shadow-lg hover:shadow-2xl transition-shadow text-left flex justify-between items-center"><span><i className="fa-solid fa-random mr-3"></i>Mixed Chapter Quiz</span><i className="fa-solid fa-arrow-right"></i></button><div className="card p-6 space-y-3">{Object.entries(scienceChapters).map(([chapterTitle, chapterData], i) => ( <button key={chapterTitle} onClick={() => startQuiz({title: chapterTitle, questions: chapterData.questions})} className="w-full text-left p-4 rounded-lg font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex justify-between items-center"><span>{chapterTitle}</span><span className="text-xs font-semibold text-slate-500">{chapterData.questions.length} Questions</span></button> ))}</div><button onClick={() => setSelectedSubject(null)} className="mt-8 text-sm font-semibold text-slate-500 hover:text-primary-500"><i className="fa-solid fa-arrow-left mr-2"></i>Back to Subjects</button></div></Section>;
+        }
+        return <Section title="Test Your Knowledge" subtitle="Select a subject to start a quick quiz and check your preparation."><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{Object.entries(DATA.quizzes).map(([subject, quizMeta], i) => ( <div key={subject} className="card p-6 text-center slide-in-up" style={{ animationDelay: `${i*100}ms` }}><div className="h-16 w-16 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/40 grid place-items-center text-primary-500 text-3xl mb-4"><i className={quizMeta.icon}></i></div><h3 className="font-display text-xl font-semibold text-slate-800 dark:text-white">{subject}</h3><p className="text-slate-500 dark:text-slate-400 mt-1 mb-6">{quizMeta.title}</p><button onClick={() => { 'chapters' in quizMeta ? setSelectedSubject(subject) : startQuiz(quizMeta) }} className="btn-grad w-full px-6 py-2.5 rounded-lg font-semibold">Start Quiz</button></div> ))}</div></Section>;
     };
 
-    const AboutSection = () => {
-        return (
-            <Section title="About The Academy" subtitle="Our mission, our promise, and our commitment to your privacy.">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    <div className="card p-6 slide-in-up" style={{ animationDelay: '100ms' }}>
-                        <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DATA.aboutContent.aboutUs }} />
-                    </div>
-                    <div className="card p-6 slide-in-up" style={{ animationDelay: '200ms' }}>
-                        <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DATA.aboutContent.privacyPolicy }} />
-                    </div>
-                </div>
-            </Section>
-        );
-    };
-
-    const Footer = ({ go }) => {
-        return (
-            <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                <div className="max-w-7xl mx-auto px-4 py-8 text-sm text-slate-500">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div>© {new Date().getFullYear()} {DATA.name} • Your SEE Success Partner</div>
-                        <div className="flex items-center gap-4">
-                            <button onClick={() => go('about')} className="hover:text-primary-500">About Us</button>
-                            <a href={DATA.social.youtube} target="_blank" className="hover:text-red-500"><i className="fa-brands fa-youtube"></i> YouTube</a>
-                            <a href={DATA.social.facebook} target="_blank" className="hover:text-blue-600"><i className="fa-brands fa-facebook"></i> Facebook</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        );
-    };
-    
     // --- MAIN APP ---
     const App = () => {
       const [active, setActive] = useState("home");
-      const [dark, setDark] = useState(getJSON('gda_theme_dark', false));
-      const [saved, setSaved] = useState(getJSON('gda_saved', []));
-      const [viewer, setViewer] = useState(null);
-      const [userName, setUserName] = useState(null);
-      
-      const [uiState, setUiState] = useState('loading'); // loading, name, celebration, certificate, ready
+      const [isDark, setIsDark] = useLocalStorage('gda_theme_dark', false);
+      const [viewerFile, setViewerFile] = useState(null);
+      const [userName, setUserName] = useLocalStorage('gda_user_name', null);
+      const [certShown, setCertShown] = useLocalStorage('gda_certificate_shown', false);
+      const [uiState, setUiState] = useState('loading');
 
-      useEffect(() => {
-          const storedName = localStorage.getItem('gda_user_name');
-          const certShown = localStorage.getItem('gda_certificate_shown');
-          if (storedName && certShown) {
-              setUserName(storedName);
-              setUiState('ready');
-          } else if (storedName && !certShown) {
-              setUserName(storedName);
-              setUiState('certificate');
-          } else {
-              setUiState('name');
-          }
-      }, []);
+      useEffect(() => { document.documentElement.classList.toggle('dark', isDark); }, [isDark]);
+      useEffect(() => { const timer = setTimeout(() => { if (userName && certShown) setUiState('ready'); else if (userName && !certShown) setUiState('certificate'); else setUiState('name'); }, 500); return () => clearTimeout(timer); }, [userName, certShown]);
 
-      useEffect(() => setJSON('gda_saved', saved), [saved]);
-
-      const handleSaveName = (name) => {
-          setUserName(name);
-          localStorage.setItem('gda_user_name', name);
-          setUiState('celebration');
-          setTimeout(() => setUiState('certificate'), 4000);
-      };
-
-      const handleContinueFromCert = () => {
-          localStorage.setItem('gda_certificate_shown', 'true');
-          setUiState('ready');
-      };
-      
-      const handleDownloadCertificate = async (element) => {
-        if (!window.html2canvas) return;
-        const canvas = await html2canvas(element, { scale: 2, useCORS: true, allowTaint: true });
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = `Ganesh_Dai_Academy_Certificate_${userName}.png`;
-        link.click();
-      };
-      
-      const toggleSave = (id) => setSaved(ids => ids.includes(id) ? ids.filter(x=>x!==id) : [...ids, id]);
-      const openFile = (file) => setViewer(file);
+      const handleSaveName = (name) => { setUserName(name); setUiState('celebration'); setTimeout(() => setUiState('certificate'), 3500); };
+      const handleContinueFromCert = () => { setCertShown(true); setUiState('ready'); };
       
       const renderContent = () => {
         switch(active) {
-            case 'notes': return <NotesExplorer savedIds={saved} toggleSave={toggleSave} openFile={openFile} />;
-            case 'prep': return <SeePreparationComponent openFile={openFile} />;
-            case 'saved': return <MyListComponent ids={saved} openFile={openFile} toggleSave={toggleSave} />;
-            case 'about': return <AboutSection />;
-            case 'home':
-            default:
-                return (
-                    <Fragment>
-                        <Hero go={setActive} userName={userName}/>
-                        <Section title="Everything You Need to Excel" subtitle="We've packed this platform with powerful resources to boost your preparation.">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <FeatureCard icon="fa-solid fa-book-open" title="Curated Notes" text="Easy-to-understand notes for every chapter, designed for quick revision." delay={100} />
-                                <FeatureCard icon="fa-solid fa-file-alt" title="Past Papers" text="Practice with official SEE question papers from previous years." delay={200} />
-                                <FeatureCard icon="fa-solid fa-star" title="Model Questions" text="Solve high-probability question sets prepared by subject experts." delay={300} />
-                            </div>
-                        </Section>
-                    </Fragment>
-                );
+            case 'notes': return <NotesExplorer openFile={setViewerFile} />;
+            case 'library': return <DigitalLibrary openFile={setViewerFile} />;
+            case 'prep': return <SeePreparationComponent openFile={setViewerFile} />;
+            case 'quizzes': return <QuizComponent />;
+            case 'about': return <AboutComponent />;
+            default: return <> <Hero go={setActive} userName={userName}/> <Section title="Everything You Need to Excel" subtitle="We've packed this platform with powerful resources to boost your preparation."><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"><FeatureCard icon="fa-solid fa-book-open" title="Curated Notes" text="Easy-to-understand notes for every chapter, designed for quick revision." delay={100} /><FeatureCard icon="fa-solid fa-lightbulb" title="Interactive Quizzes" text="Test your knowledge with our subject-wise quiz challenges." delay={200} /><FeatureCard icon="fa-solid fa-file-alt" title="Past Papers" text="Practice with official SEE question papers from previous years." delay={300} /></div></Section> </> ;
         }
       };
       
       if (uiState !== 'ready') {
-          return (
-            <Fragment>
-              {uiState === 'name' && <NameCaptureModal onSave={handleSaveName} />}
-              {uiState === 'celebration' && <WelcomeCelebration name={userName} />}
-              {uiState === 'certificate' && <CertificateModal name={userName} onContinue={handleContinueFromCert} onDownload={handleDownloadCertificate} />}
-            </Fragment>
-          );
+          return <> {uiState === 'loading' && <div className="h-screen w-screen bg-slate-100 dark:bg-slate-900"></div>} {uiState === 'name' && <NameCaptureModal onSave={handleSaveName} />} {uiState === 'celebration' && <WelcomeCelebration name={userName} />} {uiState === 'certificate' && <CertificateModal name={userName} onContinue={handleContinueFromCert} />} </> ;
       }
 
-      return (
-        <div className="min-h-screen flex flex-col">
-          <Header active={active} setActive={setActive} dark={dark} setDark={setDark} />
-          <main className="flex-1">
-              {renderContent()}
-          </main>
-          <Footer go={setActive}/>
-          <AskQuestionFAB />
-          {viewer && <PdfModal file={viewer} onClose={() => setViewer(null)} />}
-        </div>
-      );
+      return <div className="min-h-screen flex flex-col"><Header active={active} setActive={setActive} isDark={isDark} toggleTheme={() => setIsDark(d => !d)} /><main className="flex-1">{renderContent()}</main><Footer go={setActive}/><AskQuestionFAB />{viewerFile && <PdfModal file={viewerFile} onClose={() => setViewerFile(null)} />}</div>;
     };
 
     ReactDOM.render(<App/>, document.getElementById('root'));
