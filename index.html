@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1701,7 +1702,117 @@
     const WelcomeCelebration = ({ name }) => ( <div className="overlay overflow-hidden animated-gradient-bg"><div className="text-center text-white relative z-10"><h1 className="text-5xl md:text-7xl font-display font-bold" style={{ animation: `slideInDown .8s ease-out`}}>Welcome, {name}!</h1><p className="mt-4 text-xl" style={{ animation: `fadeIn 1s .5s ease-out backwards` }}>We're so glad you're here.</p></div>{Array.from({length: 10}).map((_, i) => <div key={i} className="confetti"></div>)}</div> );
     const CertificateModal = ({ name, onContinue }) => { const certificateRef = useRef(null); const [downloading, setDownloading] = useState(false); const handleDownload = async () => { if (certificateRef.current && !downloading && window.html2canvas) { setDownloading(true); try { const canvas = await html2canvas(certificateRef.current, { scale: 2, useCORS: true, backgroundColor: '#fdfdfd' }); const link = document.createElement('a'); link.href = canvas.toDataURL('image/png'); link.download = `Ganesh_Dai_Academy_Certificate_${name}.png`; link.click(); } catch (error) { console.error("Download failed:", error); } finally { setDownloading(false); } } }; return <div className="overlay"><div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-xl max-h-[90vh] flex flex-col slide-in-up" onClick={e=>e.stopPropagation()}><div className="p-4 sm:p-6 overflow-y-auto"><div ref={certificateRef} id="certificate" className="text-slate-800"><div className="text-center"><img src={DATA.logoUrl} className="w-24 h-24 mx-auto mb-2 rounded-full" alt="Academy Logo"/><h1 className="font-serif-display text-4xl text-violet-700">Certificate of Membership</h1><p className="text-lg mt-4">This certificate is proudly presented to</p><p className="font-handwriting text-6xl font-bold my-4 text-slate-800">{name}</p><p className="text-lg">for joining the Ganesh Dai Academy. We wish you the very best for your SEE preparation journey and future endeavors.</p><div className="mt-12 flex justify-between items-end"><div className="text-left"><p className="text-sm border-t-2 border-slate-400 pt-1">Date</p><p>{new Date().toLocaleDateString('en-CA')}</p></div><div className="text-center"><p className="font-handwriting text-4xl">{DATA.aboutContent.founder}</p><p className="text-sm border-t-2 border-slate-400 pt-1">Founder, Ganesh Dai Academy</p></div></div></div></div></div><div className="flex flex-col sm:flex-row gap-3 p-4 border-t border-slate-200 dark:border-slate-700"><button onClick={handleDownload} disabled={downloading} className="flex-1 bg-accent-500 hover:bg-accent-600 text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center transition disabled:bg-accent-500/70">{downloading ? <><i className="fa-solid fa-spinner spinner mr-2"></i> Downloading...</> : <><i className="fa-solid fa-download mr-2"></i>Download</>}</button><button onClick={onContinue} className="flex-1 btn-grad px-6 py-3 rounded-lg font-semibold">Continue to Academy <i className="fa-solid fa-arrow-right ml-2"></i></button></div></div></div>; };
     const AskQuestionFAB = () => ( <a href={`https://wa.me/${DATA.whatsapp.number}?text=${encodeURIComponent(DATA.whatsapp.message)}`} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 h-16 w-16 bg-gradient-to-tr from-emerald-500 to-green-500 rounded-full shadow-lg grid place-items-center text-white text-3xl transition-transform hover:scale-110 active:scale-95"><i className="fa-brands fa-whatsapp"></i></a> );
-    const PdfModal = ({ file, onClose, onDownloadRequest }) => { const modalContentRef = useRef(null); const getEmbedUrl = (url) => { if (!url) return null; const g = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/); if (g) return `https://drive.google.com/file/d/${g[1]}/preview`; return url; }; const url = getEmbedUrl(file?.pdf || file?.link); const handleFullScreen = () => { if (modalContentRef.current && modalContentRef.current.requestFullscreen) { modalContentRef.current.requestFullscreen(); } }; if (!url) return null; return <div className="overlay" onClick={onClose}><div className="modal" onClick={e=>e.stopPropagation()} ref={modalContentRef}><div className="flex items-center justify-between bg-slate-950 p-3 border-b border-[#334155] text-white"><div className="flex items-center gap-3 min-w-0"><i className="fa-solid fa-file-pdf text-rose-400"></i><span className="font-semibold truncate">{file.title}</span></div><div className="flex items-center gap-2"><button onClick={handleFullScreen} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600" title="Full Screen"><i className="fa-solid fa-expand"></i></button><button onClick={onDownloadRequest} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600" title="Download PDF"><i className="fa-solid fa-download"></i></button><button onClick={onClose} className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600 text-xl flex-shrink-0">&times;</button></div></div><div className="flex-1 bg-slate-800"><iframe src={url} title={file.title} className="w-full h-full border-0"></iframe></div></div></div>; };
+    const PdfModal = ({ file, onClose, onDownloadRequest }) => {
+  const modalContentRef = useRef(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  // Convert file link to Google Drive preview
+  const getEmbedUrl = (url) => {
+    if (!url) return null;
+    const g = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (g) return `https://drive.google.com/file/d/${g[1]}/preview`;
+    return url;
+  };
+
+  const url = getEmbedUrl(file?.pdf || file?.link);
+
+  // Toggle fullscreen
+  const handleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      // enter fullscreen
+      if (modalContentRef.current?.requestFullscreen) {
+        modalContentRef.current.requestFullscreen();
+      }
+    } else {
+      // exit fullscreen
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
+
+  // Detect fullscreen change to update icon state
+  useEffect(() => {
+    const onChange = () => setIsFullScreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  if (!url) return null;
+
+  return (
+    <div className="overlay" onClick={onClose}>
+      <div
+        className="modal"
+        onClick={(e) => e.stopPropagation()}
+        ref={modalContentRef}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between bg-slate-950 p-3 border-b border-[#334155] text-white">
+          <div className="flex items-center gap-3 min-w-0">
+            <i className="fa-solid fa-file-pdf text-rose-400"></i>
+            <span className="font-semibold truncate">{file.title}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Toggle Full Screen */}
+            <button
+              onClick={handleFullScreen}
+              className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600"
+              title={isFullScreen ? "Exit Full Screen" : "Full Screen"}
+            >
+              <i
+                className={`fa-solid ${
+                  isFullScreen ? "fa-compress" : "fa-expand"
+                }`}
+              ></i>
+            </button>
+
+            {/* Download Button */}
+            <button
+              onClick={onDownloadRequest}
+              className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600"
+              title="Download PDF"
+            >
+              <i className="fa-solid fa-download"></i>
+            </button>
+
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="h-8 w-8 grid place-items-center rounded-full bg-slate-700 hover:bg-slate-600 text-xl flex-shrink-0"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+
+        {/* PDF Viewer */}
+        <div className="relative flex-1 bg-slate-800">
+          <iframe
+            src={url}
+            title={file.title}
+            className="w-full h-full border-0 pointer-events-auto"
+            sandbox="allow-scripts allow-same-origin allow-presentation"
+          ></iframe>
+
+          {/* Transparent overlay to block pop-out / share / download */}
+          <div
+            className="absolute top-0 left-0 w-full"
+            style={{
+              height: "45px",
+              background: "transparent",
+              pointerEvents: "auto",
+              cursor: "not-allowed",
+            }}
+            title="Toolbar disabled"
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
     const PaymentModal = ({ onPaymentSuccess, onClose, userName }) => { const [premiumCode, setPremiumCode] = useState(''); const [isLoading, setIsLoading] = useState(false); const [error, setError] = useState(''); const handleVerify = (e) => { e.preventDefault(); setError(''); const expectedCode = generatePremiumCode(userName); if (premiumCode === expectedCode) { setIsLoading(true); setTimeout(() => { setIsLoading(false); onPaymentSuccess(); }, 1500); } else { setError('Invalid Premium Code. Please check and try again.'); } }; return ( <div className="overlay"><div className="modal-box bg-slate-900 text-white"><div className="p-8 bg-gradient-to-br from-blue-500 to-violet-600 text-center"><i className="fas fa-gem text-5xl mb-3 text-yellow-300"></i><h2 className="text-3xl font-extrabold font-display">Unlock Premium</h2><p className="text-white/80 mt-1">Get lifetime access to download all premium content.</p></div><div className="p-8 text-left space-y-6"><div><span className="text-xs font-bold uppercase bg-slate-700 text-blue-300 px-2 py-1 rounded-full">Step 1: Payment</span><p className="text-white/80 mt-2">Send <span className="font-bold text-white text-lg">Rs. {DATA.payment.amount}</span> to eSewa ID:</p><div className="bg-slate-800 border border-slate-700 p-3 rounded-lg mt-2 text-center text-xl font-mono tracking-widest">{DATA.payment.esewaId}</div></div><div><span className="text-xs font-bold uppercase bg-slate-700 text-blue-300 px-2 py-1 rounded-full">Step 2: Activation</span><p className="text-white/80 mt-2">Contact admin on WhatsApp to get your code, then enter it below.</p><a href={DATA.payment.whatsAppContactLink} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 mb-3 bg-green-500 text-white font-bold py-2 px-4 rounded-full text-sm hover:bg-green-600 transition"><i className="fab fa-whatsapp mr-2"></i>Contact Admin</a><form onSubmit={handleVerify}><input type="text" value={premiumCode} onChange={(e) => setPremiumCode(e.target.value)} placeholder="Enter Premium Code" className="w-full p-3 border border-slate-700 rounded-md bg-slate-800 text-white focus:ring-2 focus:ring-blue-400 focus:outline-none" required />{error && <p className="text-red-400 text-sm mt-2 text-center">{error}</p>}<button type="submit" className="w-full btn-grad font-bold py-3 px-6 rounded-full shadow-lg text-lg mt-4" disabled={isLoading}>{isLoading ? <><i className="fas fa-spinner spinner mr-2"></i>Activating...</> : 'Activate Premium'}</button></form></div><button onClick={onClose} className="text-slate-400 hover:text-white text-sm w-full mt-2">Maybe Later</button></div></div></div> ); };
     const Header = ({ active, setActive, isDark, toggleTheme, onSearchClick }) => { const [menuOpen, setMenuOpen] = useState(false); const navigate = (tab) => { setActive(tab); setMenuOpen(false); }; const NavItem = ({ name, label, icon }) => (<button onClick={()=>navigate(name)} className={classNames("px-3 py-2 rounded-md font-medium flex items-center gap-2 transition-colors w-full text-left lg:w-auto", active === name ? "text-primary-500 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/40" : "text-slate-600 dark:text-slate-300 hover:bg-slate-200/70 dark:hover:bg-slate-800/60")}><i className={`${icon} w-5 text-center`}></i> {label}</button>); const navItems = [ { name: 'home', label: 'Dashboard', icon: 'fa-solid fa-table-columns' }, { name: 'notes', label: 'Notes', icon: 'fa-solid fa-book-open' }, { name: 'library', label: 'Library', icon: 'fa-solid fa-swatchbook' }, { name: 'prep', label: 'SEE Prep', icon: 'fa-solid fa-graduation-cap' }, { name: 'quizzes', label: 'Quizzes', icon: 'fa-solid fa-lightbulb' }, { name: 'aftersee', label: 'After SEE', icon: 'fa-solid fa-rocket' }, { name: 'about', label: 'About', icon: 'fa-solid fa-info-circle' }, ]; return <header className="sticky top-0 z-40 border-b border-slate-200/80 dark:border-slate-800/80 backdrop-blur-lg bg-white/80 dark:bg-slate-900/70"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="py-3 flex items-center justify-between"><div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('home')}><img src={DATA.logoUrl} alt="Logo" className="h-10 w-10 rounded-lg"/><div><div className="font-display font-semibold text-slate-900 dark:text-white text-lg leading-tight">{DATA.name}</div><div className="text-xs text-slate-500">{DATA.subtitle}</div></div></div><nav className="hidden lg:flex items-center gap-1">{navItems.map(item => <NavItem key={item.name} {...item}/>)}</nav><div className="flex items-center gap-2"><button onClick={onSearchClick} className="h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300" aria-label="Search"><i className="fa-solid fa-search"></i></button><button onClick={toggleTheme} className="h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300" aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}><i className={isDark ? "fa-solid fa-moon text-yellow-300" : "fa-regular fa-sun text-orange-400"}></i></button><button onClick={() => setMenuOpen(o => !o)} className="lg:hidden h-10 w-10 grid place-items-center rounded-lg border border-slate-200 dark:border-slate-800"><i className={`fa-solid ${menuOpen ? 'fa-times' : 'fa-bars'}`}></i></button></div></div>{menuOpen && <nav className="lg:hidden py-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">{navItems.map(item => <NavItem key={item.name} {...item}/>)}</nav>}</div></header>; };
     const Footer = ({ go }) => <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 backdrop-blur-sm"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-sm text-slate-500"><div className="flex flex-col md:flex-row items-center justify-between gap-6"><div>© {new Date().getFullYear()} {DATA.name} • Your SEE Success Partner</div><div className="flex items-center gap-6"><button onClick={() => go('about')} className="hover:text-primary-500 transition-colors">About Us</button><a href={DATA.social.youtube} target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors text-xl" aria-label="YouTube"><i className="fa-brands fa-youtube"></i></a><a href={DATA.social.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors text-xl" aria-label="Facebook"><i className="fa-brands fa-facebook"></i></a></div></div></div></footer>;
