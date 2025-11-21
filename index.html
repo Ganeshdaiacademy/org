@@ -211,6 +211,13 @@
         { id: 2, title: "Condolence Letter", youtubeId: "8khhDgAy2Ps", description: "Learn how to write a Condolence Letter for your SEE exams." },
        { id: 3, title: "हार्दिक बधाई पत्र कसरी लेख्ने? | Badhai Patra Namuna | Class 11 Nepali", youtubeId: "zqzseZm6iVs", description: "Nepali मा हार्दिक बधाई पत्र लेख्ने तरिका र नमुना." },
 { id: 4, title: "निमन्त्रणा पत्र कसरी लेख्ने? | Nimantrana Patra Writing Tips & Sample", youtubeId: "DtPhHE2hvDg", description: "नेपालीमा निमन्त्रणा पत्र लेख्ने तरिका र नमुना." },
+{ id: 5, title: "Class-10 Optional Maths Matrix | Exercise 3.1 Solutions 2082", youtubeId: "d-faXEnr9ZA", description: "Matrix full exercise समाधानहरु (Class-10 Optional Maths)." },
+{ id: 6, title: "Class-10 Optional Maths Trigonometry | Exercise 5.1 Solutions", youtubeId: "K-ou1sVgaVo", description: "Trigonometry full exercise (Class-10 Optional Maths)." },
+{ id: 7, title: "How to Solve Equation by Matrix Method | Matrix Method", youtubeId: "dZAx9kVJH9M", description: "Solve simultaneous equations using matrix method." },
+{ id: 8, title: "Class‑10 Optional Maths Coordinate Geometry | Exercise 4.2 Solutions 2082", youtubeId: "IXkvIg8tRpA", description: "Coordinate Geometry full exercise 4.2 समाधानहरु (Class‑10 Optional Maths)." },
+
+
+
 
 
       ],
@@ -3929,42 +3936,303 @@
   ); 
 };
     
-    const VideoSection = () => {
+const VideoSection = ({ openVideo }) => {
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [watchOption, setWatchOption] = useState(null);
+
+  const VideoCard = ({ video, index }) => (
+    <div className="group relative">
+      {/* Animated Background Glow */}
+      <div className="absolute -inset-1 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+      
+      {/* Main Card */}
+      <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-2xl border border-white/20 dark:border-slate-700/50 hover:shadow-3xl transition-all duration-500 group-hover:-translate-y-3 backdrop-blur-sm">
+        {/* Floating Icon Container */}
+        <div className="absolute -top-4 left-6">
+          <div className="relative">
+            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+              <i className="fab fa-youtube text-white text-lg"></i>
+            </div>
+            {/* Floating Particles */}
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping"></div>
+            <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping animation-delay-300"></div>
+          </div>
+        </div>
+
+        {/* Video Thumbnail */}
+        <div className="relative mb-4 rounded-xl overflow-hidden border-2 border-white/20 group-hover:border-red-500/50 transition-all duration-300">
+          <img 
+            src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`} 
+            alt={video.title}
+            className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+            onError={(e) => {
+              e.target.src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
+            }}
+          />
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div className="bg-red-600 hover:bg-red-700 text-white rounded-full w-16 h-16 flex items-center justify-center cursor-pointer transform group-hover:scale-110 transition-all duration-300 shadow-2xl">
+              <i className="fa-solid fa-play text-xl"></i>
+            </div>
+          </div>
+          <div className="absolute top-3 right-3 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold">
+            <i className="fas fa-play mr-1"></i> VIDEO
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div>
+          {/* Title with Gradient Text */}
+          <h3 className="font-bold text-xl text-slate-800 dark:text-white mb-3 leading-tight group-hover:bg-gradient-to-r group-hover:from-red-600 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500">
+            {video.title}
+          </h3>
+          
+          {/* Description */}
+          <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 line-clamp-2">
+            {video.description}
+          </p>
+
+          {/* Action Button */}
+          <button
+            onClick={() => setSelectedVideo(video)}
+            className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group/btn"
+          >
+            <i className="fas fa-play text-sm group-hover/btn:animate-bounce"></i>
+            Watch Video
+            <i className="fas fa-arrow-right text-xs transform group-hover/btn:translate-x-1 transition-transform duration-300"></i>
+          </button>
+        </div>
+
+        {/* Animated Border */}
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition duration-500 -z-10">
+          <div className="absolute inset-[2px] rounded-2xl bg-white dark:bg-slate-800"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const WatchOptionsModal = () => {
+    if (!selectedVideo) return null;
+
+    const handleYouTubeWatch = () => {
+      window.open(`https://www.youtube.com/watch?v=${selectedVideo.youtubeId}&sub_confirmation=1`, '_blank');
+      setSelectedVideo(null);
+      setWatchOption(null);
+    };
+
+    const handleWatchHere = () => {
+      setWatchOption('here');
+    };
+
+    const handleFullScreenClose = () => {
+      setSelectedVideo(null);
+      setWatchOption(null);
+    };
+
+    if (watchOption === 'here') {
       return (
-        <Section title="Video Lessons" subtitle="Watch our curated video content to enhance your learning.">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {DATA.videos.map((video, index) => (
-              <div key={video.id} className="card overflow-hidden slide-in-up" style={{ animationDelay: `${index * 100}ms` }}>
-                <div className="relative aspect-video bg-slate-800">
-                  <img 
-                    src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`} 
-                    alt={video.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-red-600 hover:bg-red-700 text-white rounded-full w-16 h-16 flex items-center justify-center cursor-pointer transition-colors">
-                      <i className="fa-solid fa-play text-xl"></i>
-                    </div>
-                  </div>
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-xl z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-6xl bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-purple-500/30">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 bg-gradient-to-r from-purple-600 to-red-600">
+              <h3 className="text-2xl font-bold text-white">{selectedVideo.title}</h3>
+              <button 
+                onClick={handleFullScreenClose}
+                className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+              >
+                <i className="fas fa-times text-white"></i>
+              </button>
+            </div>
+
+            {/* Video Player */}
+            <div className="relative aspect-video bg-black">
+              <iframe
+                src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={selectedVideo.title}
+              ></iframe>
+            </div>
+
+            {/* Video Info */}
+            <div className="p-6 bg-slate-800">
+              <p className="text-white/80 text-lg mb-4">{selectedVideo.description}</p>
+              <div className="flex items-center gap-4 text-white/60">
+                <div className="flex items-center gap-2">
+                  <i className="fab fa-youtube text-red-400"></i>
+                  <span>YouTube</span>
                 </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-slate-800 dark:text-white">{video.title}</h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{video.description}</p>
-                  <a 
-                    href={`https://www.youtube.com/watch?v=${video.youtubeId}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-3 text-primary-500 hover:text-primary-600 font-medium"
-                  >
-                    Watch on YouTube <i className="fa-solid fa-external-link-alt text-xs"></i>
-                  </a>
+                <div className="flex items-center gap-2">
+                  <i className="fas fa-clock"></i>
+                  <span>Watch in full screen</span>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        </Section>
+        </div>
       );
-    };
+    }
+
+    return (
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-gradient-to-br from-slate-900 to-purple-900 rounded-3xl shadow-2xl border border-purple-500/30 overflow-hidden">
+          {/* Header */}
+          <div className="relative p-8 text-center bg-gradient-to-r from-red-600 to-purple-600">
+            <button 
+              onClick={() => setSelectedVideo(null)}
+              className="absolute top-6 right-6 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 hover:scale-110"
+            >
+              <i className="fas fa-times text-white"></i>
+            </button>
+            
+            <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-2xl">
+              <i className="fab fa-youtube text-white text-3xl"></i>
+            </div>
+            
+            <h2 className="text-2xl font-bold text-white mb-2">Watch Video</h2>
+            <p className="text-white/80 text-sm">{selectedVideo.title}</p>
+          </div>
+
+          {/* Watch Options */}
+          <div className="p-6 space-y-4">
+            {/* Option 1: Watch on YouTube */}
+            <button
+              onClick={handleYouTubeWatch}
+              className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"
+            >
+              <i className="fab fa-youtube text-xl group-hover:animate-bounce"></i>
+              <div className="text-left">
+                <div className="font-semibold">Watch on YouTube</div>
+                <div className="text-sm opacity-90">Subscribe for more content</div>
+              </div>
+              <i className="fas fa-external-link-alt text-sm opacity-70"></i>
+            </button>
+
+            {/* Option 2: Watch Here */}
+            <button
+              onClick={handleWatchHere}
+              className="w-full bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"
+            >
+              <i className="fas fa-expand text-xl group-hover:animate-pulse"></i>
+              <div className="text-left">
+                <div className="font-semibold">Watch Here</div>
+                <div className="text-sm opacity-90">Full screen experience</div>
+              </div>
+              <i className="fas fa-play text-sm opacity-70"></i>
+            </button>
+          </div>
+
+          {/* Benefits */}
+          <div className="p-4 bg-white/5 border-t border-white/10">
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div className="p-2">
+                <i className="fas fa-hd text-blue-400 text-lg mb-1"></i>
+                <p className="text-white/60 text-xs">HD Quality</p>
+              </div>
+              <div className="p-2">
+                <i className="fas fa-closed-captioning text-green-400 text-lg mb-1"></i>
+                <p className="text-white/60 text-xs">Subtitles</p>
+              </div>
+              <div className="p-2">
+                <i className="fas fa-volume-up text-yellow-400 text-lg mb-1"></i>
+                <p className="text-white/60 text-xs">Clear Audio</p>
+              </div>
+              <div className="p-2">
+                <i className="fas fa-compress text-purple-400 text-lg mb-1"></i>
+                <p className="text-white/60 text-xs">Full Screen</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-red-50/20 to-purple-50/30 dark:from-slate-900 dark:via-red-900/10 dark:to-purple-900/10">
+      {/* Animated Background Elements */}
+      <div className="fixed top-10 left-10 w-72 h-72 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div>
+      <div className="fixed top-20 right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float animation-delay-2000"></div>
+      <div className="fixed bottom-20 left-1/3 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float animation-delay-4000"></div>
+
+      <div className="relative z-10">
+        <div className="pt-12 pb-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            {/* Hero Header */}
+            <div className="text-center mb-16">
+              {/* Animated Title Container */}
+              <div className="inline-block relative mb-8">
+                <div className="absolute -inset-4 bg-gradient-to-r from-red-500 to-purple-500 rounded-2xl blur-2xl opacity-30 animate-pulse"></div>
+                <div className="relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl px-8 py-6 shadow-2xl border border-white/20 dark:border-slate-700/50">
+                  <h1 className="text-6xl font-bold bg-gradient-to-r from-red-600 via-purple-600 to-pink-600 bg-clip-text text-transparent font-display mb-4">
+                    Video Lessons
+                  </h1>
+                  <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    Learn from <span className="font-semibold text-red-600 dark:text-red-400">expert video tutorials</span> designed to boost your SEE preparation
+                  </p>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="flex justify-center gap-8 mb-8">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-red-600 dark:text-red-400">{DATA.videos.length}+</div>
+                  <div className="text-slate-600 dark:text-slate-400 text-sm">Video Lessons</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">100%</div>
+                  <div className="text-slate-600 dark:text-slate-400 text-sm">Free Access</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">HD</div>
+                  <div className="text-slate-600 dark:text-slate-400 text-sm">Quality</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Videos Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {DATA.videos.map((video, index) => (
+                <div 
+                  key={video.id}
+                  className="animate-fadeInUp"
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
+                  <VideoCard video={video} index={index} />
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Section */}
+            <div className="text-center mt-16">
+              <div className="bg-gradient-to-r from-red-500/10 to-purple-500/10 rounded-2xl p-8 border border-red-500/20">
+                <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">
+                  Want More Video Content?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+                  Subscribe to our YouTube channel for regular updates, live sessions, and exclusive content!
+                </p>
+                <a 
+                  href={DATA.social.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  <i className="fab fa-youtube text-xl"></i>
+                  Subscribe on YouTube
+                  <i className="fas fa-external-link-alt text-sm"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Modals */}
+      {selectedVideo && <WatchOptionsModal />}
+    </div>
+  );
+};
     
     // Enhanced Modern About Section
     const AboutComponent = () => {
