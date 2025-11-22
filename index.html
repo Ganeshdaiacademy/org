@@ -3936,302 +3936,279 @@
   ); 
 };
     
-const VideoSection = ({ openVideo }) => {
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [watchOption, setWatchOption] = useState(null);
-
-  const VideoCard = ({ video, index }) => (
-    <div className="group relative">
-      {/* Animated Background Glow */}
-      <div className="absolute -inset-1 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-      
-      {/* Main Card */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-2xl border border-white/20 dark:border-slate-700/50 hover:shadow-3xl transition-all duration-500 group-hover:-translate-y-3 backdrop-blur-sm">
-        {/* Floating Icon Container */}
-        <div className="absolute -top-4 left-6">
-          <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-              <i className="fab fa-youtube text-white text-lg"></i>
-            </div>
-            {/* Floating Particles */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping"></div>
-            <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping animation-delay-300"></div>
-          </div>
-        </div>
-
-        {/* Video Thumbnail */}
-        <div className="relative mb-4 rounded-xl overflow-hidden border-2 border-white/20 group-hover:border-red-500/50 transition-all duration-300">
-          <img 
-            src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`} 
-            alt={video.title}
-            className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-            onError={(e) => {
-              e.target.src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
-            }}
-          />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <div className="bg-red-600 hover:bg-red-700 text-white rounded-full w-16 h-16 flex items-center justify-center cursor-pointer transform group-hover:scale-110 transition-all duration-300 shadow-2xl">
-              <i className="fa-solid fa-play text-xl"></i>
-            </div>
-          </div>
-          <div className="absolute top-3 right-3 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold">
-            <i className="fas fa-play mr-1"></i> VIDEO
-          </div>
-        </div>
-
-        {/* Content Area */}
-        <div>
-          {/* Title with Gradient Text */}
-          <h3 className="font-bold text-xl text-slate-800 dark:text-white mb-3 leading-tight group-hover:bg-gradient-to-r group-hover:from-red-600 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500">
-            {video.title}
-          </h3>
-          
-          {/* Description */}
-          <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 line-clamp-2">
-            {video.description}
-          </p>
-
-          {/* Action Button */}
-          <button
-            onClick={() => setSelectedVideo(video)}
-            className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group/btn"
-          >
-            <i className="fas fa-play text-sm group-hover/btn:animate-bounce"></i>
-            Watch Video
-            <i className="fas fa-arrow-right text-xs transform group-hover/btn:translate-x-1 transition-transform duration-300"></i>
-          </button>
-        </div>
-
-        {/* Animated Border */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition duration-500 -z-10">
-          <div className="absolute inset-[2px] rounded-2xl bg-white dark:bg-slate-800"></div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const WatchOptionsModal = () => {
-    if (!selectedVideo) return null;
-
-    const handleYouTubeWatch = () => {
-      window.open(`https://www.youtube.com/watch?v=${selectedVideo.youtubeId}&sub_confirmation=1`, '_blank');
-      setSelectedVideo(null);
-      setWatchOption(null);
-    };
-
-    const handleWatchHere = () => {
-      setWatchOption('here');
-    };
-
-    const handleFullScreenClose = () => {
-      setSelectedVideo(null);
-      setWatchOption(null);
-    };
-
-    if (watchOption === 'here') {
-      return (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-xl z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-6xl bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-purple-500/30">
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 bg-gradient-to-r from-purple-600 to-red-600">
-              <h3 className="text-2xl font-bold text-white">{selectedVideo.title}</h3>
-              <button 
-                onClick={handleFullScreenClose}
-                className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-              >
-                <i className="fas fa-times text-white"></i>
-              </button>
-            </div>
-
-            {/* Video Player */}
-            <div className="relative aspect-video bg-black">
-              <iframe
-                src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
-                className="w-full h-full border-0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title={selectedVideo.title}
-              ></iframe>
-            </div>
-
-            {/* Video Info */}
-            <div className="p-6 bg-slate-800">
-              <p className="text-white/80 text-lg mb-4">{selectedVideo.description}</p>
-              <div className="flex items-center gap-4 text-white/60">
-                <div className="flex items-center gap-2">
-                  <i className="fab fa-youtube text-red-400"></i>
-                  <span>YouTube</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <i className="fas fa-clock"></i>
-                  <span>Watch in full screen</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+const VideoSection = ({ user, isPremium, onGoPremium }) => { 
+  const [videos, setVideos] = useState([]); 
+  const [selectedVideo, setSelectedVideo] = useState(null); 
+  const [watchOption, setWatchOption] = useState(null); 
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
+  const [activeChannel, setActiveChannel] = useState('all'); // 'all', 'mathnesh', 'genzsir'
+  const YOUTUBE_API_KEY = 'AIzaSyCFVD6SwuSEW8objocAIA4dU9W-vOXcs0Y';
+  
+  // Channel configurations
+  const CHANNELS = {
+    mathnesh: {
+      name: 'Mathnesh 9th-10th',
+      handle: '@Mathnesh9th10th',
+      url: 'https://www.youtube.com/@Mathnesh9th10th',
+      searchTerms: ['mathnesh', '9th', '10th', 'math', 'mathematics']
+    },
+    genzsir: {
+      name: 'Genz Sir',
+      handle: '@Genz-Sir',
+      url: 'https://www.youtube.com/@Genz-Sir',
+      searchTerms: ['genz', 'genzsir', 'science', 'education']
     }
+  };
+  
+  useEffect(() => { fetchAllYouTubeVideos(); }, []); 
+  
+  const fetchAllYouTubeVideos = async () => { 
+    try { 
+      setLoading(true);
+      setError(null);
+      console.log('Fetching videos from both YouTube channels...');
+      
+      let allVideos = [];
+      
+      // Fetch from Mathnesh channel
+      try {
+        const mathneshVideos = await fetchChannelVideos('mathnesh');
+        allVideos = [...allVideos, ...mathneshVideos];
+      } catch (error) {
+        console.error('Error fetching Mathnesh videos:', error);
+      }
+      
+      // Fetch from Genz Sir channel
+      try {
+        const genzsirVideos = await fetchChannelVideos('genzsir');
+        allVideos = [...allVideos, ...genzsirVideos];
+      } catch (error) {
+        console.error('Error fetching Genz Sir videos:', error);
+      }
+      
+      // If no videos found from API, use sample videos
+      if (allVideos.length === 0) {
+        setError('Using sample videos - channels will connect when videos are available');
+        allVideos = getSampleVideos();
+      }
+      
+      setVideos(allVideos);
+      console.log('All processed videos:', allVideos);
+      
+    } catch (error) { 
+      console.error('Error fetching videos:', error); 
+      setError('Failed to load videos from YouTube');
+      setVideos(getSampleVideos());
+    } finally {
+      setLoading(false);
+    }
+  }; 
 
-    return (
-      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-gradient-to-br from-slate-900 to-purple-900 rounded-3xl shadow-2xl border border-purple-500/30 overflow-hidden">
-          {/* Header */}
-          <div className="relative p-8 text-center bg-gradient-to-r from-red-600 to-purple-600">
-            <button 
-              onClick={() => setSelectedVideo(null)}
-              className="absolute top-6 right-6 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 hover:scale-110"
-            >
-              <i className="fas fa-times text-white"></i>
-            </button>
-            
-            <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-2xl">
-              <i className="fab fa-youtube text-white text-3xl"></i>
-            </div>
-            
-            <h2 className="text-2xl font-bold text-white mb-2">Watch Video</h2>
-            <p className="text-white/80 text-sm">{selectedVideo.title}</p>
-          </div>
-
-          {/* Watch Options */}
-          <div className="p-6 space-y-4">
-            {/* Option 1: Watch on YouTube */}
-            <button
-              onClick={handleYouTubeWatch}
-              className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"
-            >
-              <i className="fab fa-youtube text-xl group-hover:animate-bounce"></i>
-              <div className="text-left">
-                <div className="font-semibold">Watch on YouTube</div>
-                <div className="text-sm opacity-90">Subscribe for more content</div>
-              </div>
-              <i className="fas fa-external-link-alt text-sm opacity-70"></i>
-            </button>
-
-            {/* Option 2: Watch Here */}
-            <button
-              onClick={handleWatchHere}
-              className="w-full bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"
-            >
-              <i className="fas fa-expand text-xl group-hover:animate-pulse"></i>
-              <div className="text-left">
-                <div className="font-semibold">Watch Here</div>
-                <div className="text-sm opacity-90">Full screen experience</div>
-              </div>
-              <i className="fas fa-play text-sm opacity-70"></i>
-            </button>
-          </div>
-
-          {/* Benefits */}
-          <div className="p-4 bg-white/5 border-t border-white/10">
-            <div className="grid grid-cols-2 gap-4 text-center">
-              <div className="p-2">
-                <i className="fas fa-hd text-blue-400 text-lg mb-1"></i>
-                <p className="text-white/60 text-xs">HD Quality</p>
-              </div>
-              <div className="p-2">
-                <i className="fas fa-closed-captioning text-green-400 text-lg mb-1"></i>
-                <p className="text-white/60 text-xs">Subtitles</p>
-              </div>
-              <div className="p-2">
-                <i className="fas fa-volume-up text-yellow-400 text-lg mb-1"></i>
-                <p className="text-white/60 text-xs">Clear Audio</p>
-              </div>
-              <div className="p-2">
-                <i className="fas fa-compress text-purple-400 text-lg mb-1"></i>
-                <p className="text-white/60 text-xs">Full Screen</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const fetchChannelVideos = async (channelKey) => {
+    const channel = CHANNELS[channelKey];
+    console.log(`Fetching videos from ${channel.name}...`);
+    
+    // Search for channel by name
+    const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&q=${encodeURIComponent(channel.handle)}&part=snippet&type=channel&maxResults=1`);
+    
+    if (!channelResponse.ok) {
+      throw new Error(`Failed to fetch ${channel.name} channel info`);
+    }
+    
+    const channelData = await channelResponse.json();
+    console.log(`${channel.name} channel search result:`, channelData);
+    
+    if (!channelData.items || channelData.items.length === 0) {
+      throw new Error(`Channel ${channel.name} not found`);
+    }
+    
+    const channelId = channelData.items[0].id.channelId;
+    console.log(`Found ${channel.name} channel ID:`, channelId);
+    
+    // Fetch videos from this channel
+    const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=15&type=video`);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${channel.name} videos`);
+    }
+    
+    const data = await response.json();
+    console.log(`${channel.name} videos:`, data);
+    
+    if (data.items && data.items.length > 0) {
+      return data.items.map(item => ({
+        id: item.id.videoId,
+        youtubeId: item.id.videoId,
+        title: item.snippet.title,
+        description: item.snippet.description,
+        subject: detectSubject(item.snippet.title),
+        duration: getDurationFromTitle(item.snippet.title),
+        isPremium: false,
+        publishedAt: item.snippet.publishedAt,
+        channelTitle: item.snippet.channelTitle,
+        channel: channelKey,
+        thumbnail: item.snippet.thumbnails.high.url
+      }));
+    }
+    
+    return [];
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-red-50/20 to-purple-50/30 dark:from-slate-900 dark:via-red-900/10 dark:to-purple-900/10">
-      {/* Animated Background Elements */}
-      <div className="fixed top-10 left-10 w-72 h-72 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div>
-      <div className="fixed top-20 right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float animation-delay-2000"></div>
-      <div className="fixed bottom-20 left-1/3 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float animation-delay-4000"></div>
+  const getSampleVideos = () => {
+    return [
+      // Mathnesh sample videos
+      { 
+        id: 'math1', 
+        youtubeId: 'ZJrYDPVvcBM', 
+        title: 'Grade 9-10 Mathematics: Algebra Basics', 
+        description: 'Complete algebra guide for Grade 9 and 10 students. Covering all major topics and concepts.', 
+        subject: 'Mathematics', 
+        duration: '35:20', 
+        isPremium: false,
+        publishedAt: '2024-01-15T00:00:00Z',
+        channelTitle: 'Mathnesh 9th-10th',
+        channel: 'mathnesh'
+      },
+      { 
+        id: 'math2', 
+        youtubeId: 'ZJrYDPVvcBM', 
+        title: 'Geometry Fundamentals for SEE', 
+        description: 'Basic geometry concepts and principles for Grade 9-10 SEE curriculum.', 
+        subject: 'Mathematics', 
+        duration: '42:15', 
+        isPremium: false,
+        publishedAt: '2024-01-10T00:00:00Z',
+        channelTitle: 'Mathnesh 9th-10th',
+        channel: 'mathnesh'
+      },
+      // Genz Sir sample videos
+      { 
+        id: 'genz1', 
+        youtubeId: 'ZJrYDPVvcBM', 
+        title: 'Science - Physics Complete Guide', 
+        description: 'Complete physics guide covering all major topics for secondary level.', 
+        subject: 'Physics', 
+        duration: '38:30', 
+        isPremium: false,
+        publishedAt: '2024-01-08T00:00:00Z',
+        channelTitle: 'Genz Sir',
+        channel: 'genzsir'
+      },
+      { 
+        id: 'genz2', 
+        youtubeId: 'ZJrYDPVvcBM', 
+        title: 'Chemistry Made Easy', 
+        description: 'Simple and easy chemistry concepts for better understanding.', 
+        subject: 'Chemistry', 
+        duration: '45:10', 
+        isPremium: false,
+        publishedAt: '2024-01-05T00:00:00Z',
+        channelTitle: 'Genz Sir',
+        channel: 'genzsir'
+      },
+      { 
+        id: 'math3', 
+        youtubeId: 'ZJrYDPVvcBM', 
+        title: 'Trigonometry Masterclass', 
+        description: 'Advanced trigonometry problem solving techniques.', 
+        subject: 'Mathematics', 
+        duration: '52:10', 
+        isPremium: false,
+        publishedAt: '2024-01-01T00:00:00Z',
+        channelTitle: 'Mathnesh 9th-10th',
+        channel: 'mathnesh'
+      },
+      { 
+        id: 'genz3', 
+        youtubeId: 'ZJrYDPVvcBM', 
+        title: 'Biology - Cell Structure', 
+        description: 'Complete guide to cell biology for secondary students.', 
+        subject: 'Biology', 
+        duration: '35:20', 
+        isPremium: false,
+        publishedAt: '2023-12-28T00:00:00Z',
+        channelTitle: 'Genz Sir',
+        channel: 'genzsir'
+      }
+    ];
+  };
 
-      <div className="relative z-10">
-        <div className="pt-12 pb-20 px-4">
-          <div className="max-w-7xl mx-auto">
-            {/* Hero Header */}
-            <div className="text-center mb-16">
-              {/* Animated Title Container */}
-              <div className="inline-block relative mb-8">
-                <div className="absolute -inset-4 bg-gradient-to-r from-red-500 to-purple-500 rounded-2xl blur-2xl opacity-30 animate-pulse"></div>
-                <div className="relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl px-8 py-6 shadow-2xl border border-white/20 dark:border-slate-700/50">
-                  <h1 className="text-6xl font-bold bg-gradient-to-r from-red-600 via-purple-600 to-pink-600 bg-clip-text text-transparent font-display mb-4">
-                    Video Lessons
-                  </h1>
-                  <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                    Learn from <span className="font-semibold text-red-600 dark:text-red-400">expert video tutorials</span> designed to boost your SEE preparation
-                  </p>
-                </div>
-              </div>
+  // Helper function to detect subject from video title
+  const detectSubject = (title) => {
+    const lowerTitle = title.toLowerCase();
+    if (lowerTitle.includes('physics') || lowerTitle.includes('mechanic') || lowerTitle.includes('optics') || lowerTitle.includes('wave') || lowerTitle.includes('electric')) return 'Physics';
+    if (lowerTitle.includes('chemistry') || lowerTitle.includes('organic') || lowerTitle.includes('atomic') || lowerTitle.includes('mole') || lowerTitle.includes('reaction')) return 'Chemistry';
+    if (lowerTitle.includes('math') || lowerTitle.includes('calculus') || lowerTitle.includes('algebra') || lowerTitle.includes('trigonometry') || lowerTitle.includes('geometry')) return 'Mathematics';
+    if (lowerTitle.includes('biology') || lowerTitle.includes('genetic') || lowerTitle.includes('cell') || lowerTitle.includes('botany') || lowerTitle.includes('zoology')) return 'Biology';
+    if (lowerTitle.includes('computer') || lowerTitle.includes('programming') || lowerTitle.includes('coding') || lowerTitle.includes('python') || lowerTitle.includes('java')) return 'Computer Science';
+    if (lowerTitle.includes('economic') || lowerTitle.includes('account') || lowerTitle.includes('business') || lowerTitle.includes('market') || lowerTitle.includes('finance')) return 'Economics';
+    if (lowerTitle.includes('english') || lowerTitle.includes('grammar') || lowerTitle.includes('writing') || lowerTitle.includes('literature')) return 'English';
+    if (lowerTitle.includes('nepali') || lowerTitle.includes('नेपाली')) return 'Nepali';
+    return 'General Education';
+  };
 
-              {/* Stats */}
-              <div className="flex justify-center gap-8 mb-8">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-red-600 dark:text-red-400">{DATA.videos.length}+</div>
-                  <div className="text-slate-600 dark:text-slate-400 text-sm">Video Lessons</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">100%</div>
-                  <div className="text-slate-600 dark:text-slate-400 text-sm">Free Access</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">HD</div>
-                  <div className="text-slate-600 dark:text-slate-400 text-sm">Quality</div>
-                </div>
-              </div>
-            </div>
+  // Helper function to extract duration from title
+  const getDurationFromTitle = (title) => {
+    const timeMatch = title.match(/(\d+)[:.]?(\d+)?\s*(min|minutes|hr|hour)/i);
+    if (timeMatch) {
+      if (timeMatch[3].toLowerCase().includes('hr')) {
+        return `${timeMatch[1]}h${timeMatch[2] || '00'}m`;
+      }
+      return `${timeMatch[1]}m${timeMatch[2] || '00'}s`;
+    }
+    const durations = ['25:15', '38:30', '42:10', '35:45', '48:20', '29:55'];
+    return durations[Math.floor(Math.random() * durations.length)];
+  };
+  
+  const filteredVideos = videos.filter(video => {
+    const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesChannel = activeChannel === 'all' || video.channel === activeChannel;
+    return matchesSearch && matchesChannel;
+  }); 
 
-            {/* Videos Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {DATA.videos.map((video, index) => (
-                <div 
-                  key={video.id}
-                  className="animate-fadeInUp"
-                  style={{ animationDelay: `${index * 150}ms` }}
-                >
-                  <VideoCard video={video} index={index} />
-                </div>
-              ))}
-            </div>
+  const getChannelColor = (channel) => {
+    switch(channel) {
+      case 'mathnesh': return 'from-blue-500 to-cyan-500';
+      case 'genzsir': return 'from-purple-500 to-pink-500';
+      default: return 'from-red-500 to-orange-500';
+    }
+  };
 
-            {/* CTA Section */}
-            <div className="text-center mt-16">
-              <div className="bg-gradient-to-r from-red-500/10 to-purple-500/10 rounded-2xl p-8 border border-red-500/20">
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">
-                  Want More Video Content?
-                </h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
-                  Subscribe to our YouTube channel for regular updates, live sessions, and exclusive content!
-                </p>
-                <a 
-                  href={DATA.social.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                >
-                  <i className="fab fa-youtube text-xl"></i>
-                  Subscribe on YouTube
-                  <i className="fas fa-external-link-alt text-sm"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  const getChannelIcon = (channel) => {
+    switch(channel) {
+      case 'mathnesh': return 'fas fa-calculator';
+      case 'genzsir': return 'fas fa-flask';
+      default: return 'fab fa-youtube';
+    }
+  };
 
-      {/* Modals */}
-      {selectedVideo && <WatchOptionsModal />}
-    </div>
-  );
+  const VideoCard = ({ video, index }) => ( 
+    <div className="group relative"><div className="absolute -inset-1 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div><div className="relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-2xl border border-white/20 dark:border-slate-700/50 hover:shadow-3xl transition-all duration-500 group-hover:-translate-y-3 backdrop-blur-sm"><div className="absolute -top-4 left-6"><div className="relative"><div className={`w-12 h-12 bg-gradient-to-br ${getChannelColor(video.channel)} rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}><i className={`${getChannelIcon(video.channel)} text-white text-lg`}></i></div><div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping"></div><div className="absolute -bottom-1 -left-1 w-3 h-3 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping animation-delay-300"></div></div></div><div className="relative mb-4 rounded-xl overflow-hidden border-2 border-white/20 group-hover:border-red-500/50 transition-all duration-300"><img src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`} alt={video.title} className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { e.target.src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`; }} /><div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"><div className="bg-red-600 hover:bg-red-700 text-white rounded-full w-16 h-16 flex items-center justify-center cursor-pointer transform group-hover:scale-110 transition-all duration-300 shadow-2xl"><i className="fa-solid fa-play text-xl"></i></div></div><div className="absolute top-3 right-3 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold"><i className="fas fa-play mr-1"></i> VIDEO</div><div className="absolute bottom-3 left-3 bg-black/80 text-white px-2 py-1 rounded text-xs">{video.duration}</div><div className="absolute bottom-3 right-3 bg-black/60 text-white px-2 py-1 rounded text-xs"><i className="far fa-calendar mr-1"></i>{new Date(video.publishedAt).toLocaleDateString()}</div></div><div className="flex items-center gap-2 mb-3"><span className="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-2 py-1 rounded-full">{video.subject}</span><span className={`text-xs font-semibold ${video.channel === 'mathnesh' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30'} px-2 py-1 rounded-full`}><i className={`${getChannelIcon(video.channel)} mr-1`}></i>{video.channel === 'mathnesh' ? 'Mathnesh' : 'Genz Sir'}</span><span className="text-xs font-semibold text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-full"><i className="fas fa-unlock mr-1"></i>FREE</span></div><h3 className="font-bold text-xl text-slate-800 dark:text-white mb-3 leading-tight group-hover:bg-gradient-to-r group-hover:from-red-600 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500">{video.title}</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 line-clamp-2">{video.description}</p><div className="flex items-center gap-2 mb-4 text-xs text-slate-500 dark:text-slate-400"><i className="fab fa-youtube text-red-500"></i><span>{video.channelTitle}</span></div><button onClick={() => setSelectedVideo(video)} className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group/btn"><i className="fas fa-play text-sm group-hover/btn:animate-bounce"></i>Watch Video<i className="fas fa-arrow-right text-xs transform group-hover/btn:translate-x-1 transition-transform duration-300"></i></button><div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition duration-500 -z-10"><div className="absolute inset-[2px] rounded-2xl bg-white dark:bg-slate-800"></div></div></div></div> 
+  ); 
+  
+  const WatchOptionsModal = () => { 
+    if (!selectedVideo) return null; 
+    const handleYouTubeWatch = () => { window.open(`https://www.youtube.com/watch?v=${selectedVideo.youtubeId}`, '_blank'); setSelectedVideo(null); setWatchOption(null); }; 
+    const handleWatchHere = () => { setWatchOption('here'); }; 
+    const handleFullScreenClose = () => { setSelectedVideo(null); setWatchOption(null); }; 
+    if (watchOption === 'here') { 
+      return ( 
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-xl z-50 flex items-center justify-center p-4"><div className="relative w-full max-w-6xl bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-purple-500/30"><div className="flex items-center justify-between p-6 bg-gradient-to-r from-purple-600 to-red-600"><h3 className="text-2xl font-bold text-white">{selectedVideo.title}</h3><button onClick={handleFullScreenClose} className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"><i className="fas fa-times text-white"></i></button></div><div className="relative aspect-video bg-black"><iframe src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&rel=0&modestbranding=1`} className="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={selectedVideo.title}></iframe></div><div className="p-6 bg-slate-800"><p className="text-white/80 text-lg mb-4">{selectedVideo.description}</p><div className="flex items-center gap-4 text-white/60"><div className="flex items-center gap-2"><i className="fab fa-youtube text-red-400"></i><span>YouTube</span></div><div className="flex items-center gap-2"><i className="fas fa-clock"></i><span>{selectedVideo.duration}</span></div><div className="flex items-center gap-2"><i className="fas fa-book"></i><span>{selectedVideo.subject}</span></div><div className="flex items-center gap-2"><i className={`${getChannelIcon(selectedVideo.channel)} ${selectedVideo.channel === 'mathnesh' ? 'text-blue-400' : 'text-purple-400'}`}></i><span>{selectedVideo.channel === 'mathnesh' ? 'Mathnesh' : 'Genz Sir'}</span></div></div></div></div></div> 
+      ); 
+    } 
+    return ( 
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"><div className="w-full max-w-md bg-gradient-to-br from-slate-900 to-purple-900 rounded-3xl shadow-2xl border border-purple-500/30 overflow-hidden"><div className="relative p-8 text-center bg-gradient-to-r from-red-600 to-purple-600"><button onClick={() => setSelectedVideo(null)} className="absolute top-6 right-6 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 hover:scale-110"><i className="fas fa-times text-white"></i></button><div className={`w-20 h-20 bg-gradient-to-br ${getChannelColor(selectedVideo.channel)} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-2xl`}><i className={`${getChannelIcon(selectedVideo.channel)} text-white text-3xl`}></i></div><h2 className="text-2xl font-bold text-white mb-2">Watch Video</h2><p className="text-white/80 text-sm">{selectedVideo.title}</p><div className="mt-2 bg-green-500/20 border border-green-500/30 rounded-full px-3 py-1 inline-flex items-center gap-2"><i className="fas fa-unlock text-green-400 text-sm"></i><span className="text-green-300 text-sm font-semibold">Free Access</span></div></div><div className="p-6 space-y-4"><button onClick={handleYouTubeWatch} className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"><i className="fab fa-youtube text-xl group-hover:animate-bounce"></i><div className="text-left"><div className="font-semibold">Watch on YouTube</div><div className="text-sm opacity-90">Subscribe for more content</div></div><i className="fas fa-external-link-alt text-sm opacity-70"></i></button><button onClick={handleWatchHere} className="w-full bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"><i className="fas fa-expand text-xl group-hover:animate-pulse"></i><div className="text-left"><div className="font-semibold">Watch Here</div><div className="text-sm opacity-90">Full screen experience</div></div><i className="fas fa-play text-sm opacity-70"></i></button></div><div className="p-4 bg-white/5 border-t border-white/10"><div className="space-y-2 text-sm text-white/80"><div className="flex justify-between"><span>Subject:</span><span className="font-semibold">{selectedVideo.subject}</span></div><div className="flex justify-between"><span>Duration:</span><span className="font-semibold">{selectedVideo.duration}</span></div><div className="flex justify-between"><span>Channel:</span><span className={`font-semibold ${selectedVideo.channel === 'mathnesh' ? 'text-blue-400' : 'text-purple-400'}`}>{selectedVideo.channel === 'mathnesh' ? 'Mathnesh 9th-10th' : 'Genz Sir'}</span></div></div></div></div></div> 
+    ); 
+  }; 
+  
+  const mathneshVideos = videos.filter(v => v.channel === 'mathnesh');
+  const genzsirVideos = videos.filter(v => v.channel === 'genzsir');
+  
+  return ( 
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-red-50/20 to-purple-50/30 dark:from-slate-900 dark:via-red-900/10 dark:to-purple-900/10"><div className="fixed top-10 left-10 w-72 h-72 bg-red-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div><div className="fixed top-20 right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float animation-delay-2000"></div><div className="fixed bottom-20 left-1/3 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float animation-delay-4000"></div><div className="relative z-10"><div className="pt-12 pb-20 px-4"><div className="max-w-7xl mx-auto"><div className="text-center mb-16"><div className="inline-block relative mb-8"><div className="absolute -inset-4 bg-gradient-to-r from-red-500 to-purple-500 rounded-2xl blur-2xl opacity-30 animate-pulse"></div><div className="relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl px-8 py-6 shadow-2xl border border-white/20 dark:border-slate-700/50"><h1 className="text-6xl font-bold bg-gradient-to-r from-red-600 via-purple-600 to-pink-600 bg-clip-text text-transparent font-display mb-4">Dual YouTube Channels</h1><p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">FREE videos from <span className="font-semibold text-blue-600 dark:text-blue-400">Mathnesh 9th-10th</span> & <span className="font-semibold text-purple-600 dark:text-purple-400">Genz Sir</span> channels!</p></div></div>{error && (<div className="max-w-2xl mx-auto mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl"><div className="flex items-center gap-3"><i className="fas fa-exclamation-triangle text-yellow-600 text-xl"></i><div><p className="font-semibold text-yellow-800">Note: Using sample videos</p><p className="text-yellow-700 text-sm">The system will show actual videos when channels have content</p></div></div></div>)}<div className="max-w-4xl mx-auto mb-8"><div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl p-4 shadow-2xl border border-white/20 dark:border-slate-700/50"><div className="flex flex-wrap gap-3 justify-center"><button onClick={() => setActiveChannel('all')} className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 ${activeChannel === 'all' ? 'bg-gradient-to-r from-red-500 to-purple-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'}`}><i className="fas fa-layer-group mr-2"></i>All Channels ({videos.length})</button><button onClick={() => setActiveChannel('mathnesh')} className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 ${activeChannel === 'mathnesh' ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'}`}><i className="fas fa-calculator mr-2"></i>Mathnesh ({mathneshVideos.length})</button><button onClick={() => setActiveChannel('genzsir')} className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 ${activeChannel === 'genzsir' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'}`}><i className="fas fa-flask mr-2"></i>Genz Sir ({genzsirVideos.length})</button></div></div></div><div className="max-w-2xl mx-auto mb-12"><div className="relative group"><div className="absolute -inset-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-1000"></div><div className="relative"><div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none"><i className="fas fa-search text-red-500 text-xl"></i></div><input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="🔍 Search through FREE videos from both channels... ✨" className="w-full pl-14 pr-6 py-5 bg-white/90 dark:bg-slate-800/90 border-2 border-red-200 dark:border-red-800 rounded-2xl focus:ring-4 focus:ring-red-500/30 focus:border-red-500 transition-all duration-500 text-slate-800 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 shadow-2xl backdrop-blur-sm text-lg font-medium" /><div className="absolute inset-y-0 right-0 pr-5 flex items-center"><div className="bg-gradient-to-r from-red-500 to-purple-500 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg transform group-hover:scale-110 transition-transform duration-300">{filteredVideos.length} FREE videos</div></div></div></div></div><div className="flex justify-center gap-8 mb-8"><div className="text-center"><div className="text-3xl font-bold text-red-600 dark:text-red-400">{videos.length}</div><div className="text-slate-600 dark:text-slate-400 text-sm">Total Videos</div></div><div className="text-center"><div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{mathneshVideos.length}</div><div className="text-slate-600 dark:text-slate-400 text-sm">Mathnesh Videos</div></div><div className="text-center"><div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{genzsirVideos.length}</div><div className="text-slate-600 dark:text-slate-400 text-sm">Genz Sir Videos</div></div></div></div>{loading ? (<div className="text-center py-20"><div className="inline-block relative"><div className="w-20 h-20 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div><div className="absolute inset-0 flex items-center justify-center"><i className="fab fa-youtube text-red-500 text-2xl"></i></div></div><h3 className="text-2xl font-bold text-slate-800 dark:text-white mt-4">Loading from Both Channels...</h3><p className="text-slate-600 dark:text-slate-400">Fetching content from Mathnesh & Genz Sir channels</p></div>) : filteredVideos.length > 0 ? (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{filteredVideos.map((video, index) => (<div key={video.id} className="animate-fadeInUp" style={{ animationDelay: `${index * 150}ms` }}><VideoCard video={video} index={index} /></div>))}</div>) : (<div className="text-center py-20"><div className="relative inline-block mb-8"><div className="w-40 h-40 bg-gradient-to-br from-red-400 to-purple-500 rounded-3xl flex items-center justify-center mx-auto shadow-2xl transform -rotate-6 animate-float"><i className="fab fa-youtube text-white text-5xl"></i></div><div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full animate-ping"></div><div className="absolute -bottom-2 -left-2 w-6 h-6 bg-pink-400 rounded-full animate-ping animation-delay-1000"></div></div><h3 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent mb-4">No Videos Found</h3><p className="text-slate-600 dark:text-slate-400 text-lg mb-8 max-w-md mx-auto">Try different search terms or check channel filters.</p><button onClick={() => {setSearchTerm(''); setActiveChannel('all');}} className="bg-gradient-to-r from-red-500 to-purple-500 hover:from-red-600 hover:to-purple-600 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl flex items-center gap-3 mx-auto"><i className="fas fa-redo animate-pulse"></i>Clear Filters</button></div>)}<div className="text-center mt-16"><div className="bg-gradient-to-r from-green-500/10 to-teal-500/10 rounded-2xl p-8 border border-green-500/20"><h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-4">🎉 Two Channels, Double the Learning!</h3><p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">Access FREE educational content from both Mathnesh 9th-10th and Genz Sir YouTube channels. More variety, more knowledge!</p><div className="flex flex-col sm:flex-row gap-4 justify-center"><a href="https://www.youtube.com/@Mathnesh9th10th" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"><i className="fas fa-calculator text-xl"></i>Mathnesh Channel<i className="fas fa-external-link-alt text-sm"></i></a><a href="https://www.youtube.com/@Genz-Sir" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"><i className="fas fa-flask text-xl"></i>Genz Sir Channel<i className="fas fa-external-link-alt text-sm"></i></a></div></div></div></div></div></div>{selectedVideo && <WatchOptionsModal />}<style jsx>{`@keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(-5deg); } }@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }.animate-float { animation: float 6s ease-in-out infinite; }.animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }.animation-delay-2000 { animation-delay: 2s; }.animation-delay-4000 { animation-delay: 4s; }.animation-delay-300 { animation-delay: 300ms; }.animation-delay-1000 { animation-delay: 1000ms; }.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }`}</style></div> 
+  ); 
 };
     
     // Enhanced Modern About Section
